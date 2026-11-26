@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.3
+
+occhio di visibilità per riga (solo vista) accanto al numero, con occhio globale in intestazione e indicatore nella barra di stato; il tipo di item (attività, milestone, attesa, indicazione) si sceglie anche dal menu del tasto destro; Ctrl+Maiusc+Invio inserisce una riga sopra; correzione: un gruppo ora include le indicazioni (intervalli) che contiene, anche se è l\'unico figlio; l\'estensione di un intervallo si vede mentre si trascina il bordo, come per le barre; il nome di un gruppo troppo corto si legge intero a destra.
+
 ## 0.9.2
 
 impostazioni predefinite riviste (margini 1/3 settimane, pannello dettagli chiuso, zoom elenco 110%, intestazione Anno + Mese + settimana dall'inizio, gruppi con sola parentesi, barre stondate); etichetta delle indicazioni con tre modalità: Adattiva, A lato, Sopra. Le righe vuote sotto l'ultimo item non sono più colorate (interruttore «Mostra le righe vuote» in Visualizza) e le nuove barre si disegnano in tutta l'area vuota; il periodo «Progetto» è una riga dell'elenco dei periodi, con occhio di visibilità.

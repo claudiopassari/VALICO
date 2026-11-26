@@ -1,0 +1,20 @@
+// nome del gruppo leggibile anche quando il gruppo è molto corto
+const {chromium}=require('playwright');
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1700,height:700}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(400);const W=ms=>p.waitForTimeout(ms);const ev=(f,a)=>p.evaluate(f,a);
+await ev(()=>{GanttApp.commit('t',q=>{q.items=[];const g=GanttApp.core.newItem('VIE CAVO');const m=GanttApp.core.newItem('Valutazione attraversamenti stradali con il fornitore');m.level=2;m.type='milestone';const a=GanttApp.core.newItem('Attraversamenti');a.level=2;
+ const g2=GanttApp.core.newItem('GRUPPO LUNGO CON NOME LUNGO');const b1=GanttApp.core.newItem('B1');b1.level=2;
+ q.items.push(g,m,a,g2,b1);GanttApp.core.opBarRange(q,a.uid,'2026-11-30','2026-11-30');GanttApp.core.setField(q,m.uid,'start','30/11/2026');GanttApp.core.opBarRange(q,b1.uid,'2026-11-30','2027-01-29')})});await W(400);
+await ev(()=>GanttApp.act.setScale&&GanttApp.act.setScale('weeks'));await W(300);
+const r=await ev(()=>{const rows=[...document.querySelectorAll('#tlBody .trow')];const u=GanttApp.P.items[0].uid;
+ const a=document.querySelector('#tlBody .alab[data-u="'+u+'"]'),o=document.querySelector('#tlBody .blab.out[data-u="'+u+'"]'),ar=document.querySelector('#tlBody .area[data-u="'+u+'"]');
+ const el=a||o;return {alab:!!a,out:!!o,trunc:el?el.scrollWidth>el.clientWidth+1:null,txt:el?el.textContent:null,aw:ar?ar.getBoundingClientRect().width:null,ow:o?o.getBoundingClientRect().left-ar.getBoundingClientRect().right:null}});
+ok((r.alab&&!r.trunc)||(r.out&&!r.trunc),'gruppo corto: nome non troncato '+JSON.stringify(r));
+ok(r.out&&r.ow>=0&&r.ow<20,'gruppo corto: nome subito a destra del gruppo '+JSON.stringify(r));
+const u2=await ev(()=>GanttApp.P.items[3].uid);
+const r2=await ev(u=>({alab:!!document.querySelector('#tlBody .alab[data-u="'+u+'"]'),out:!!document.querySelector('#tlBody .blab.out[data-u="'+u+'"]')}),u2);
+ok(r2.alab&&!r2.out,'gruppo lungo: nome dentro il gruppo '+JSON.stringify(r2));
+console.log('ui69 pass',pass,'fail',fail,errs.length?errs.slice(0,3):'');
+await b.close()})();

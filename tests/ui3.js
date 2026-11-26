@@ -43,11 +43,11 @@ const s5=await p.evaluate(()=>window.GanttApp.P.items[5].start);ok(s5>=today,'Og
 await p.evaluate(()=>{const A=window.GanttApp;A.ui.dirty=false});
 await row(13).locator('.c-name .t').click();
 const n0=(await names()).length;
-await p.keyboard.press('Shift+Enter');await p.keyboard.type('Sopra');await p.keyboard.press('Enter');await p.keyboard.press('Escape');
-let nm=await names();eq([nm.length,nm[13]],[n0+1,'Sopra'],'Maiusc+Invio inserisce sopra');eq(nm[14],'Consegna','Consegna scesa');
+await p.keyboard.press('Control+Shift+Enter');await p.keyboard.type('Sopra');await p.keyboard.press('Enter');await p.keyboard.press('Escape');
+let nm=await names();eq([nm.length,nm[13]],[n0+1,'Sopra'],'Ctrl+Maiusc+Invio inserisce sopra');eq(nm[14],'Consegna','Consegna scesa');
 await p.keyboard.press('Control+Enter');await p.keyboard.type('Sotto');await p.keyboard.press('Enter');await p.keyboard.press('Escape');
 nm=await names();eq([nm[13],nm[14]],['Sopra','Sotto'],'Ctrl+Invio inserisce sotto');
-const n1=nm.length;await p.keyboard.press('Control+Shift+Enter');nm=await names();eq(nm.length,n1,'Ctrl+Maiusc+Invio libera');
+const n1=nm.length;await p.keyboard.press('Shift+Enter');nm=await names();eq(nm.length,n1,'Maiusc+Invio da solo non inserisce più');
 await p.keyboard.press('Alt+Enter');await p.keyboard.type('Fine');await p.keyboard.press('Enter');await p.keyboard.press('Escape');
 nm=await names();eq(nm[nm.length-1],'Fine','Alt+Invio in fondo');
 // durante la modifica Maiusc+Invio conferma soltanto

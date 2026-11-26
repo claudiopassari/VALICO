@@ -13,10 +13,10 @@ const ui_=await U('Nota fase');
 await AA(u=>{const A=window.GanttApp;A.commit('t',q=>A.core.setField(q,u,'type','indication'))},ui_);
 eq((await D('Nota fase'))[2],'indication','tipo indicazione');
 ok(await p.locator('#itemsBody .row:has-text("Nota fase") .idot').count()===1,'icona dell\'indicazione nell\'elenco');
-// non è un gruppo e non aggrega: figli del gruppo con indicazione
+// non è un gruppo; il gruppo ne include l'intervallo
 const before=await D('Cantiere');
 await AA(([u,a])=>{const A=window.GanttApp;A.commit('t',q=>{A.core.setField(q,u,'start','01/02/27');A.core.setField(q,u,'dur','3')})},[ui_]);
-eq((await D('Cantiere')).slice(0,2),before.slice(0,2),'l\'indicazione manuale non entra nell\'aggregazione del gruppo');
+eq((await D('Cantiere')).slice(0,2),before.slice(0,2),'un\'indicazione fuori dal gruppo non ne cambia le date');
 // sotto un\'indicazione non si annida
 const r1=await AA(()=>{const A=window.GanttApp,q=JSON.parse(JSON.stringify(A.P));try{const i=q.items.length;const x=A.core.newItem('X');x.level=2;q.items.push(x);A.core.finalize(q);return q.items[i].level+'|'+q.items[i-0].type}catch(e){return e.message}});
 ok(r1.startsWith('1|'),'finalize riporta a livello 1 un figlio di indicazione: '+r1);
@@ -58,7 +58,7 @@ await AA(()=>{const A=window.GanttApp;A.commit('t',q=>{q.periods.push({uid:'pp',
 const rt=await A(()=>{const A=window.GanttApp;const t=JSON.stringify(A.core.prepareSave(A.P,{}));const before=JSON.parse(t);A.core.loadText(t,null,'x.json');const P=A.P;
   const nota=P.items.find(i=>i.name==='Nota fase');
   return {cov:nota.covers.length,type:nota.type,per:P.periods.length,bl:P.baselines.length,act:!!P.activeBaseline,blN:Object.keys(P.baselines[0].d).length,ver:before.app.version}});
-eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.9.2'],'salvataggio e ricarica: indicazione, periodi, baseline');
+eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.9.3'],'salvataggio e ricarica: indicazione, periodi, baseline');
 await W(200);
 // ---- Ctrl + trascinamento verticale
 await AA(()=>{const a=window.GanttApp;a.ui.sel=[];a.render()});await W(100);

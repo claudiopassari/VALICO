@@ -54,6 +54,6 @@ ok(nest>=1,'riquadri presenti '+nest);
 const bad=await z.evaluate(()=>{const A=GanttApp;const vr=[...document.querySelectorAll('#tlCv .trow[data-u]')];let n=0,out=0;const ars=[...document.querySelectorAll('#tlCv .bx.aln')].map(e=>{const r=e.getBoundingClientRect();return {u:e.dataset.u,l:r.left,r:r.right,t:r.top,b:r.bottom}});
  document.querySelectorAll('#tlCv .bx.bar').forEach(bar=>{const r=bar.getBoundingClientRect();ars.forEach(a=>{if(r.top>=a.t&&r.bottom<=a.b){n++;if(r.left<a.l-0.5||r.right>a.r+0.5)out++}})});return [n,out]});
 ok(bad[0]>3&&bad[1]===0,'nessuna barra esce dal riquadro del gruppo '+bad);
-const idw=await z.evaluate(()=>Math.round(document.querySelector('#itemsCols .c-id').getBoundingClientRect().width));ok(idw<=42,'colonna # stretta: '+idw);
+const idw=await z.evaluate(()=>Math.round(document.querySelector('#itemsCols .c-id').getBoundingClientRect().width));ok(idw<=56,'colonna # stretta: '+idw);
 await c3.close();}
 console.log('pass',pass,'fail',fail);await b.close()})();

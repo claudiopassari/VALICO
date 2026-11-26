@@ -116,7 +116,7 @@ svg{display:block}
 .iwrap{flex:1;overflow:auto;position:relative;min-height:0;--gcols:40px minmax(200px,1fr);--gmin:240px}
 .cols{display:grid;grid-template-columns:var(--gcols);min-width:var(--gmin);height:var(--tl-head);align-items:end;border-bottom:1px solid var(--line);background:var(--panel2);position:sticky;top:0;z-index:6}
 .cols .c{padding:0 8px 8px;color:var(--muted);font-size:calc(11px*var(--k));font-weight:650;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--panel2)}
-.cols .c-id{text-align:right;padding-right:8px}.tpick{margin:2px 0 10px}.tpick .seg{display:flex}.tpick .seg button{flex:1}.cols .nres{position:absolute;right:0;top:0;bottom:0;width:7px;cursor:col-resize;z-index:7}.cols .nres:hover{background:linear-gradient(90deg,transparent 3px,var(--accent) 3px,var(--accent) 5px,transparent 5px)}
+.cols .c-id{text-align:right;padding-right:8px;display:flex;justify-content:flex-end;align-items:center}.tpick{margin:2px 0 10px}.tpick .seg{display:flex}.tpick .seg button{flex:1}.cols .nres{position:absolute;right:0;top:0;bottom:0;width:7px;cursor:col-resize;z-index:7}.cols .nres:hover{background:linear-gradient(90deg,transparent 3px,var(--accent) 3px,var(--accent) 5px,transparent 5px)}
 .cols .c-progress{text-align:right}
 .s1{position:sticky;left:0;z-index:3}
 .s2{position:sticky;left:calc(var(--idw,40px)*var(--ki,1));z-index:3}
@@ -137,6 +137,19 @@ svg{display:block}
 .row .c-id .g{display:none;cursor:grab;width:18px;height:18px;align-items:center;justify-content:center;color:var(--muted)}
 .row .c-id .g svg{width:16px;height:16px;fill:currentColor;stroke:none}
 .row:hover .c-id .n{display:none}
+.row .c-id .eyb{display:none;width:18px;height:18px;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;margin-left:3px;border-radius:5px;flex:none}
+.row .c-id .eyb svg,.cols .c-id .eyh svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.row:hover .c-id .eyb,.row.hid .c-id .eyb{display:inline-flex}
+.row .c-id .eyb:hover{background:var(--accent2);color:var(--text)}
+.row.hid .c:not(.c-id){opacity:.45}
+.row.hid .c-id .eyb{color:var(--accent)}
+.cols .c-id .eyh{display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;cursor:pointer;margin-left:3px;border-radius:5px;color:var(--muted)}
+.cols .c-id .eyh.on{color:var(--accent)}
+.cols .c-id .eyh:hover{background:var(--accent2)}
+.trow.hid>.bx{opacity:.4}
+#panels.i-closed .row .c-id .eyb,#panels.i-closed .cols .c-id .eyh{display:none!important}
+.stnote{cursor:pointer;color:var(--accent)}
+.stnote:hover{text-decoration:underline}
 .row:hover .c-id .g{display:inline-flex}
 .row .c.ro{color:var(--muted)}
 .row .c.ro .t{opacity:.85}
@@ -761,7 +774,7 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
         <div class="cols" id="itemsCols"></div>
         <div id="itemsBody"></div>
       </div>
-      <div class="shortcuts" id="scItems">Invio o F2: modifica · Maiusc+Invio: inserisce sopra · Ctrl+Invio: sotto · Alt+Invio: in fondo · Ctrl+↑ ↓: sposta · Ctrl+← →: livello · Canc: elimina · Ctrl+Z / Ctrl+Y: annulla e ripristina · Ctrl+S: salva</div>
+      <div class="shortcuts" id="scItems">Invio o F2: modifica · Ctrl+Maiusc+Invio: inserisce sopra · Ctrl+Invio: sotto · Alt+Invio: in fondo · Ctrl+↑ ↓: sposta · Ctrl+← →: livello · Canc: elimina · Ctrl+Z / Ctrl+Y: annulla e ripristina · Ctrl+S: salva</div>
       <span class="vt" id="vtItems">Item</span>
       <div class="resizer" id="itemsResizer" data-tip="Trascina per cambiare la larghezza dell'elenco. Doppio clic: larghezza automatica."></div>
     </section>
@@ -900,8 +913,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.2', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.3', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.3: occhio di visibilità per riga (solo vista) accanto al numero, con occhio globale in intestazione e indicatore nella barra di stato; il tipo di item (attività, milestone, attesa, indicazione) si sceglie anche dal menu del tasto destro; Ctrl+Maiusc+Invio inserisce una riga sopra; correzione: un gruppo ora include le indicazioni (intervalli) che contiene, anche se è l\\'unico figlio; l\\'estensione di un intervallo si vede mentre si trascina il bordo, come per le barre; il nome di un gruppo troppo corto si legge intero a destra.",
     "0.9.2: impostazioni predefinite riviste (margini 1/3 settimane, pannello dettagli chiuso, zoom elenco 110%, intestazione Anno + Mese + settimana dall\'inizio, gruppi con sola parentesi, barre stondate); etichetta delle indicazioni con tre modalità: Adattiva, A lato, Sopra. Le righe vuote sotto l\'ultimo item non sono più colorate (interruttore «Mostra le righe vuote» in Visualizza) e le nuove barre si disegnano in tutta l\'area vuota; il periodo «Progetto» è una riga dell\'elenco dei periodi, con occhio di visibilità.",
     "0.9.1: simboli degli item uniformati e distinguibili: l\'attesa è un quadrato vuoto, il gruppo una linea verticale con estremità arrotondate (come la parentesi nella timeline); attività = pallino, milestone = rombo, indicazione = linea orizzontale.",
     "0.9.0: nuovo formato «PDF vettoriale» (stampa del browser: testo selezionabile, font reali incorporati, forme scalabili senza perdita; con più pagine l\'intestazione della timeline si ripete e le pagine si interrompono alle righe); senza formato carta («Adatta al grafico», predefinito) la pagina ha le dimensioni del diagramma; il PDF precedente diventa «PDF immagine»; le viste predefinite usano il PDF vettoriale. Tavolozza 4 × 10: colonne in ordine di tonalità (rosso, arancio, giallo, verde, blu, viola, rosa) e neutri in coda (bianco avorio, grigio, nero), quattro livelli per colore (nuovo livello medio-chiaro); i colori già assegnati non cambiano. Periodi riordinabili trascinando la maniglia nell\'elenco: l\'ordine è la priorità (riga della fascia e prevalenza del colore nella timeline; i progetti esistenti possono mostrare la sovrapposizione dei colori invertita). Testo e griglia del calendario della timeline più visibili. Gruppi: impostazioni «Fondo», «Parentesi» (bordo sinistro più spesso che segue gli angoli del riquadro) e «Riquadro» (nessuno, arrotondato, squadrato) al posto di «Riquadro», «Fondo» e «Contorno»; «Terminazione delle barre» e «Margine finale» passano nella sezione «Barre». Nuovo pulsante per attivare o disattivare la colorazione della timeline in corrispondenza dei periodi. Rimossa la guida «Che cosa voglio ottenere» e l\'autore dalla barra di stato: le informazioni sul programma si aprono dalla Guida (?).",
@@ -1452,7 +1466,7 @@ function finalize(p){
       for(j = i+1; j < n && items[j].level > it.level; j++){
         var c = items[j];
         if(c.level === it.level+1){
-          if(c.start && c.end && c.type !== 'indication'){   /* contano solo gli elementi con la barra (inizio e fine); le indicazioni non aggregano */
+          if(c.start && c.end){   /* contano gli elementi con la barra (inizio e fine), indicazioni comprese: il gruppo le contiene anche nella timeline (non pesano sull'avanzamento) */
             if(s === null || c.start < s) s = c.start;
             if(e === null || c.end > e) e = c.end;
           }
@@ -2199,20 +2213,30 @@ var COLS = [
   { id:'margin',   label:'Margine',      tip:'Margine totale in giorni lavorativi (0 = percorso critico)', w:84, num:true, opt:true, dev:true, mg:true, adv:true }
 ];
 var NAME_MIN = 200;
-function idW(){ var n = (typeof P !== 'undefined' && P && P.items) ? P.items.length : 0; return n >= 1000 ? 48 : 40; }   /* colonna «#» stretta: lo spazio va al nome */
+function idW(){ var n = (typeof P !== 'undefined' && P && P.items) ? P.items.length : 0; return n >= 1000 ? 62 : 54; }   /* colonna «#» stretta: lo spazio va al nome */
 function colById(id){ for(var i = 0; i < COLS.length; i++) if(COLS[i].id === id) return COLS[i]; return null; }
 function itemByUid(u){ for(var i = 0; i < P.items.length; i++) if(P.items[i].uid === u) return P.items[i]; return null; }
 function colHidden(id){ var c = colById(id); if(id === 'name') return false; if(c && c.opt) return (P.view.shownColumns || []).indexOf(id) < 0; return P.view.hiddenColumns.indexOf(id) >= 0; }
 function visCols(){ return COLS.filter(function(c){ return !colHidden(c.id); }); }
 function visRows(){
-  var out = [], hideUntil = -1, i, n = P.items.length;
+  var out = [], hideUntil = -1, i, n = P.items.length, sh = !!ui.showHid, it;
   for(i = 0; i < n; i++){
     if(i < hideUntil) continue;
+    it = P.items[i];
+    if(it.hidden && !sh){ hideUntil = isGroupAt(P, i) ? blockEnd(P, i) : i + 1; continue; }   /* riga nascosta (solo vista): sparisce con i suoi figli, i dati restano */
     out.push(i);
-    if(P.items[i].type === 'group' && P.items[i].collapsed) hideUntil = blockEnd(P, i);
+    if(it.type === 'group' && it.collapsed) hideUntil = blockEnd(P, i);
   }
   return out;
 }
+function hiddenCount(){ var n = 0; P.items.forEach(function(x){ if(x.hidden) n++; }); return n; }
+function toggleHidden(u){
+  var it = itemByUid(u); if(!it) return;
+  var tg = ui.sel.indexOf(u) >= 0 ? ui.sel.slice() : [u], v = !it.hidden;
+  commit(v ? 'Nascondi righe' : 'Mostra righe', function(p){ tg.forEach(function(x){ var q = p.items.filter(function(z){ return z.uid === x; })[0]; if(q){ if(v) q.hidden = true; else delete q.hidden; } }); });
+  selectedHiddenFix(); render();
+}
+function setShowHidden(v){ ui.showHid = !!v; selectedHiddenFix(); render(); }
 function gridInfo(list, nameW, tight){
   var vc = list || visCols(), zk = Math.min(140, Math.max(80, +prefs.itemScale || 100)) / 100, nw = nameW || NAME_MIN, fx = !nameW && P && P.view && +P.view.nameW > 0;
   if(fx) nw = Math.max(120, Math.min(900, +P.view.nameW));   /* larghezza della colonna Nome impostata a mano: fissa, il pannello scorre in orizzontale */
@@ -2277,7 +2301,9 @@ function renderItems(){
   wrap.style.setProperty('--gcols', g.tpl); wrap.style.setProperty('--gmin', g.min+'px');
   $('#panels').style.setProperty('--nrows', String(Math.max(vr.length + 1, 28)));
   cols.textContent = '';
-  cols.appendChild(h('div',{ class:'c c-id s1', text:'#', 'data-tip':'Numero di riga. Al passaggio del cursore compare la maniglia per spostare la riga.' }));
+  var hcnt = hiddenCount(), hid0 = h('div',{ class:'c c-id s1', 'data-tip':'Numero di riga. Al passaggio del cursore compare la maniglia per spostare la riga.' }, h('span',{ text:'#' }));
+  if(hcnt || ui.showHid) hid0.appendChild(h('span',{ class:'eyh'+(ui.showHid ? ' on' : ''), role:'button', 'aria-pressed':String(!!ui.showHid), 'aria-label':'Mostra le righe nascoste', 'data-tip':(ui.showHid ? 'Le righe nascoste sono visibili (attenuate): clic per nasconderle di nuovo' : hcnt + (hcnt === 1 ? ' riga nascosta' : ' righe nascoste') + ': clic per mostrarle (attenuate) e poterle riattivare') }, icon(ui.showHid ? 'eye' : 'eyeoff')));
+  cols.appendChild(hid0);
   g.cols.forEach(function(c){
     var hc = h('div',{ class:'c c-'+c.id+(c.id === 'name' ? ' s2' : ''), text:c.label, 'data-tip':c.tip });
     if(c.id === 'name') hc.appendChild(h('span',{ class:'nres', 'data-tip':'Trascina per allargare solo la colonna Nome (il pannello scorre in orizzontale). Doppio clic: larghezza automatica.' }));
@@ -2294,8 +2320,9 @@ function renderItems(){
 }
 function rowEl(it, i, vcols){
   var sel = ui.sel.indexOf(it.uid) >= 0, grp = it.type === 'group';
-  var row = h('div',{ class:'row'+(sel ? ' sel' : '')+(grp ? ' grp' : ''), 'data-uid':it.uid });
-  row.appendChild(h('div',{ class:'c c-id s1' }, h('span',{ class:'n', text:String(i+1) }), h('span',{ class:'g', 'data-tip':'Trascina per spostare: in verticale cambia l\'ordine, in orizzontale il livello' }, icon('grip'))));
+  var row = h('div',{ class:'row'+(sel ? ' sel' : '')+(grp ? ' grp' : '')+(it.hidden ? ' hid' : ''), 'data-uid':it.uid });
+  row.appendChild(h('div',{ class:'c c-id s1' }, h('span',{ class:'n', text:String(i+1) }), h('span',{ class:'g', 'data-tip':'Trascina per spostare: in verticale cambia l\'ordine, in orizzontale il livello' }, icon('grip')),
+    h('span',{ class:'eyb'+(it.hidden ? ' off' : ''), role:'button', 'aria-label':it.hidden ? 'Mostra la riga' : 'Nascondi la riga', 'aria-pressed':String(!it.hidden), 'data-tip':it.hidden ? 'Riga nascosta (solo vista): clic per mostrarla di nuovo' : 'Nascondi la riga (solo vista: date e collegamenti non cambiano)' }, icon(it.hidden ? 'eyeoff' : 'eye'))));
   vcols.forEach(function(c){ row.appendChild(cellEl(it, i, c)); });
   return row;
 }
@@ -2644,6 +2671,8 @@ function openMenuAt(x, y, entries){
 function rowMenuEntries(){
   var one = ui.sel.length === 1, it = one ? itemByUid(ui.sel[0]) : null, grp = it && it.type === 'group';
   var e = [], ccfg = colorCfgFor(ui.sel.slice());
+  var tpk = ui.sel.length ? typeRow(ui.sel.slice(), null) : null;   /* tipo di item: stesso selettore del pannello Dettagli */
+  if(tpk){ e.push({ el:tpk }); e.push({ sep:true }); }
   if(ccfg){ e.push({ head:'Colore'+(ui.sel.length > 1 ? ' ('+ui.sel.length+' item)' : ''), el:colorMask(Object.assign({}, ccfg, { small:true, after:closePop })) }); e.push({ sep:true }); }
   e = e.concat([
     { label:'Modifica dettagli', fn:function(){ setPanel('details', true, true); }, disabled:!one },
@@ -2666,6 +2695,7 @@ function rowMenuEntries(){
   e.push({ label:'Nuova barra da disegnare', keys:scKeys('newBar'), fn:actNewBar });
   e.push({ label:ui.linkMode ? 'Esci dalla modalità collegamento' : 'Aggiungi collegamento', fn:function(){ setLinkMode(!ui.linkMode); } });
   e.push({ label:'Blocca o sblocca le date', fn:actLock });
+  e.push({ label:(one && it.hidden) ? 'Mostra la riga' : 'Nascondi la riga (solo vista)', fn:function(){ if(ui.sel.length) toggleHidden(ui.sel[ui.sel.length - 1]); }, disabled:!ui.sel.length });
   e.push({ label:'Duplica', keys:scKeys('dup'), fn:actDuplicate });
   e.push({ label:'Elimina', keys:scKeys('delRows'), fn:actDelete });
   e.push({ label:'Rimuovi i collegamenti' + (ui.sel.length > 1 ? ' degli item selezionati' : ''), fn:function(){ var n = 0; commit('Rimuovi collegamenti', function(p){ n = opUnlink(p, ui.sel.slice()); }); toast(n ? n + (n === 1 ? ' collegamento rimosso' : ' collegamenti rimossi') : 'Nessun collegamento da rimuovere.'); } });
@@ -2729,7 +2759,7 @@ function initItemsEvents(){
     if(e.button !== 0 && e.button !== 2) return;
     var row = e.target.closest('.row'); if(!row || row.classList.contains('add')) return;
     var u = row.getAttribute('data-uid');
-    if(e.target.closest('.chev') || e.target.closest('.lockb') || e.target.closest('.dots') || e.target.closest('.calb') || e.target.closest('.ddb')) return;
+    if(e.target.closest('.chev') || e.target.closest('.lockb') || e.target.closest('.dots') || e.target.closest('.calb') || e.target.closest('.ddb') || e.target.closest('.eyb')) return;
     if(ui.edit && e.target.closest('input')) return;
     if(ui.edit) endEdit('stay', true);
     if(!itemByUid(u)) return;
@@ -2762,6 +2792,7 @@ function initItemsEvents(){
     var row = e.target.closest('.row'); if(!row) return;
     if(row.classList.contains('add')){ actInsert('end'); return; }
     var u = row.getAttribute('data-uid'), b;
+    if(e.target.closest('.eyb')){ toggleHidden(u); return; }
     if((b = e.target.closest('.chev'))){ toggleCollapse(u); return; }
     if((b = e.target.closest('.ck'))){ ui.slow = null; pickColorFor(b, ui.sel.indexOf(u) >= 0 ? ui.sel.slice() : [u]); return; }
     if((b = e.target.closest('.lockb'))){ toggleLockOne(u, b.getAttribute('data-lock')); return; }
@@ -2839,6 +2870,7 @@ function startRowDrag(e0, u0){
 function initNameResizer(){
   var cols = $('#itemsCols');
   cols.addEventListener('dblclick',function(e){ if(!e.target.closest('.nres')) return; e.preventDefault(); if(P.view.nameW){ delete P.view.nameW; ui.dirty = true; applyItemsWidth(); renderItems(); } });
+  cols.addEventListener('click',function(e){ if(e.target.closest('.eyh')){ e.preventDefault(); setShowHidden(!ui.showHid); } });
   cols.addEventListener('mousedown',function(e){
     var hd = e.target.closest('.nres'); if(!hd || e.button !== 0) return;
     e.preventDefault(); e.stopPropagation();
@@ -3726,7 +3758,7 @@ function renderTimeline(){
   { var prb = document.createElement('div'); prb.style.cssText = 'position:absolute;visibility:hidden;width:1px;height:var(--row-h)'; document.body.appendChild(prb); ui.rh = prb.getBoundingClientRect().height || 32; prb.remove(); }
   ui.frames = tlFrames(vr, g);
   for(k = 0; k < n; k++){
-    var row = h('div',{ class:'trow'+(k >= vr.length ? ' emp' : ''), 'data-k':String(k) });
+    var row = h('div',{ class:'trow'+(k >= vr.length ? ' emp' : (P.items[vr[k]] && P.items[vr[k]].hidden ? ' hid' : '')), 'data-k':String(k) });
     if(k < vr.length){
       i = vr[k]; row.setAttribute('data-u', items[i].uid);
       if(selSet[items[i].uid]) row.classList.add('sel');
@@ -3922,7 +3954,10 @@ function tlBars(row, i, k, vr, g){
       row.appendChild(h('div',{ class:'bx area', 'data-u':u, 'data-lv':String(it.level), style:ast }));
       row.appendChild(h('div',{ class:'bx aln', 'data-u':u, 'data-lv':String(it.level), style:ast }));
       if(prefs.gPar !== 'none') row.appendChild(h('div',{ class:'bx par', 'data-u':u, 'data-lv':String(it.level), style:ast }));
-      if(text) row.appendChild(h('span',{ class:'bx alab', 'data-u':u, style:'left:'+(x0 + off + 10)+'px;max-width:'+Math.max(20, aw - 14)+'px', text:text }));
+      if(text){
+        if(textW(text, fs, true) + 6 <= aw - 14) row.appendChild(h('span',{ class:'bx alab', 'data-u':u, style:'left:'+(x0 + off + 10)+'px;max-width:'+Math.max(20, aw - 14)+'px', text:text }));
+        else row.appendChild(h('span',{ class:'bx blab out', 'data-u':u, style:'left:'+(x0 + off + aw + 6)+'px', text:text }));   /* gruppo troppo corto: il nome si legge a destra, intero */
+      }
     } else {
       blLine(row, it, g);
       var cg = frameClamp(ui.frames && ui.frames[k], x0, x0 + bw, frameFit(ui.frames && ui.frames[k], k).ex);
@@ -4591,6 +4626,16 @@ function initTimelineEvents(){
       drag.ns = ns; drag.ne = ne;
       if(!drag.el) return;
       drag.el.style.left = ((ns - g.a) * g.px)+'px'; drag.el.style.width = ((ne - ns + 1) * g.px)+'px';
+      if(drag.el.classList.contains('ind') && drag.el.parentNode){   /* indicazione: etichetta e maniglie seguono l'estensione, come nelle barre */
+        var ix0 = (ns - g.a) * g.px, ix1 = (ne - g.a + 1) * g.px, iw = ix1 - ix0, lbs = drag.el.parentNode.querySelectorAll('.blab[data-u="'+drag.uid+'"], .ldot[data-u="'+drag.uid+'"]'), lz, le;
+        for(lz = 0; lz < lbs.length; lz++){
+          le = lbs[lz];
+          if(le.classList.contains('ldot')) le.style.left = (le.getAttribute('data-e') === 's' ? ix0 : ix1)+'px';
+          else if(le.classList.contains('out')) le.style.left = (ix1 + 6)+'px';
+          else if(le.classList.contains('inl')){ le.style.left = ix0+'px'; le.style.width = iw+'px'; }
+          else le.style.left = ix0+'px';
+        }
+      }
       if(brkOn(g) && drag.el.classList.contains('bar') && P.items[drag.i] && P.items[drag.i].type !== 'indication') brkBuild(drag.el, ns, ne, g, (ns - g.a) * g.px, (ne - ns + 1) * g.px, 0, itemHex(P, drag.i), P.items[drag.i].progress ? Math.min(100, P.items[drag.i].progress) : 0);
     } else if(drag.kind === 'draw' || drag.kind === 'new'){
       var a1 = Math.min(drag.dn0, dn), b1 = Math.max(drag.dn0, dn);
@@ -4616,7 +4661,7 @@ function initTimelineEvents(){
   }
   function rebind(){   /* dopo il ridisegno dovuto all'estensione del calendario, si riagganciano gli elementi del trascinamento */
     var rows = document.querySelectorAll('#tlBody .trow');
-    if(drag.kind === 'left' || drag.kind === 'right') drag.el = rows[drag.k] ? rows[drag.k].querySelector('.bar[data-u="'+drag.uid+'"]') : null;
+    if(drag.kind === 'left' || drag.kind === 'right') drag.el = rows[drag.k] ? rows[drag.k].querySelector('.bar[data-u="'+drag.uid+'"], .ind[data-u="'+drag.uid+'"]') : null;
     else if(drag.kind === 'draw' || drag.kind === 'new'){ drag.row = rows[drag.k]; drag.el = null; }
   }
   function stop(){
@@ -4667,7 +4712,7 @@ function initTimelineEvents(){
     var g = ui.geo, vr = visRows(), cnt = 1, q;
     if(hit === 'move' || hit === 'left' || hit === 'right'){
       if(isGroupAt(P, pos.i)) for(q = pos.k + 1; q < vr.length && P.items[vr[q]].level > it.level; q++) cnt++;
-      var bar = pos.row.querySelector('.bar[data-u="'+it.uid+'"]');
+      var bar = pos.row.querySelector('.bar[data-u="'+it.uid+'"], .ind[data-u="'+it.uid+'"]');
       drag = { kind:hit, uid:it.uid, i:pos.i, k:pos.k, cnt:cnt, dn0:pos.dn, x0:e.clientX, s0:it.start ? toDN(it.start) : null, e0:it.end ? toDN(it.end) : null, el:bar, moved:false, delta:0 };
       if(multi){
         var vIdx = {}, rk = {}, qq;
@@ -5558,7 +5603,7 @@ function loadText(text, handle, name){
   try{ np = normalizeLoaded(obj); }catch(e2){ toast(e2.message,6500); return false; }
   P = np; hist.undo.length = 0; hist.redo.length = 0; ui.px = null; ui.tlInit = false; ui.tlA = null; ui.tlHadDates = undefined;
   ui.sel = []; ui.anchor = null; ui.cell = null; ui.edit = null;
-  ui.fileHandle = handle || null; ui.fileName = name || null; ui.dirty = false; ui.unsaved = 0; ui.loadedCounter = P.saveCounter;
+  ui.fileHandle = handle || null; ui.fileName = name || null; ui.dirty = false; ui.unsaved = 0; ui.loadedCounter = P.saveCounter; ui.showHid = false;
   if(name && (!obj.project || !obj.project.title)) P.project.title = name.replace(/\.json$/i,'');
   actLog('file', 'Progetto aperto: '+(name || P.project.title)); render(); toast('Progetto aperto: '+(name || P.project.title));
   return true;
@@ -7022,6 +7067,8 @@ function renderStatus(){
   s.appendChild(h('span',null, 'File: ', h('b',{ text: ui.fileName || 'non ancora salvato' })));
   s.appendChild(h('span',null, P.rev ? ['Rev. ', h('b',{ text:revText(P.rev) }), revIsDraft() ? ' · in lavorazione' : '', ver && ver.issuedAt ? ' (emessa il '+fmtDM(ver.issuedAt)+')' : ''] : 'Nessuna revisione emessa'));
   s.appendChild(h('span',null, 'Ultimo salvataggio: '+ago(P.lastSavedAt)+(ui.dirty?'  ·  modifiche non salvate':'')));
+  var hc = hiddenCount();
+  if(hc){ var hs = h('span',{ class:'stnote', role:'button', 'data-tip':'Righe nascoste (solo vista). Clic per mostrarle o nasconderle di nuovo. Escluse dalle esportazioni finché sono nascoste.' }, hc + (hc === 1 ? ' riga nascosta' : ' righe nascoste') + (ui.showHid ? ' (visibili)' : '')); hs.addEventListener('click', function(){ setShowHidden(!ui.showHid); }); s.appendChild(hs); }
   var wl = P.items.filter(function(x){ return dlLate(x) > 0; }).length, wp = (!virtOn() && P.calendar.projectStart) ? P.items.filter(function(x){ return x.start && x.start < P.calendar.projectStart; }).length : 0;
   var wq = (!virtOn() && P.calendar.projectEnd) ? P.items.filter(function(x){ var e = x.end || x.start; return e && e > P.calendar.projectEnd; }).length : 0;
   if(wl) s.appendChild(h('span',{ class:'stwarn', 'data-tip':'Item la cui fine prevista supera la scadenza' }, wl + (wl === 1 ? ' scadenza superata' : ' scadenze superate')));
@@ -7611,7 +7658,7 @@ var SC_DEFS = [
   { id:'redo', g:'Generale', label:'Ripristina', def:'Ctrl+Y' },
   { id:'save', g:'Generale', label:'Sovrascrivi il file', def:'Ctrl+S' },
   { id:'edit', g:'Elenco', label:'Modifica la cella attiva', def:'F2' },
-  { id:'insAbove', g:'Elenco', label:'Inserisci sopra', def:'Shift+Enter' },
+  { id:'insAbove', g:'Elenco', label:'Inserisci sopra', def:'Ctrl+Shift+Enter' },
   { id:'insBelow', g:'Elenco', label:'Inserisci sotto', def:'Ctrl+Enter' },
   { id:'insEnd', g:'Elenco', label:'Inserisci in fondo', def:'Alt+Enter' },
   { id:'indent', g:'Elenco', label:'Aumenta livello', def:'Alt+ArrowRight' },
