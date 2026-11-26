@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1600,height:900}});
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
+await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(300);
+await p.evaluate(()=>{window.confirm=()=>true});
+await p.setInputFiles('#xlsxInput',process.cwd()+'/ext.xlsx');await p.waitForTimeout(1000);
+const it=await p.evaluate(()=>window.GanttApp.P.items.map(i=>[i.name,i.level,i.start,i.end,i.duration,i.assignee,i.progress,i.predecessors.map(x=>x.type+x.lag).join()]));
+console.log(JSON.stringify(it),await p.evaluate(()=>document.querySelector('#toast').textContent));
+ok(it.length===3,'3 righe');ok(it[1][2]==='2026-12-07'&&it[1][3]==='2026-12-10','date lette dai seriali (file deflate di openpyxl)');ok(it[0][0]==='Fase A'&&it[0][4]===3,'il gruppo eredita date dai figli');ok(it[1][1]===2,'rientro con spazi = livello 2');ok(it[1][5]==='Neri','risorsa');ok(it[2][7]==='FS1','predecessore 2FS+1');
+console.log('pass',pass,'fail',fail);await b.close()})();

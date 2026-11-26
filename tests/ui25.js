@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');const seed=require('./seed21.js');
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
+await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+const A=f=>p.evaluate(f);
+await A(()=>{const a=window.GanttApp.act;a.setScale('weeks');a.setView('weekHdr','repeat');a.setView('hdrLevels',{week:false})});await p.waitForTimeout(250);
+const n=await p.locator('#tlHead .tlr').count();
+const t=await A(()=>[...document.querySelectorAll('#tlHead .tlr')].map(r=>r.querySelector('.tlc')?r.querySelector('.tlc').textContent:''));
+console.log(n,t);
+ok(n===1,'una sola riga (mese e anno) con settimane disattivate');
+ok(/\d{2}|\d{4}/.test(t[0])&&/[a-zA-Z]/.test(t[0]),'riga con mese e anno');
+await A(()=>window.GanttApp.act.setView('hdrLevels',{}));await p.waitForTimeout(200);
+ok(await p.locator('#tlHead .tlr').count()===2,'con settimane attive: due righe');
+console.log('pass',pass,'fail',fail);await b.close()})();

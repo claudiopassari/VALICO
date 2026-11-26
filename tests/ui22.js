@@ -1,0 +1,17 @@
+const {chromium}=require('playwright');const seed=require('./seed21.js');
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.evaluate(()=>{const A=window.GanttApp;A.commit('p',q=>{q.periods.push({uid:'pp1',name:'Fase 1',start:'2026-11-25',end:'2026-12-04',color:{c:'blu',v:1}})})});await p.waitForTimeout(200);
+ok(await p.locator('#tlCv .tper').count()===1,'tinta presente di default');
+await p.locator('#tlCmds [data-act="band"]').click();await p.waitForTimeout(200);
+await p.screenshot({path:'per22.png'});
+await p.locator('.pdr .tintb').click();await p.waitForTimeout(250);
+ok(await p.locator('#tlCv .tper').count()===0,'tinta rimossa');
+ok(await p.locator('#tlHead .pseg[data-p="pp1"]').count()===1,'la linea nella fascia resta');
+ok(await p.locator('.pdr .tintb').getAttribute('aria-pressed')==='false','stato del pulsante');
+await p.locator('.pdr .tintb').click();await p.waitForTimeout(250);
+ok(await p.locator('#tlCv .tper').count()===1,'tinta ripristinata');
+ok(errs.length===0,'nessun errore');
+console.log('pass',pass,'fail',fail);await b.close()})();

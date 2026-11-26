@@ -1,0 +1,39 @@
+Valico Source-Available Licence, version 1.0 (DRAFT - not reviewed by a lawyer)
+
+Copyright (c) 2026 Claudio Passari. All rights reserved.
+
+1. Definitions
+   "Software" means Valico, in source or distributed form (including the file src/valico.html and its copy docs/index.html), and the documentation in this repository.
+   "You" means the person or organisation using the Software.
+
+2. Permission to use
+   Subject to this licence, You may run the Software, free of charge, for personal, educational and professional purposes, including inside a company or public body, provided that You do not modify it. You may keep and use unmodified copies of the Software on Your own devices and share them unmodified, together with this licence and the copyright notices, with colleagues and clients of Your own organisation.
+
+3. Source availability
+   The source code is published so that it can be read, inspected and audited (for example for a security review). Reading the source does not grant any right other than those in this licence.
+
+4. What You may not do without prior written permission of the copyright holder
+   a) copy, adapt, translate, modify or create derivative works of the Software, in whole or in part;
+   b) reuse source code, text, graphics or design of the Software in another product or project;
+   c) publish, sell, sublicense, rent or otherwise distribute the Software or any modified version of it, other than as allowed in section 2;
+   d) offer the Software, or a service substantially based on it, to third parties as a hosted or commercial product;
+   e) remove or alter copyright notices, the name of the Software or the author's name;
+   f) use the name "Valico" or its logo for another product.
+
+5. Your data
+   Project files, exports and other content You create with the Software belong to You. The Software does not claim any right on them and does not transmit them: it runs entirely in Your browser.
+
+6. Contributions
+   If You submit a contribution (pull request, patch, suggestion) You grant the copyright holder a perpetual, worldwide, irrevocable, royalty-free licence to use, modify and distribute it as part of the Software, and You confirm You have the right to do so.
+
+7. No warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. Schedules, dates and calculations produced by the Software must be checked by the user before being relied upon.
+
+8. Limitation of liability
+   TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER IS NOT LIABLE FOR ANY CLAIM OR DAMAGES ARISING FROM THE USE OF THE SOFTWARE.
+
+9. Termination
+   This licence terminates automatically if You breach it. Mandatory rights granted by law (for example those of the Italian Law 633/1941, art. 64-ter and 64-quater) are not affected.
+
+10. Public hosting on GitHub
+   Publishing this repository on GitHub allows other GitHub users to view and fork it within GitHub, under the GitHub Terms of Service. This does not extend the rights granted by this licence.

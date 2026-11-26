@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');const seed=require('./seed21.js');
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
+await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+const r=await p.evaluate(()=>{const A=window.GanttApp;A.commit('m',q=>{q.view.critMode='network'});A.commit('l',q=>{const f=n=>q.items.find(i=>i.name===n).uid;A.core.opLink(q,f('Scavi'),f('Armature'),'FS');A.core.opLink(q,f('Armature'),f('Pilastri'),'FS');A.core.opLink(q,f('Pilastri'),f('Solai'),'FS');A.core.opLink(q,f('Solai'),f('Consegna'),'FS')});
+const c=A.core.criticalSet(A.P);const nm=u=>A.P.items.find(i=>i.uid===u).name;return {crit:Object.keys(c.uids).map(nm),links:Object.keys(c.links).length,fl:Object.keys(c.float).reduce((o,u)=>{o[nm(u)]=c.float[u];return o},{})}});
+console.log(JSON.stringify(r));
+['Scavi','Armature','Pilastri','Solai','Consegna'].forEach(n=>ok(r.crit.indexOf(n)>=0,n+' critico'));
+ok(r.crit.indexOf('Casseri')<0,'Casseri non critico (non collegato)');
+ok(r.links===4,'4 collegamenti critici ('+r.links+')');
+ok(r.fl.Casseri>0,'margine Casseri positivo');
+await p.evaluate(()=>window.GanttApp.act.setView('showCritical',true));await p.waitForTimeout(250);
+ok(await p.locator('#tlCv .bx.crit').count()>=5,'barre critiche');
+ok(await p.locator('#tlCv .dep.crit').count()===4,'frecce critiche');
+console.log('pass',pass,'fail',fail);await b.close()})();

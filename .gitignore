@@ -1,0 +1,10 @@
+# Project files and exports: never commit real project data
+*.valico.json
+*.bak
+*.wip
+*.log
+node_modules/
+tests/out/
+.DS_Store
+Thumbs.db
+*.png
