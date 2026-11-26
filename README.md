@@ -7,7 +7,7 @@ Autore: Claudio Passari. Versione corrente: vedi [CHANGELOG.md](CHANGELOG.md).
 ## Uso
 
 1. Scarica [`src/valico.html`](src/valico.html) (pulsante *Raw* → «Salva con nome») e aprilo con un browser recente (Chrome, Edge, Firefox, Safari).
-2. In alternativa, se sono attivate le GitHub Pages del repository (cartella `/docs`), apri l'indirizzo pubblicato: il comportamento è identico e il file viene comunque eseguito localmente nel browser.
+2. In alternativa apri la versione online: https://claudiopassari.github.io/VALICO/ (cartella `/docs` delle GitHub Pages). Il comportamento è identico e il programma viene comunque eseguito localmente nel browser: i dati del progetto non lasciano il dispositivo.
 3. Salva il progetto in JSON dal menu *File*; riaprilo con *Apri*.
 
 ## Funzioni principali
