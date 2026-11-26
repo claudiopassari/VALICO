@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.4
+
+il nome di un gruppo molto corto parte dall\'inizio del gruppo e prosegue oltre il bordo, intero (non più troncato né spostato a destra).
+
 ## 0.9.3
 
 occhio di visibilità per riga (solo vista) accanto al numero, con occhio globale in intestazione e indicatore nella barra di stato; il tipo di item (attività, milestone, attesa, indicazione) si sceglie anche dal menu del tasto destro; Ctrl+Maiusc+Invio inserisce una riga sopra; correzione: un gruppo ora include le indicazioni (intervalli) che contiene, anche se è l\'unico figlio; l\'estensione di un intervallo si vede mentre si trascina il bordo, come per le barre; il nome di un gruppo troppo corto si legge intero a destra.

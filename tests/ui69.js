@@ -11,8 +11,9 @@ await ev(()=>GanttApp.act.setScale&&GanttApp.act.setScale('weeks'));await W(300)
 const r=await ev(()=>{const rows=[...document.querySelectorAll('#tlBody .trow')];const u=GanttApp.P.items[0].uid;
  const a=document.querySelector('#tlBody .alab[data-u="'+u+'"]'),o=document.querySelector('#tlBody .blab.out[data-u="'+u+'"]'),ar=document.querySelector('#tlBody .area[data-u="'+u+'"]');
  const el=a||o;return {alab:!!a,out:!!o,trunc:el?el.scrollWidth>el.clientWidth+1:null,txt:el?el.textContent:null,aw:ar?ar.getBoundingClientRect().width:null,ow:o?o.getBoundingClientRect().left-ar.getBoundingClientRect().right:null}});
-ok((r.alab&&!r.trunc)||(r.out&&!r.trunc),'gruppo corto: nome non troncato '+JSON.stringify(r));
-ok(r.out&&r.ow>=0&&r.ow<20,'gruppo corto: nome subito a destra del gruppo '+JSON.stringify(r));
+ok(r.alab&&!r.out&&!r.trunc,'gruppo corto: nome intero, non troncato e non spostato '+JSON.stringify(r));
+const st=await ev(()=>{const u=GanttApp.P.items[0].uid;const a=document.querySelector('#tlBody .alab[data-u="'+u+'"]').getBoundingClientRect(),ar=document.querySelector('#tlBody .area[data-u="'+u+'"]').getBoundingClientRect();return {dl:a.left-ar.left,over:a.right>ar.right}});
+ok(st.dl>=0&&st.dl<16&&st.over,'il nome parte dall\'inizio del gruppo e supera il bordo '+JSON.stringify(st));
 const u2=await ev(()=>GanttApp.P.items[3].uid);
 const r2=await ev(u=>({alab:!!document.querySelector('#tlBody .alab[data-u="'+u+'"]'),out:!!document.querySelector('#tlBody .blab.out[data-u="'+u+'"]')}),u2);
 ok(r2.alab&&!r2.out,'gruppo lungo: nome dentro il gruppo '+JSON.stringify(r2));
