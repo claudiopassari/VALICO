@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:1300}});
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
 const A=f=>p.evaluate(f);
 const r=await A(()=>{const a=window.GanttApp,C=a.core;let o={};
  a.commit('s',q=>{const f=n=>q.items.find(i=>i.name===n);const arm=f('Armature');const cut=C.fromDN(C.toDN(arm.start)+2);C.opSplit(q,arm.uid,cut);});

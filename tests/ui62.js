@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();const c=await b.newContext({viewport:{width:1900,height:1000}});const p=await c.newPage();let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL',m)}};
 const eq=(a,x,m)=>ok(JSON.stringify(a)===JSON.stringify(x),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(x));
 const W=t=>p.waitForTimeout(t);const pe=[];p.on('pageerror',e=>{pe.push(e.message);console.log('ERR',e.message)});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
 const ev=(f,a)=>p.evaluate(f,a);
 // ---------- estensione con periodi e marker
 const b0=await ev(()=>GanttApp.ui.geo.b);
@@ -139,6 +139,9 @@ ok(/lo/.test(lab2.ind)&&/up/.test(lab2.lab)&&lab2.above,'indicazione corta: etic
 await ev(()=>{GanttApp.commit('t',q=>{q.view.indLabel='side'})});await W(300);
 const lab3=await ev(()=>{const e=document.querySelector('#tlBody .ind');const l=document.querySelector('#tlBody .blab[data-u="'+e.dataset.u+'"]');return {ind:e.className,lab:l.className}});
 ok(!/lo|gap/.test(lab3.ind)&&/out/.test(lab3.lab),'opzione «a lato»: comportamento precedente '+JSON.stringify(lab3));
+await ev(()=>{GanttApp.commit('t',q=>{const it=q.items.find(x=>x.type==='indication');it.end='2026-12-11';q.view.indLabel='above'})});await W(300);
+const lab4=await ev(()=>{const e=document.querySelector('#tlBody .ind');const l=document.querySelector('#tlBody .blab[data-u="'+e.dataset.u+'"]');return {ind:e.className,lab:l.className}});
+ok(/lo/.test(lab4.ind)&&/up/.test(lab4.lab)&&!/gap/.test(lab4.ind),'opzione «sopra»: etichetta sempre sopra, anche se la linea è lunga '+JSON.stringify(lab4));
 await p.click('#tlCmds [data-act="tlopts"]');await W(300);ok(await p.locator('.pop >> text=Etichetta delle indicazioni').count()>=1,'opzione in Visualizza');await p.keyboard.press('Escape');
 // ---------- interruttori generali marker / periodi
 const nm0=await ev(()=>document.querySelectorAll('#tlHead .mtag').length);ok(nm0>0,'marker visibili');

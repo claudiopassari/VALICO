@@ -5,7 +5,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
 const W=t=>p.waitForTimeout(t);
-await p.goto('file://'+process.cwd()+'/app.html');await W(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(300);
 await p.evaluate(()=>window.GanttApp.act.loadExample());await W(500);
 await p.locator('[data-act="export"]').click();await W(700);
 // ---- Output: il formato sta nel pannello Output

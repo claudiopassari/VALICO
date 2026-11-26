@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1500,height:820}});
 const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>{if(m.type()==='error')errs.push('console: '+m.text())});
 p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');
 // Alt+Enter to add, type, Tab through
 await p.keyboard.press('Alt+Enter');await p.keyboard.type('Fondazioni');await p.keyboard.press('Tab');
 await p.keyboard.type('23/11/26');await p.keyboard.press('Tab');await p.keyboard.type('30/11/26');await p.keyboard.press('Tab');

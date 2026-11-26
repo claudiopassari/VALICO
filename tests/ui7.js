@@ -3,7 +3,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1400,height:800},deviceScaleFactor:2});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 const rows=()=>p.locator('#itemsBody .row[data-uid]');
 const asg=i=>p.evaluate(i=>window.GanttApp.P.items[i].assignee,i);
 const cell=(i,c)=>rows().nth(i).locator('.c-'+c);

@@ -3,14 +3,14 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1800,height:800}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 await p.locator('#tgDetails').click();await p.waitForTimeout(500);
 const it=(i)=>p.evaluate(i=>{const x=window.GanttApp.P.items[i];return {s:x.start,e:x.end,d:x.duration,ls:x.lockStart,le:x.lockEnd,n:x.name}},i);
 // ---- motore
 const eng=await p.evaluate(()=>{const c=window.GanttApp.core;return {w47:c.isoWeek(c.toDN('2026-11-16')),w1:c.isoWeek(c.toDN('2026-01-01')),w53:c.isoWeek(c.toDN('2026-12-31')),mon:c.fromDN(c.mondayOf(c.toDN('2026-11-22')))}});
 eq(eng,{w47:47,w1:1,w53:53,mon:'2026-11-16'},'settimane ISO e lunedì');
 const ex=await p.evaluate(()=>{const c=window.GanttApp;const e=c.core.tlExtent(c.P);return {a:c.core.fromDN(e.a),b:c.core.fromDN(e.b),mn:c.core.fromDN(e.mn),mx:c.core.fromDN(e.mx)}});
-eq(ex.a,'2026-11-16','estensione: 1 settimana prima, al lunedì');ok(ex.b>='2027-01-03'&&ex.b<'2027-01-10','estensione: 2 settimane dopo '+ex.b);
+eq(ex.a,'2026-11-16','estensione: 1 settimana prima, al lunedì');ok(ex.b>='2027-01-10'&&ex.b<'2027-01-17','estensione: 3 settimane dopo '+ex.b);
 const rg=await p.evaluate(()=>{const A=window.GanttApp,c=A.core,P=JSON.parse(JSON.stringify(A.P));
   const iScavi=P.items.findIndex(x=>x.name==='Scavi');
   const r={};

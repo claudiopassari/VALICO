@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 const eq=(a,x,m)=>ok(JSON.stringify(a)===JSON.stringify(x),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(x));
 const W=t=>p.waitForTimeout(t);p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
 const dlg=[];p.on('dialog',d=>{dlg.push(d.message());d.accept()});
-await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
 // ---- Vai al giorno
 await p.locator('#tlCmds [data-act="gotoDay"]').click();await W(250);
 ok(await p.locator('.pop #gtFrom').count()===1&&await p.locator('.pop #gtTo').count()===1,'popover con i due campi data');

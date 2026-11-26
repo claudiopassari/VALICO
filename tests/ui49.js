@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});
 const c=await b.newContext({viewport:{width:2300,height:1200}});const p=await c.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
-await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(300);
 const W=t=>p.waitForTimeout(t);const A=f=>p.evaluate(f);
 await A(()=>{const A=GanttApp,C=A.core;A.commit('seed',q=>{
  const rows=[['G1',1],['T1',2],['T2',2],['T3',2],['T4',2]];

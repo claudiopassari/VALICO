@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
 const r=await p.evaluate(()=>{const A=window.GanttApp;A.commit('m',q=>{q.view.critMode='network'});A.commit('l',q=>{const f=n=>q.items.find(i=>i.name===n).uid;A.core.opLink(q,f('Scavi'),f('Armature'),'FS');A.core.opLink(q,f('Armature'),f('Pilastri'),'FS');A.core.opLink(q,f('Pilastri'),f('Solai'),'FS');A.core.opLink(q,f('Solai'),f('Consegna'),'FS')});
 const c=A.core.criticalSet(A.P);const nm=u=>A.P.items.find(i=>i.uid===u).name;return {crit:Object.keys(c.uids).map(nm),links:Object.keys(c.links).length,fl:Object.keys(c.float).reduce((o,u)=>{o[nm(u)]=c.float[u];return o},{})}});
 console.log(JSON.stringify(r));

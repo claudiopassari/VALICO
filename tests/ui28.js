@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');const f
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const ctx=await b.newContext({viewport:{width:1920,height:900},acceptDownloads:true});const p=await ctx.newPage();
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
 const W=t=>p.waitForTimeout(t);
 await p.locator('[data-act="export"]').click();await W(300);
 ok(await p.locator('#dlgExp[open]').count()===1,'dialogo aperto');

@@ -4,7 +4,7 @@ const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stri
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1600,height:860}});
 const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>{if(m.type()==='error')errs.push('console: '+m.text())});
 let dialogs=[];p.on('dialog',d=>{dialogs.push(d.message());d.accept()});
-await p.goto('file://'+process.cwd()+'/app.html');
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');
 const S=()=>p.evaluate(()=>JSON.stringify(window.GanttApp.P.items.map(i=>i.name+':'+i.level)));
 const ST=()=>p.evaluate(()=>({sel:window.GanttApp.ui.sel.map(u=>window.GanttApp.P.items.findIndex(i=>i.uid===u)),cell:window.GanttApp.ui.cell&&{r:window.GanttApp.P.items.findIndex(i=>i.uid===window.GanttApp.ui.cell.uid),c:window.GanttApp.ui.cell.col},edit:!!window.GanttApp.ui.edit}));
 // seed: A, a1, a2, B, C

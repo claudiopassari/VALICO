@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
 const A=f=>p.evaluate(f);
 await A(()=>{const a=window.GanttApp.act;a.setScale('weeks');a.setView('weekHdr','repeat');a.setView('hdrLevels',{week:false})});await p.waitForTimeout(250);
 const n=await p.locator('#tlHead .tlr').count();

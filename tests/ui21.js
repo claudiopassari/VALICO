@@ -3,7 +3,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
 const A=f=>p.evaluate(f);const W=ms=>p.waitForTimeout(ms);
 const snap=()=>A(()=>{const A=window.GanttApp;return A.P.items.map(i=>[i.name,i.start,i.end,i.duration])});
 const before=await snap();
@@ -20,7 +20,7 @@ console.log('giorni',cur);
 ok(cur[2]===1&&cur[3]===4,'Getti a G4 (Scavi 3 gg)');
 eq(await p.locator('#tlHead .tlc.nw, #tlCv .tnw').count(),0,'nessun weekend ombreggiato');
 // header: nessuna riga mese/anno
-const hd=await A(()=>document.querySelector('#tlHead').innerText.replace(/\s+/g,' ').slice(0,120));console.log('header',hd);
+const hd=await A(()=>document.querySelector('#tlHead').innerText.replace(/\s+/g,' ').slice(0,600));console.log('header',hd);
 ok(/S1/.test(hd),'intestazione con S1');
 // digitazione
 await A(()=>{const A=window.GanttApp;A.commit('t',q=>A.core.setField(q,q.items.find(i=>i.name==='Quadri').uid,'start','G20'))});

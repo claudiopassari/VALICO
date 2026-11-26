@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const seed=require('./seed21.js');
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1500,height:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 const names=()=>p.evaluate(()=>window.GanttApp.P.items.map(i=>i.name));
 const ST=()=>p.evaluate(()=>({edit:!!window.GanttApp.ui.edit,n:window.GanttApp.P.items.length}));p.on('dialog',d=>d.accept());
 // header Item: ordine ITEM | comandi ... toggle

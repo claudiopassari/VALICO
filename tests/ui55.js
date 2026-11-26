@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 const W=(p,t)=>p.waitForTimeout(t);
 const c=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:2});const p=await c.newPage();
 const errs=[];p.on('pageerror',e=>{errs.push(e.message);fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,500);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,500);
 const st=()=>p.evaluate(()=>({tab:document.documentElement.getAttribute('data-tab'),cons:document.documentElement.hasAttribute('data-consult'),sheet:document.querySelector('#msheet').classList.contains('on'),sheetTxt:document.querySelector('#msheet').innerText,
  order:[...document.querySelectorAll('#mnav button[data-t]')].map(x=>x.dataset.t),warn:document.querySelector('#mwarn').innerText,warnVis:getComputedStyle(document.querySelector('#mwarn')).display,navTop:document.querySelector('#mnav').getBoundingClientRect().bottom,ih:innerHeight}));
 let s=await st();
@@ -51,7 +51,7 @@ s=await st();ok(s.warn.length>0&&s.warnVis==='block','riga avvisi compatta visib
 // limite risoluzione export su touch
 ok(await p.evaluate(()=>{const o={fmt:'png',px:20000};const bb={w:4000,h:3000};const r=GanttApp.core.expScale(o,bb);return (bb.w*r.s*bb.h*r.s<=16.1e6&&bb.w*r.s<=8192.5)}).then(v=>v===true),'limite di risoluzione su touch');
 // PC: nessun effetto
-{const c2=await b.newContext({viewport:{width:1500,height:800}});const q=await c2.newPage();await q.goto('file://'+process.cwd()+'/app.html');await W(q,400);await q.evaluate(()=>GanttApp.act.loadExample());await W(q,300);
+{const c2=await b.newContext({viewport:{width:1500,height:800}});const q=await c2.newPage();await q.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await q.goto('file://'+process.cwd()+'/app.html');await W(q,400);await q.evaluate(()=>GanttApp.act.loadExample());await W(q,300);
  const r=await q.evaluate(()=>({cons:!!GanttApp.ui.consult,nav:getComputedStyle(document.querySelector('#mnav')).display,sheet:getComputedStyle(document.querySelector('#msheet')).display,warn:getComputedStyle(document.querySelector('#mwarn')).display,c:GanttApp.commit('t',q=>{q.items[3].name='Z'})!==false}));
  ok(!r.cons&&r.nav==='none'&&r.sheet==='none'&&r.warn==='none'&&r.c,'PC invariato '+JSON.stringify(r));await c2.close();}
 ok(errs.length===0,'nessun errore JS');

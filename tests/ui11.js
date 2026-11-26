@@ -3,10 +3,10 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');
 const A=f=>p.evaluate(f);const W=ms=>p.waitForTimeout(ms);
 // ---- default margini
-eq(await A(()=>{const v=window.GanttApp.core.newProject().view;return [v.marginBeforeWeeks,v.marginAfterWeeks]}),[1,2],'margini predefiniti 1 e 2');
+eq(await A(()=>{const v=window.GanttApp.core.newProject().view;return [v.marginBeforeWeeks,v.marginAfterWeeks]}),[1,3],'margini predefiniti 1 e 3');
 // ---- primo blocco a 1/4
 await p.locator('#itemsBody .row.add, #itemsBody .add').first().click();await W(150);
 await p.keyboard.type('Primo');await p.keyboard.press('Enter');await W(200);

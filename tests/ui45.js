@@ -5,7 +5,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
 const net=[];p.on('request',r=>{const u=r.url();if(!/^(file|data|blob|about):/.test(u))net.push(u)});
 const W=t=>p.waitForTimeout(t);const url='file://'+process.cwd()+'/app.html';
-await p.goto(url+'?welcome=1');await W(700);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto(url+'?welcome=1');await W(700);
 const dlg=p.locator('#dlgWelcome');
 ok(await dlg.evaluate(d=>d.open),'benvenuto aperto');
 const txt=await dlg.textContent();

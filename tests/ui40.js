@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:2300,height:1200}});
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(400);const W=t=>p.waitForTimeout(t);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(400);const W=t=>p.waitForTimeout(t);
 // 1 ordine e gruppi della barra timeline
 const acts=await p.evaluate(()=>[...document.querySelectorAll('#tlCmds .tcap')].map(c=>[...c.children].map(e=>e.getAttribute('data-act')||'seg')));
 console.log(JSON.stringify(acts));

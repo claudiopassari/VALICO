@@ -2,6 +2,14 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.2
+
+impostazioni predefinite riviste (margini 1/3 settimane, pannello dettagli chiuso, zoom elenco 110%, intestazione Anno + Mese + settimana dall'inizio, gruppi con sola parentesi, barre stondate); etichetta delle indicazioni con tre modalità: Adattiva, A lato, Sopra. Le righe vuote sotto l'ultimo item non sono più colorate (interruttore «Mostra le righe vuote» in Visualizza) e le nuove barre si disegnano in tutta l'area vuota; il periodo «Progetto» è una riga dell'elenco dei periodi, con occhio di visibilità.
+
+## 0.9.1
+
+simboli degli item uniformati e distinguibili: l'attesa è un quadrato vuoto, il gruppo una linea verticale con estremità arrotondate (come la parentesi nella timeline); attività = pallino, milestone = rombo, indicazione = linea orizzontale.
+
 ## 0.9.0
 
 nuovo formato «PDF vettoriale» (stampa del browser: testo selezionabile, font reali incorporati, forme scalabili senza perdita; con più pagine l'intestazione della timeline si ripete e le pagine si interrompono alle righe); senza formato carta («Adatta al grafico», predefinito) la pagina ha le dimensioni del diagramma; il PDF precedente diventa «PDF immagine»; le viste predefinite usano il PDF vettoriale. Tavolozza 4 × 10: colonne in ordine di tonalità (rosso, arancio, giallo, verde, blu, viola, rosa) e neutri in coda (bianco avorio, grigio, nero), quattro livelli per colore (nuovo livello medio-chiaro); i colori già assegnati non cambiano. Periodi riordinabili trascinando la maniglia nell'elenco: l'ordine è la priorità (riga della fascia e prevalenza del colore nella timeline; i progetti esistenti possono mostrare la sovrapposizione dei colori invertita). Testo e griglia del calendario della timeline più visibili. Gruppi: impostazioni «Fondo», «Parentesi» (bordo sinistro più spesso che segue gli angoli del riquadro) e «Riquadro» (nessuno, arrotondato, squadrato) al posto di «Riquadro», «Fondo» e «Contorno»; «Terminazione delle barre» e «Margine finale» passano nella sezione «Barre». Nuovo pulsante per attivare o disattivare la colorazione della timeline in corrispondenza dei periodi. Rimossa la guida «Che cosa voglio ottenere» e l'autore dalla barra di stato: le informazioni sul programma si aprono dalla Guida (?).
@@ -194,7 +202,7 @@ modalità Collegamento o tasto Maiusc, trascinamento tra i punti delle barre, fr
 
 30 tonalità per task, gruppi, milestone e marker, con opzione sui discendenti.
 
-## Fascia dei periodi sotto i giorni, con evidenziazione del progetto attivo e tinta leggera nella griglia.
+## Fascia dei periodi sotto i giorni, con evidenziazione del progetto attivo e tinta leggera nella griglia
 
 Fascia dei periodi sotto i giorni, con evidenziazione del progetto attivo e tinta leggera nella griglia.
 
@@ -202,11 +210,11 @@ Fascia dei periodi sotto i giorni, con evidenziazione del progetto attivo e tint
 
 fino a dieci, linea grigia sotto le barre, rifacimento con conferma e rapporto delle modifiche copiabile.
 
-## Nuovo tipo di item «Indicazione»; Ctrl+trascinamento verticale per riordinare dalla timeline; cursore per la dimensione dell'elenco; riepilogo delle scorciatoie (facoltativo).
+## Nuovo tipo di item «Indicazione»; Ctrl+trascinamento verticale per riordinare dalla timeline; cursore per la dimensione dell'elenco; riepilogo delle scorciatoie (facoltativo)
 
 Nuovo tipo di item «Indicazione»; Ctrl+trascinamento verticale per riordinare dalla timeline; cursore per la dimensione dell'elenco; riepilogo delle scorciatoie (facoltativo).
 
-## Zone di ridimensionamento delle barre estese di alcuni pixel verso l'interno; con Ctrl premuto la barra si estende o si comprime in modo simmetrico dai due lati.
+## Zone di ridimensionamento delle barre estese di alcuni pixel verso l'interno; con Ctrl premuto la barra si estende o si comprime in modo simmetrico dai due lati
 
 Zone di ridimensionamento delle barre estese di alcuni pixel verso l'interno; con Ctrl premuto la barra si estende o si comprime in modo simmetrico dai due lati.
 
@@ -214,7 +222,7 @@ Zone di ridimensionamento delle barre estese di alcuni pixel verso l'interno; co
 
 1 settimana prima e 2 dopo il lavoro.
 
-## Il primo blocco disegnato porta la vista a circa un quarto della schermata, lasciando spazio a destra.
+## Il primo blocco disegnato porta la vista a circa un quarto della schermata, lasciando spazio a destra
 
 Il primo blocco disegnato porta la vista a circa un quarto della schermata, lasciando spazio a destra.
 
@@ -222,10 +230,11 @@ Il primo blocco disegnato porta la vista a circa un quarto della schermata, lasc
 
 i suggerimenti compaiono subito; digitando è selezionato il primo, con le frecce ci si sposta e con Invio o Tab si conferma.
 
-## Accanto ad Annulla e Ripristina, frecce per l'elenco delle operazioni (si può tornare indietro o avanti di più passi) e pulsante Log con data e ora delle attività.
+## Accanto ad Annulla e Ripristina, frecce per l'elenco delle operazioni (si può tornare indietro o avanti di più passi) e pulsante Log con data e ora delle attività
 
 Accanto ad Annulla e Ripristina, frecce per l'elenco delle operazioni (si può tornare indietro o avanti di più passi) e pulsante Log con data e ora delle attività.
 
 ## Dalla 0.3.2
 
 nome Valico, quattro nuovi temi, anteprima del carattere al passaggio, festivi colorati, menu del tasto destro sui giorni, intestazione settimane con mese e anno, quattro stili dei gruppi, marker rielaborati.
+

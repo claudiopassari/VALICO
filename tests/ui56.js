@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 const eq=(a,x,m)=>ok(JSON.stringify(a)===JSON.stringify(x),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(x));
 const c=await b.newContext({viewport:{width:1500,height:900}});const p=await c.newPage();const W=t=>p.waitForTimeout(t);
 const pe=[];p.on('pageerror',e=>pe.push(e.message));p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await W(400);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(400);
 // --- diagnostica: nessun errore all'avvio
 let n=await p.evaluate(()=>{GanttApp;return document.getElementById('dgText')?1:0});ok(n===1,'area diagnostica presente');
 // errore non gestito con testo "sensibile"
@@ -14,7 +14,7 @@ await p.evaluate(()=>{window.__d=GanttApp.core.diag?1:0});
 await p.locator('[data-act="help"]').click();await W(200);await p.locator('.pop [data-act="diag"]').click();await W(400);
 ok(await p.evaluate(()=>document.getElementById('dlgAbout').open&&document.getElementById('abDiag').open),'Diagnostica apre Informazioni sulla sezione');
 const rep=await p.inputValue('#dgText');
-ok(/Valico · diagnostica/.test(rep)&&/Versione: 0\.9\.0/.test(rep),'intestazione e versione');ok(/Errori registrati: 1/.test(rep),'un errore registrato');
+ok(/Valico · diagnostica/.test(rep)&&/Versione: 0\.9\.2/.test(rep),'intestazione e versione');ok(/Errori registrati: 1/.test(rep),'un errore registrato');
 ok(!/Cabina|Rossi|segreto|utente|file:\/\//.test(rep),'nessun contenuto sensibile nel riepilogo: '+rep.split('\n').filter(l=>/errore/.test(l)).join('|'));
 ok(/«…»/.test(rep),'testo tra virgolette oscurato');
 ok(/Progetto: \d+ righe/.test(rep)&&/Schermo:/.test(rep)&&/modalità PC/.test(rep),'ambiente e progetto');
@@ -43,10 +43,10 @@ await p.locator('.pop [data-act="about"]').click();await W(300);
 ok(await p.evaluate(()=>document.getElementById('dlgAbout').open),'0.9.0: le informazioni si aprono dalla Guida (?)');
 await p.evaluate(()=>{const d=document.getElementById('dlgAbout');d.close()});await W(150);
 // promemoria nel progetto vuoto
-await p.goto('file://'+process.cwd()+'/app.html');await W(400);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(400);
 ok(await p.evaluate(()=>!document.getElementById('guideHint')),'0.8.19: nessun promemoria «progetto vuoto» nel pannello Item');
 // benvenuto
-await p.goto('file://'+process.cwd()+'/app.html?welcome=1');await W(500);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html?welcome=1');await W(500);
 ok(await p.locator('#wlGuide').count()===0,'0.8.18: la guida degli scenari non è più nella finestra di benvenuto');await p.evaluate(()=>GanttApp.act.closeWelcome());await W(150);await p.evaluate(()=>GanttApp.act.openGuide&&GanttApp.act.openGuide());await W(300);ok(true,'');
 // dismiss permanente
 await p.keyboard.press('Escape');await W(150);

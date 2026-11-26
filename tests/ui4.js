@@ -9,7 +9,7 @@ await p.addInitScript(()=>{
   window.showSaveFilePicker=async(o)=>{const name=window.__next||o.suggestedName;window.__next=null;window.__sugg.push(o.suggestedName);
     return {name,async createWritable(){let buf='';return {async write(t){buf=t},async close(){window.__files[name]=buf}}},async getFile(){return {name,async text(){return window.__files[name]}}}}};
 });
-await p.goto('file://'+process.cwd()+'/app.html');
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');
 const F=n=>p.evaluate(n=>JSON.parse(window.__files[n]),n);
 const st=()=>p.evaluate(()=>({pill:document.querySelector('#verPill').textContent,status:document.querySelector('#status').textContent,file:window.GanttApp.ui.fileName,dirty:window.GanttApp.ui.dirty}));
 await p.evaluate(()=>{const A=window.GanttApp;A.commit('x',q=>{q.items.push(A.core.newItem('Uno'))});});

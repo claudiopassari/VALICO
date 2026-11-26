@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1500,height:1000}});let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 const W=t=>p.waitForTimeout(t);p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(400);await p.evaluate(()=>GanttApp.act.loadExample());await W(500);
 const addEmpty=n=>p.evaluate(n=>{const A=GanttApp;A.commit('t',p=>{for(let k=0;k<n;k++)A.core.opInsert(p,null,'end');return 'ok'});},n);
 await addEmpty(3);await W(400);
 const info=()=>p.evaluate(()=>{const A=GanttApp,it=A.P.items;return {n:it.length,names:it.slice(-3).map(i=>i.name),dates:it.slice(-3).map(i=>!!i.start),edit:A.ui.edit?it.findIndex(i=>i.uid===A.ui.edit.uid):null,inp:document.activeElement&&document.activeElement.tagName}});

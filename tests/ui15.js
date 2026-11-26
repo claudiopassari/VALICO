@@ -3,7 +3,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 const A=f=>p.evaluate(f);const AA=(f,a)=>p.evaluate(f,a);const W=ms=>p.waitForTimeout(ms);
 const U=n=>AA(n=>window.GanttApp.P.items.find(i=>i.name===n).uid,n);
 const D=n=>AA(n=>{const x=window.GanttApp.P.items.find(i=>i.name===n);return [x.start,x.end,x.type]},n);
@@ -58,7 +58,7 @@ await AA(()=>{const A=window.GanttApp;A.commit('t',q=>{q.periods.push({uid:'pp',
 const rt=await A(()=>{const A=window.GanttApp;const t=JSON.stringify(A.core.prepareSave(A.P,{}));const before=JSON.parse(t);A.core.loadText(t,null,'x.json');const P=A.P;
   const nota=P.items.find(i=>i.name==='Nota fase');
   return {cov:nota.covers.length,type:nota.type,per:P.periods.length,bl:P.baselines.length,act:!!P.activeBaseline,blN:Object.keys(P.baselines[0].d).length,ver:before.app.version}});
-eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.9.0'],'salvataggio e ricarica: indicazione, periodi, baseline');
+eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.9.2'],'salvataggio e ricarica: indicazione, periodi, baseline');
 await W(200);
 // ---- Ctrl + trascinamento verticale
 await AA(()=>{const a=window.GanttApp;a.ui.sel=[];a.render()});await W(100);

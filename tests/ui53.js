@@ -39,7 +39,7 @@ f=await fr('square');ok(f&&parseFloat(f.bt)>0&&parseFloat(f.rad)===0,'squadrato:
 f=await fr('lines');ok(f&&parseFloat(f.bt)===0&&parseFloat(f.bl)>0,'solo linee: nessun bordo orizzontale '+JSON.stringify(f));
 // predefinito per profilo nuovo
 const ctx2=await b.newContext({viewport:{width:1650,height:700}});const q=await ctx2.newPage();await q.goto('file://'+process.cwd()+'/app.html');await q.waitForTimeout(400);
-ok(await q.evaluate(()=>document.documentElement.getAttribute('data-gfr'))==='round','predefinito: arrotondato');
+ok(await q.evaluate(()=>document.documentElement.getAttribute('data-gfr'))==='none','predefinito: nessun riquadro');
 // UI: controllo in Visualizza
 await q.evaluate(()=>GanttApp.act.loadExample());await q.waitForTimeout(400);await q.locator('#tlCmds [data-act="tlopts"]').click();await q.waitForTimeout(250);
 ok(await q.locator('.pop .vrow',{hasText:'Riquadro'}).count()===1,'controllo Riquadro');
@@ -50,7 +50,7 @@ const nest=await q.evaluate(()=>{const A=[...document.querySelectorAll('#tlCv .b
 ok(nest>=1,'riquadri presenti '+nest);
 
 // barre dei figli contenute nel riquadro del gruppo
-{const c3=await b.newContext({viewport:{width:1800,height:800}});const z=await c3.newPage();await z.goto('file://'+process.cwd()+'/app.html');await z.waitForTimeout(300);await z.evaluate(()=>GanttApp.act.loadExample());await z.waitForTimeout(500);await z.evaluate(()=>GanttApp.act.setScale('days'));await z.waitForTimeout(500);
+{const c3=await b.newContext({viewport:{width:1800,height:800}});const z=await c3.newPage();await z.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await z.goto('file://'+process.cwd()+'/app.html');await z.waitForTimeout(300);await z.evaluate(()=>GanttApp.act.loadExample());await z.waitForTimeout(500);await z.evaluate(()=>GanttApp.act.setScale('days'));await z.waitForTimeout(500);
 const bad=await z.evaluate(()=>{const A=GanttApp;const vr=[...document.querySelectorAll('#tlCv .trow[data-u]')];let n=0,out=0;const ars=[...document.querySelectorAll('#tlCv .bx.aln')].map(e=>{const r=e.getBoundingClientRect();return {u:e.dataset.u,l:r.left,r:r.right,t:r.top,b:r.bottom}});
  document.querySelectorAll('#tlCv .bx.bar').forEach(bar=>{const r=bar.getBoundingClientRect();ars.forEach(a=>{if(r.top>=a.t&&r.bottom<=a.b){n++;if(r.left<a.l-0.5||r.right>a.r+0.5)out++}})});return [n,out]});
 ok(bad[0]>3&&bad[1]===0,'nessuna barra esce dal riquadro del gruppo '+bad);

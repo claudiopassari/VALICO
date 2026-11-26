@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1600,height:900}});
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(300);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(300);
 await p.evaluate(()=>{window.confirm=()=>true});
 await p.setInputFiles('#xlsxInput',process.cwd()+'/ext.xlsx');await p.waitForTimeout(1000);
 const it=await p.evaluate(()=>window.GanttApp.P.items.map(i=>[i.name,i.level,i.start,i.end,i.duration,i.assignee,i.progress,i.predecessors.map(x=>x.type+x.lag).join()]));

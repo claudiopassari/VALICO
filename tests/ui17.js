@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 await p.evaluate(()=>{const A=window.GanttApp;A.commit('t',q=>{const m=A.core.newItem?null:null;q.markers.push({uid:'cm1',kind:'custom',name:'Verifica',color:{c:'arancio',v:1},date:'2026-12-02',dateEnd:null})})});
 await p.evaluate(()=>document.querySelector('#tlCmds [data-act="mkList"]').click());await p.waitForTimeout(250);
 const xs=await p.evaluate(()=>[...document.querySelectorAll('.pop .mkr')].map(r=>{const g=s=>{const e=r.querySelector(s);return e?Math.round(e.getBoundingClientRect().left):null};return {eye:g('.eye'),del:g('button[aria-label^="Elimina"]'),auto:g('.auto')}}));

@@ -5,7 +5,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 for(const cs of ['dark','light']){
  const ctx=await b.newContext({colorScheme:cs,viewport:{width:1600,height:800}});const p=await ctx.newPage();
  p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
- await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(500);
+ await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(500);
  const t=await p.evaluate(()=>document.documentElement.getAttribute('data-theme'));
  ok(t===(cs==='dark'?'dark':'light'),'tema automatico '+cs+' -> '+t);
  const pr=await p.evaluate(()=>JSON.parse(localStorage.getItem('gantt.prefs.v1')||'{}').theme);
@@ -14,7 +14,7 @@ for(const cs of ['dark','light']){
 }
 const ctx=await b.newContext({viewport:{width:1900,height:800}});const p=await ctx.newPage();
 p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(400);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(400);
 const W=t=>p.waitForTimeout(t);
 // intestazione W·S
 await p.evaluate(()=>{const A=GanttApp;A.P.view.scale='days';A.P.view.hdrLevels={year:true,month:true,week:true,wprog:true,day:true,num:true};A.render();});await W(300);

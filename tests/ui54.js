@@ -3,13 +3,13 @@ const {chromium}=require('playwright');
 const W=(p,t)=>p.waitForTimeout(t);
 // PC: nessuna modifica
 {const c=await b.newContext({viewport:{width:1700,height:800}});const p=await c.newPage();p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);
 const d=await p.evaluate(()=>({mob:document.documentElement.hasAttribute('data-mob'),nav:getComputedStyle(document.querySelector('#mnav')).display,cols:getComputedStyle(document.querySelector('#panels')).gridTemplateColumns.split(' ').length,st:getComputedStyle(document.querySelector('#status')).display,vis:['pDetails','pItems','pTimeline'].map(i=>getComputedStyle(document.getElementById(i)).visibility),sw:document.documentElement.scrollWidth,iw:innerWidth,idw:Math.round(document.querySelector('#itemsCols .c-id').getBoundingClientRect().width)}));
 ok(!d.mob&&d.nav==='none'&&d.cols===3&&d.st!=='none'&&d.vis.every(v=>v==='visible'),'PC: layout a tre pannelli invariato '+JSON.stringify(d));ok(d.sw<=d.iw,'PC: nessuno scorrimento orizzontale della pagina');
 await c.close();}
 for(const [nm,vp] of [['verticale',{width:390,height:844}],['orizzontale',{width:844,height:390}],['piccolo',{width:360,height:640}]]){
  const c=await b.newContext({viewport:vp,hasTouch:true,isMobile:true,deviceScaleFactor:2});const p=await c.newPage();p.on('pageerror',e=>{fail++;console.log('ERR',nm,e.message)});
- await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,500);
+ await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,500);
  const st=()=>p.evaluate(()=>({mob:document.documentElement.hasAttribute('data-mob'),tab:document.documentElement.getAttribute('data-tab'),sw:document.documentElement.scrollWidth,cw:document.documentElement.clientWidth,vis:['pItems','pTimeline','pDetails'].map(i=>getComputedStyle(document.getElementById(i)).visibility),nav:document.querySelectorAll('#mnav button[data-t]').length,navTop:Math.round(document.querySelector('#mnav').getBoundingClientRect().top),ih:innerHeight,mainH:Math.round(document.querySelector('#panels').getBoundingClientRect().height),hdrH:Math.round(document.querySelector('#hdr').getBoundingClientRect().height)}));
  let s=await st();
  ok(s.mob&&s.tab==='items','['+nm+'] modalità smartphone attiva, scheda Elenco');ok(s.sw<=s.cw,'['+nm+'] nessuno scorrimento orizzontale '+s.sw+'/'+s.cw);
@@ -28,7 +28,7 @@ for(const [nm,vp] of [['verticale',{width:390,height:844}],['orizzontale',{width
  await c.close();}
 // passaggio dinamico PC <-> smartphone senza perdere il progetto
 {const c=await b.newContext({viewport:{width:1700,height:800},hasTouch:true,isMobile:true});const p=await c.newPage();p.on('pageerror',e=>{fail++;console.log('ERR',e.message)});
-await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,400);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);await p.evaluate(()=>GanttApp.act.loadExample());await W(p,400);
 const n=await p.evaluate(()=>GanttApp.P.items.length);
 await p.setViewportSize({width:400,height:800});await W(p,600);ok(await p.evaluate(()=>document.documentElement.hasAttribute('data-mob')),'ridimensionando: smartphone attivo');
 await p.setViewportSize({width:1700,height:800});await W(p,600);
@@ -37,6 +37,6 @@ ok(!back.mob&&back.cols===3&&back.vis==='visible'&&back.n===n,'ritorno a PC: tre
 // il file salvato non contiene impostazioni mobili
 ok(await p.evaluate(()=>!/data-mob|mobTab/.test(JSON.stringify(GanttApp.P))),'il file di progetto non contiene stato mobile');
 await c.close();}
-{const c=await b.newContext({viewport:{width:700,height:800}});const p=await c.newPage();await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);
+{const c=await b.newContext({viewport:{width:700,height:800}});const p=await c.newPage();await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await W(p,400);
 ok(!(await p.evaluate(()=>document.documentElement.hasAttribute('data-mob'))),'finestra PC stretta (senza touch): layout invariato');await c.close();}
 console.log('pass',pass,'fail',fail);await b.close()})();

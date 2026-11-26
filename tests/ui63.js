@@ -85,7 +85,7 @@ await p.locator('#tlCmds [data-act="tlopts"]').click();await W(300);
 for(const t of ['Fondo','Parentesi','Riquadro','Terminazione delle barre'])ok(await p.locator('.pop .vrow',{hasText:t}).count()>=1,'impostazione '+t);
 ok(await p.locator('.pop .vrow',{hasText:'Contorno'}).count()===0,'«Contorno» assorbito dal riquadro');
 const cnt0=await p.evaluate(()=>({par:document.querySelectorAll('#tlCv .bx.par').length,aln:document.querySelectorAll('#tlCv .bx.aln').length,gp:document.documentElement.getAttribute('data-gp'),gfr:document.documentElement.getAttribute('data-gfr')}));
-ok(cnt0.par>0&&cnt0.par===cnt0.aln&&cnt0.gp==='on'&&cnt0.gfr==='round','predefinito: parentesi e riquadro arrotondato '+JSON.stringify(cnt0));
+ok(cnt0.par>0&&cnt0.gp==='on'&&cnt0.gfr==='none','predefinito: solo parentesi, nessun riquadro '+JSON.stringify(cnt0));
 await p.locator('.pop .vrow',{hasText:'Riquadro'}).locator('button',{hasText:'Nessuno'}).click();await W(400);
 const cnt1=await p.evaluate(()=>({gb:document.documentElement.getAttribute('data-gb'),vis:[...document.querySelectorAll('#tlCv .bx.aln')].filter(e=>e.getBoundingClientRect().width>0).length,par:[...document.querySelectorAll('#tlCv .bx.par')].filter(e=>e.getBoundingClientRect().width>0).length,pre:getComputedStyle(document.querySelector('#tlCv .bx.par'),'::before').borderTopLeftRadius}));
 ok(cnt1.gb==='none'&&cnt1.vis===0&&cnt1.par>0&&parseFloat(cnt1.pre)>50,'senza riquadro resta la linea verticale con estremità arrotondate '+JSON.stringify(cnt1));

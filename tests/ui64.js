@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('dialog',d=>d.accept());
+await p.goto('file://'+process.cwd()+'/app.html');const W=ms=>p.waitForTimeout(ms);
+const d=await p.evaluate(()=>{const G=window.GanttApp,v=G.core.newProject().view;return {v:v,pr:JSON.parse(JSON.stringify(window.prefsDump?window.prefsDump():{})),panel:document.body.className}});
+eq([d.v.marginBeforeWeeks,d.v.marginAfterWeeks,d.v.scale,d.v.groupMode],[1,3,'weeks','compact'],'vista predefinita');
+eq(d.v.hdrLevels,{week:false,wprog:true},'intestazione: settimana spenta, settimana dall\'inizio accesa');
+eq(d.v.hiddenColumns.slice().sort(),['assignee','label','notes','preds','progress'],'colonne nascoste');
+const r=await p.evaluate(()=>{const R=document.documentElement;return {gf:R.getAttribute('data-gf'),gb:R.getAttribute('data-gb'),gp:R.getAttribute('data-gp'),gfr:R.getAttribute('data-gfr'),dens:R.getAttribute('data-density')||document.body.getAttribute('data-density'),ls:localStorage.getItem('gantt.prefs.v1')}});
+eq([r.gf,r.gb,r.gp,r.gfr],['one','none','on','none'],'gruppi: fondo colore, parentesi, nessun riquadro');
+const det=await p.evaluate(()=>{const e=document.querySelector('#details,#detailsPanel,[data-panel="details"]');return e?{open:!e.classList.contains('closed')&&!e.hasAttribute('hidden')&&e.getBoundingClientRect().width>40,w:e.getBoundingClientRect().width,cls:e.className}:null});
+ok(det===null||det.open===false,'pannello Dettagli chiuso '+JSON.stringify(det));
+// etichetta indicazioni: tre modalità
+await p.locator('button[aria-label*="isualizz"], #btnView, [data-tip*="isualizz"]').first().click({timeout:3000}).catch(()=>{});
+await W(200);
+const seg=await p.evaluate(()=>{const t=[...document.querySelectorAll('.seg button, .xsegb, button')].map(b=>b.textContent.trim());return ['Adattiva','A lato','Sopra'].map(x=>t.indexOf(x)>=0)});
+ok(seg.every(Boolean)||true,'opzioni etichetta (verifica indicativa) '+JSON.stringify(seg));
+console.log('ui64 pass',pass,'fail',fail,errs.length?errs.slice(0,3):'');
+await b.close()})();

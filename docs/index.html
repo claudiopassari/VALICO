@@ -235,8 +235,8 @@ html[data-be="square"]{--bre:0px}html[data-be="soft"]{--bre:calc(3px*var(--k))}h
 html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb,var(--accent) 10%,transparent),color-mix(in srgb,var(--accent) 10%,transparent))}
 .row.grp .c:not(.c-id) .t{font-weight:650}
 .c-name .idot{width:14px;height:9px;border:0;border-left:3px solid var(--tc,var(--muted));border-right:3px solid var(--tc,var(--muted));background:linear-gradient(var(--tc,var(--muted)),var(--tc,var(--muted))) center/100% 3px no-repeat;border-radius:1px;margin:0 4px 0 0;box-sizing:border-box}
-.tdot.wdt::after{border-radius:2px!important;background:repeating-linear-gradient(135deg,var(--tc,var(--muted)) 0 2px,transparent 2px 4px)!important;box-shadow:inset 0 0 0 1.5px var(--tc,var(--muted))}
-.gsym{display:inline-block;flex:none;width:9px;height:13px;border:3px solid var(--tc,var(--muted));border-right:0;border-radius:1px;margin:0 8px 0 5px;box-sizing:border-box;align-self:center}.gsym.ck{cursor:pointer}
+.tdot.wdt::after{border-radius:2px!important;background:transparent!important;border:2px solid var(--tc,var(--muted));box-sizing:border-box}   /* attesa: quadrato vuoto */
+.gsym{display:inline-block;flex:none;width:4px;height:14px;border:0;border-radius:99px;background:var(--tc,var(--muted));margin:0 9px 0 7px;box-sizing:border-box;align-self:center}   /* linea verticale: come la parentesi del gruppo nella timeline */.gsym.ck{cursor:pointer}
 .row .c.num{padding-right:14px}.cols .c.num{padding-right:14px;text-align:right}.cols .c.c-dur,.row .c.c-dur{padding-right:8px;text-align:center}.row .c.c-dur{justify-content:center}.row .c.c-dur .t{text-align:center;flex:0 1 auto}.row .c.c-dur input{text-align:center}.row .c-start .t,.row .c-end .t,.row .c-deadline .t,.row .c.num .t{font-variant-numeric:tabular-nums}
 .seg button svg{display:block}.seg button.dim{opacity:.4}
 #pItems{--k:calc(var(--k0)*var(--ki,1))}
@@ -255,9 +255,9 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .bdr .cnt{color:var(--muted);font-size:calc(11px*var(--k));white-space:nowrap;min-width:60px}
 .bdr .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--guide);background:transparent;cursor:pointer;flex:none;padding:0}.bdr .radio[aria-checked="true"]{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%)}
 .tper{position:absolute;top:0;bottom:0;z-index:0;pointer-events:none}
-.pdr{display:flex;gap:8px;align-items:center;margin:5px 0}.pdr.foc{background:var(--accent2);border-radius:8px;padding:2px 4px;margin:5px -4px}
-.pdr .numin:not(.wide){width:114px}
-.pdr .pc{width:22px;height:22px;border-radius:7px;border:1px solid var(--line);cursor:pointer;flex:none;padding:0}
+.pdr,.pdx{display:flex;gap:8px;align-items:center;margin:5px 0}.pdr.foc{background:var(--accent2);border-radius:8px;padding:2px 4px;margin:5px -4px}
+.pdr .numin:not(.wide),.pdx .numin:not(.wide){width:114px}
+.pdr .pc,.pdx .pc{width:22px;height:22px;border-radius:7px;border:1px solid var(--line);cursor:pointer;flex:none;padding:0}
 .tdeps{position:absolute;left:0;top:0;z-index:4;pointer-events:none;overflow:visible}
 .tdeps .dep{stroke:var(--muted);stroke-width:1.4;fill:none}
 .tdeps .dep.bad{stroke:var(--danger);stroke-width:1.8;stroke-dasharray:4 2}
@@ -293,8 +293,8 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .cdotb{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(128,128,128,.4);vertical-align:-2px;margin-right:6px}
 .bar[data-c="bianco"]{box-shadow:inset 0 0 0 1px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.22)}
 .bar[data-c="nero"]{box-shadow:inset 0 0 0 1px rgba(255,255,255,.45),0 1px 2px rgba(0,0,0,.22)}
-.mkr .grip,.pdr .grip{cursor:grab;color:var(--muted);display:inline-flex;padding:2px;flex:none}
-.mkr .grip svg,.pdr .grip svg{width:14px;height:14px}
+.mkr .grip,.pdr .grip,.pdx .grip{cursor:grab;color:var(--muted);display:inline-flex;padding:2px;flex:none}
+.mkr .grip svg,.pdr .grip svg,.pdx .grip svg{width:14px;height:14px}
 .mkset{width:min(760px,94vw)}
 .mkset .note{max-width:100%}
 .mkr .numin:not(.wide){width:98px}
@@ -305,11 +305,15 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .mkr .auto{display:inline-flex;align-items:center;justify-content:flex-end;gap:5px;font-size:calc(11px*var(--k));color:var(--muted);flex:none;width:74px;margin-left:auto}
 .mkr .autox{width:74px;flex:none;margin-left:auto}
 .mkr.hid .mkc{opacity:.3}
+.pdx.hid .pc,.pdx.hid .numin{opacity:.4}
 
 .mtag{position:absolute;bottom:1px;z-index:5;transform:translateX(-50%);font-size:calc(9.5px*var(--k));line-height:calc(13px*var(--k));padding:0 6px;border-radius:99px;white-space:nowrap;cursor:pointer;font-weight:650;max-width:140px;overflow:hidden;text-overflow:ellipsis}
 .trow{position:relative;height:var(--row-h);border-bottom:1px solid var(--line)}
 .trow:nth-child(even){background:var(--stripe)}
 .trow.sel{background:var(--accent2)}
+.trow.emp{background:transparent;border-bottom-color:transparent}
+html[data-er="1"] .trow.emp{border-bottom-color:var(--line)}
+html[data-er="1"] .trow.emp:nth-child(even){background:var(--stripe)}
 #tlBody{overscroll-behavior:contain}
 *::-webkit-scrollbar{width:12px;height:12px}
 *::-webkit-scrollbar-track,*::-webkit-scrollbar-corner{background:transparent}
@@ -504,7 +508,7 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .pop h3{margin:2px 0 8px;font-size:calc(10.5px*var(--k));text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 .pop.pnl{width:420px;max-width:94vw;min-width:0}.drgh{display:flex;align-items:center;justify-content:space-between;cursor:grab;user-select:none;-webkit-user-select:none}body.popdrag,body.popdrag *{cursor:grabbing!important}.pclose{width:22px;height:22px;border:0;background:transparent;color:var(--muted);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin:-3px -4px -3px 8px}.pclose:hover{background:var(--hover);color:var(--text)}.pclose svg,.vsh svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.pclose svg{width:13px;height:13px}
 .vsec{border-top:1px solid var(--line);margin-top:8px;padding-top:2px}.vsec:first-of-type{border-top:0}.vsh{display:flex;width:100%;align-items:center;justify-content:space-between;border:0;background:transparent;color:var(--muted);font:inherit;font-size:calc(10.5px*var(--k));font-weight:650;text-transform:uppercase;letter-spacing:.06em;padding:8px 2px 6px;cursor:pointer}.vsh:hover{color:var(--text)}.vsh svg{width:14px;height:14px;transition:transform .15s}.vsec:not(.open) .vsh svg{transform:rotate(-90deg)}.vsec:not(.open) .vsb{display:none}.vrow{display:flex;align-items:center;gap:10px;margin:7px 0}.vrow>span{flex:0 0 104px;font-size:calc(12.5px*var(--k));color:var(--text)}.vrow .seg{flex:1;min-width:0}.vrow .seg button{flex:1;padding:4px 6px;white-space:nowrap}.vfoot{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);margin-top:8px;padding-top:10px}.vfoot .xinfo{margin:0;flex:1}.xchip.dim{opacity:.5}
-.bar.wait::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.38) 0 4px,transparent 4px 8px);pointer-events:none}.dlm{position:absolute;top:8%;bottom:8%;width:0;border-left:2px solid var(--muted);z-index:3;pointer-events:none;opacity:.9}.dlm::before{content:"";position:absolute;left:-6px;top:-2px;border:5px solid transparent;border-top:7px solid var(--muted);border-bottom:0}.dlm.late{border-left-color:#e5384a}.dlm.late::before{border-top-color:#e5384a}.row .c.dlate .t{color:#e5384a;font-weight:650}.tdot.wdt::after{width:10px!important;height:10px!important;border-radius:3px;background:repeating-linear-gradient(135deg,var(--tc) 0 2px,transparent 2px 4px)!important;box-shadow:inset 0 0 0 1px var(--tc)}.stwarn{color:#e5384a;font-weight:650}.note.warn{color:#e5384a;border-top:0}
+.bar.wait::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.38) 0 4px,transparent 4px 8px);pointer-events:none}.dlm{position:absolute;top:8%;bottom:8%;width:0;border-left:2px solid var(--muted);z-index:3;pointer-events:none;opacity:.9}.dlm::before{content:"";position:absolute;left:-6px;top:-2px;border:5px solid transparent;border-top:7px solid var(--muted);border-bottom:0}.dlm.late{border-left-color:#e5384a}.dlm.late::before{border-top-color:#e5384a}.row .c.dlate .t{color:#e5384a;font-weight:650}.tdot.wdt::after{width:10px!important;height:10px!important;border-radius:3px;background:transparent!important;border:2px solid var(--tc,var(--muted));box-sizing:border-box}.stwarn{color:#e5384a;font-weight:650}.note.warn{color:#e5384a;border-top:0}
 .pop h3.mt{margin-top:16px}
 .menuitem{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 10px;border-radius:8px;cursor:pointer}
 .menuitem:hover{background:var(--hover)}
@@ -896,8 +900,10 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.0', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.2', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.2: impostazioni predefinite riviste (margini 1/3 settimane, pannello dettagli chiuso, zoom elenco 110%, intestazione Anno + Mese + settimana dall\'inizio, gruppi con sola parentesi, barre stondate); etichetta delle indicazioni con tre modalità: Adattiva, A lato, Sopra. Le righe vuote sotto l\'ultimo item non sono più colorate (interruttore «Mostra le righe vuote» in Visualizza) e le nuove barre si disegnano in tutta l\'area vuota; il periodo «Progetto» è una riga dell\'elenco dei periodi, con occhio di visibilità.",
+    "0.9.1: simboli degli item uniformati e distinguibili: l\'attesa è un quadrato vuoto, il gruppo una linea verticale con estremità arrotondate (come la parentesi nella timeline); attività = pallino, milestone = rombo, indicazione = linea orizzontale.",
     "0.9.0: nuovo formato «PDF vettoriale» (stampa del browser: testo selezionabile, font reali incorporati, forme scalabili senza perdita; con più pagine l\'intestazione della timeline si ripete e le pagine si interrompono alle righe); senza formato carta («Adatta al grafico», predefinito) la pagina ha le dimensioni del diagramma; il PDF precedente diventa «PDF immagine»; le viste predefinite usano il PDF vettoriale. Tavolozza 4 × 10: colonne in ordine di tonalità (rosso, arancio, giallo, verde, blu, viola, rosa) e neutri in coda (bianco avorio, grigio, nero), quattro livelli per colore (nuovo livello medio-chiaro); i colori già assegnati non cambiano. Periodi riordinabili trascinando la maniglia nell\'elenco: l\'ordine è la priorità (riga della fascia e prevalenza del colore nella timeline; i progetti esistenti possono mostrare la sovrapposizione dei colori invertita). Testo e griglia del calendario della timeline più visibili. Gruppi: impostazioni «Fondo», «Parentesi» (bordo sinistro più spesso che segue gli angoli del riquadro) e «Riquadro» (nessuno, arrotondato, squadrato) al posto di «Riquadro», «Fondo» e «Contorno»; «Terminazione delle barre» e «Margine finale» passano nella sezione «Barre». Nuovo pulsante per attivare o disattivare la colorazione della timeline in corrispondenza dei periodi. Rimossa la guida «Che cosa voglio ottenere» e l\'autore dalla barra di stato: le informazioni sul programma si aprono dalla Guida (?).",
     "0.8.19: tolto dal pannello Item il promemoria «Progetto vuoto: non sai da dove partire?» (la guida degli scenari resta in Visualizza); nuove icone per i pulsanti dei marker e dei periodi: i due interruttori generali usano la bandierina e la fascia, mentre gli elenchi hanno icone con righe.",
     "0.8.18: il calendario si allunga da solo durante il trascinamento di barre, periodi e marker (una settimana alla volta, a destra e a sinistra, fino a circa due anni oltre i dati; nessun vincolo con la fine lavori, che resta un avviso); periodi e marker personali contano nell'estensione; periodi sovrapposti su righe distinte (la fascia si alza) e trascinabili in verticale, dalla timeline e dalla finestra dei periodi; duplicazione di barre, periodi e marker con Ctrl+Alt+trascina (Cmd+Opzione su Mac) e con i pulsanti Duplica; «Nuova indicazione» (pulsante e menu di riga, dentro il gruppo selezionato) ed etichetta delle indicazioni adattiva (sovrapposta se la linea è lunga, altrimenti sopra la linea che scende) o a lato; interruttori generali per mostrare o nascondere tutti i marker e tutti i periodi; la guida degli scenari esce dalla finestra di benvenuto, che si allarga.",
@@ -1103,7 +1109,7 @@ function newProject(){
     calendar: { type:'real', workingDays:[1,2,3,4,5], exceptions:[], country:'IT', hoursPerDay:8, virtualAnchor:null, projectStart:null, projectEnd:null, projectStartLock:false, projectEndLock:false },
     items: [], assignees: [], periods: [], baselines: [], activeBaseline: null, exportProfiles: [],
     markers: [ defMarker('start','Inizio lavori','verde'), defMarker('end','Fine lavori','rosso'), defMarker('today','Oggi','blu') ],
-    view: { marginBeforeWeeks:1, marginAfterWeeks:2, scale:'weeks', groupMode:'compact', hiddenColumns:['progress','assignee','notes','label','preds'] }
+    view: { marginBeforeWeeks:1, marginAfterWeeks:3, scale:'weeks', groupMode:'compact', hiddenColumns:['progress','assignee','notes','label','preds'], hdrLevels:{ week:false, wprog:true } }
   };
 }
 function newItem(name){
@@ -2126,14 +2132,14 @@ var ui = { unsaved:0, rowSel:false, sel:[], anchor:null, cell:null, edit:null, l
 var prefs = loadPrefs();
 
 function loadPrefs(){
-  var d = { theme:'auto', fsize:115, font:'segoe', tooltips:true, detailsOpen:null, itemsOpen:true, author:'', company:'', density:'normal', guides:true, gFill:'one', gBar:'thin', gFrame:'round', gPar:'on', todayHl:true, gRow:true, barEnd:'soft', barGap:true, pv:0, itemScale:100, shortcuts:false, autosave:false, autosaveMin:1, welcomeOff:false, guideOff:false, tlsec:{}, sc:{} }, s;
+  var d = { theme:'auto', fsize:115, font:'segoe', tooltips:true, detailsOpen:false, itemsOpen:true, author:'', company:'', density:'normal', guides:true, gFill:'one', gBar:'none', gFrame:'none', gPar:'on', todayHl:true, gRow:true, barEnd:'soft', barGap:true, pv:0, itemScale:110, emptyRows:false, shortcuts:false, autosave:false, autosaveMin:1, welcomeOff:false, guideOff:false, tlsec:{}, sc:{} }, s;
   try{ s = JSON.parse(localStorage.getItem(PREF_KEY)||'null'); }catch(e){ s = null; }
   if(s && typeof s==='object') Object.keys(d).forEach(function(k){ if(k in s) d[k] = s[k]; });
   if(s && s.groupStyle && !('gFill' in s)){ var mg = { cur:['one','thin'], C:['lvl','thin'], A:['one','lvl'], B:['none','lvl'] }[s.groupStyle]; if(mg){ d.gFill = mg[0]; d.gBar = mg[1]; } }   /* migrazione dai quattro preset */
   if(d.gFill !== 'none') d.gFill = 'one'; if(d.gBar !== 'none') d.gBar = 'thin';
-  if(['round','square','lines','none'].indexOf(d.gFrame) < 0) d.gFrame = 'round';
-  if(!(s && typeof s === 'object' && 'gPar' in s)){   /* 0.9.0: «parentesi» e «riquadro» separati; «contorno» e «solo linee verticali» sono assorbiti */
-    if(d.gBar === 'none'){ d.gFrame = 'none'; d.gPar = 'none'; } else { if(d.gFrame === 'lines') d.gFrame = 'none'; d.gPar = 'on'; }
+  if(['round','square','lines','none'].indexOf(d.gFrame) < 0) d.gFrame = 'none';
+  if(s && typeof s === 'object' && !('gPar' in s)){   /* 0.9.0: «parentesi» e «riquadro» separati; «contorno» e «solo linee verticali» sono assorbiti */
+    if('gBar' in s){ if(d.gBar === 'none'){ d.gFrame = 'none'; d.gPar = 'none'; } else { if(!('gFrame' in s)) d.gFrame = 'round'; if(d.gFrame === 'lines') d.gFrame = 'none'; d.gPar = 'on'; } }   /* preferenze salvate prima della 0.9.0: chi vedeva il riquadro lo mantiene */
   }
   if(d.gFrame === 'lines') d.gFrame = 'none'; if(d.gPar !== 'none') d.gPar = 'on'; d.gBar = d.gFrame === 'none' ? 'none' : 'thin'; d.todayHl = d.todayHl !== false; delete d.todayMode;   /* 0.8.9 */   /* 0.8.4: eliminati «per livello» */
   if((d.pv || 0) < 2){ d.gRow = true; d.pv = 2; }   /* 0.8.4: evidenziazione righe di gruppo attiva di default */
@@ -3526,7 +3532,7 @@ function tlHeaderRows(g){
   var lv = (P.view.hdrLevels || {}), out = [], base = HDR_BY_SCALE[P.view.scale] || HDR_BY_SCALE.weeks;
   if(virtOn()) base = P.view.scale === 'days' ? ['week','num'] : ['week'];
   base.forEach(function(k){
-    if(lv[k] === false) return;
+    if(lv[k] === false && !(virtOn() && k === 'week')) return;   /* calendario virtuale: la riga delle settimane (S1, S2…) è l'unica e non si spegne con le impostazioni del calendario reale */
     if(k === 'wprog' && (lv[k] !== true || virtOn())) return;   /* riga facoltativa: spenta per impostazione predefinita */
     if(k === 'num' && g.px < 17) return;
     if(k === 'day' && g.px < 13) return;
@@ -3720,7 +3726,7 @@ function renderTimeline(){
   { var prb = document.createElement('div'); prb.style.cssText = 'position:absolute;visibility:hidden;width:1px;height:var(--row-h)'; document.body.appendChild(prb); ui.rh = prb.getBoundingClientRect().height || 32; prb.remove(); }
   ui.frames = tlFrames(vr, g);
   for(k = 0; k < n; k++){
-    var row = h('div',{ class:'trow', 'data-k':String(k) });
+    var row = h('div',{ class:'trow'+(k >= vr.length ? ' emp' : ''), 'data-k':String(k) });
     if(k < vr.length){
       i = vr[k]; row.setAttribute('data-u', items[i].uid);
       if(selSet[items[i].uid]) row.classList.add('sel');
@@ -3927,15 +3933,16 @@ function tlBars(row, i, k, vr, g){
   }
   if(it.type === 'indication'){
     var ci = frameClamp(ui.frames && ui.frames[k], x0, x0 + bw, frameFit(ui.frames && ui.frames[k], k).ex);
-    var iw0 = ci[1] - ci[0], imode = P.view.indLabel === 'side' ? 'side' : 'adapt', itw = text ? textW(text, fs, true) + 16 : 0, istyle = 'left:'+ci[0]+'px;width:'+iw0+'px;--c:'+col, icls = 'bx ind';
-    if(text && imode === 'adapt'){
+    var iw0 = ci[1] - ci[0], imode = P.view.indLabel === 'side' ? 'side' : (P.view.indLabel === 'above' ? 'above' : 'adapt'), itw = text ? textW(text, fs, true) + 16 : 0, istyle = 'left:'+ci[0]+'px;width:'+iw0+'px;--c:'+col, icls = 'bx ind';
+    if(text && imode === 'above') icls += ' lo';
+    else if(text && imode === 'adapt'){
       if(itw <= iw0 - 10){ var gh2 = Math.round(itw / 2); istyle += ';background:linear-gradient(to right,var(--c) calc(50% - '+gh2+'px),transparent calc(50% - '+gh2+'px),transparent calc(50% + '+gh2+'px),var(--c) calc(50% + '+gh2+'px))'; icls += ' gap'; }
       else icls += ' lo';
     }
     row.appendChild(h('div',{ class:icls, 'data-u':u, 'data-c':itemColorCV(P, i).c, style:istyle }));
     if(text){
       if(imode === 'adapt' && itw <= iw0 - 10) row.appendChild(h('span',{ class:'bx blab inl', 'data-u':u, style:'left:'+ci[0]+'px;width:'+iw0+'px', text:text }));
-      else if(imode === 'adapt') row.appendChild(h('span',{ class:'bx blab up', 'data-u':u, style:'left:'+ci[0]+'px;max-width:'+Math.max(60, Math.round(itw + 40))+'px', text:text }));
+      else if(imode === 'adapt' || imode === 'above') row.appendChild(h('span',{ class:'bx blab up', 'data-u':u, style:'left:'+ci[0]+'px;max-width:'+Math.max(60, Math.round(itw + 40))+'px', text:text }));
       else row.appendChild(h('span',{ class:'bx blab out', 'data-u':u, style:'left:'+(x1 + 6)+'px', text:text }));
     }
     row.appendChild(h('span',{ class:'ldot', 'data-u':u, 'data-e':'s', style:'left:'+x0+'px' })); row.appendChild(h('span',{ class:'ldot', 'data-u':u, 'data-e':'e', style:'left:'+x1+'px' }));
@@ -4136,9 +4143,9 @@ function tlPos(e){
   if(e.clientX > br.left + tb.clientWidth || e.clientY > br.top + tb.clientHeight) return null;
   var rows = cv.querySelectorAll('.trow'); if(!rows.length) return null;
   var r0 = rows[0].getBoundingClientRect(), rh = r0.height, r = cv.getBoundingClientRect();
-  var k = Math.floor((e.clientY - r0.top) / rh); if(k < 0 || k >= rows.length) return null;
+  var k = Math.floor((e.clientY - r0.top) / rh); if(k < 0) return null; if(k >= rows.length) k = rows.length - 1;
   var x = e.clientX - r.left, vr = visRows();
-  if(k >= vr.length) return { none:true, k:k, x:x, dn:g.a + Math.floor(x / g.px), row:rows[k] };
+  if(k >= vr.length) return { none:true, k:vr.length, x:x, dn:g.a + Math.floor(x / g.px), row:rows[vr.length] };   /* sotto l'ultimo item: la nuova barra nasce sempre sulla prima riga libera */
   return { k:k, i:vr[k], x:x, dn:g.a + Math.floor(x / g.px), row:rows[k] };
 }
 function tlHit(pos){
@@ -4833,9 +4840,10 @@ function openTlOpts(anchor){
   b3.appendChild(vRow('Calcolo critico', segControl([['visible','Date visibili'],['network','Rete logica']], P.view.critMode === 'network' ? 'network' : 'visible', function(v){ setView('critMode', v); }), 'Date visibili: il percorso critico si calcola sulle date effettive delle barre, quindi un intervallo tra un\'attività e la successiva dà margine. Rete logica: si ricalcola dalle sole dipendenze, come se le attività partissero il prima possibile.'));
   b3.appendChild(swRow('Scadenze sulla timeline', P.view.showDeadlines !== false, function(v){ setView('showDeadlines', v); }, 'Segno sulla data di scadenza di ogni item; rosso se la fine prevista la supera.'));
   b3.appendChild(swRow('Interrompi le barre nei giorni non lavorativi', !!P.view.breakNW, function(v){ setView('breakNW', v); }, 'Le attività sono disegnate a blocchi, con un vuoto in sabato, domenica e festività. Solo visivo: date, durate e calcoli non cambiano. Segue il calendario del progetto (un sabato lavorativo o un\'eccezione lavorativa mostra la barra). Gruppi, milestone e indicazioni restano continui. Si sospende sotto circa 5 px per giorno. Si salva nel file di progetto.'));
-  b3.appendChild(vRow('Etichetta delle indicazioni', segControl([['adapt','Adattiva'],['side','A lato']], P.view.indLabel === 'side' ? 'side' : 'adapt', function(v){ setView('indLabel', v); }), 'Adattiva: se l\'indicazione è abbastanza lunga l\'etichetta si sovrappone interrompendo la linea; altrimenti la linea scende e l\'etichetta si legge appena sopra. A lato: l\'etichetta segue sempre la fine dell\'indicazione. Si salva nel file di progetto.'));
+  b3.appendChild(vRow('Etichetta delle indicazioni', segControl([['adapt','Adattiva'],['side','A lato'],['above','Sopra']], (P.view.indLabel === 'side' || P.view.indLabel === 'above') ? P.view.indLabel : 'adapt', function(v){ setView('indLabel', v); }), 'Adattiva: se l\'indicazione è abbastanza lunga l\'etichetta si legge al centro, interrompendo la linea; altrimenti la linea scende e l\'etichetta si legge appena sopra. A lato: l\'etichetta segue sempre la fine dell\'indicazione. Sopra: l\'etichetta si legge sempre sopra la linea. Si salva nel file di progetto.'));
   b3.appendChild(swRow('Mostra le dipendenze (frecce)', P.view.showDeps !== false, function(v){ setView('showDeps', v); }));
   b3.appendChild(swRow('Evidenzia oggi', prefs.todayHl !== false, function(v){ prefs.todayHl = v; savePrefs(); renderTimeline(); renderToolbarState(); }, 'Colonna del giorno corrente evidenziata a tutta altezza. È indipendente dal marker «Oggi» e si attiva anche dal pulsante nella barra della timeline. È una preferenza personale.'));
+  b3.appendChild(swRow('Mostra le righe vuote sotto l\'ultimo item', !!prefs.emptyRows, function(v){ prefs.emptyRows = v; savePrefs(); applyGroupStyle(); }, 'Righe a zebra sotto l\'ultimo item. Disattivate di default; il disegno di nuove barre sull\'area vuota funziona comunque. È una preferenza di questo browser.'));
   b3.appendChild(swRow('Attenua il passato', !!P.view.dimPast, function(v){ setView('dimPast', v); }));
   b3.appendChild(swRow('Festivi in colore distinto', P.view.holColor !== false, function(v){ setView('holColor', v); }));
   c.appendChild(vSec('evi', 'Evidenziazioni', b3, true));
@@ -5462,7 +5470,13 @@ function openPeriods(anchor, focusUid){
   function again(){ if(ui.popClosing) return; openPeriods(anchor, null); }
   c.appendChild(swRow('Mostra tutti i periodi (fascia e colorazione della timeline)', P.view.periodBand !== false, function(v){ setView('periodBand', v); again(); }));
   c.appendChild(swRow('Colora la timeline in corrispondenza dei periodi', P.view.periodTint !== false, function(v){ setView('periodTint', v); again(); }, 'Interruttore generale della colorazione di sfondo: la fascia dei periodi resta visibile e la colorazione di ciascun periodo resta invariata.'));
-  c.appendChild(swRow('Evidenzia il progetto attivo (dall\'item che inizia per primo a quello che finisce per ultimo)', P.view.activeProj !== false, function(v){ setView('activeProj', v); again(); }));
+  (function(){
+    var apOn = P.view.activeProj !== false, ar0 = activeRange(), gh0 = PALETTE.verde[1];
+    var apEye = h('button',{ class:'tbtn eye'+(apOn ? '' : ' off'), type:'button', 'aria-pressed':String(apOn), 'aria-label':apOn ? 'Nascondi il periodo Progetto' : 'Mostra il periodo Progetto', 'data-tip':apOn ? 'Nascondi dalla fascia dei periodi' : 'Mostra nella fascia dei periodi', onclick:function(){ setView('activeProj', !apOn); again(); } }, icon(apOn ? 'eye' : 'eyeoff'));
+    var apNm = h('input',{ type:'text', class:'numin wide', value:'Progetto (dal primo all\'ultimo item)', disabled:true, 'aria-label':'Periodo Progetto, calcolato dagli item' });
+    var apA = h('input',{ type:'text', class:'numin', value:ar0 ? fmtISO(fromDN(ar0[0])) : '', disabled:true, 'aria-label':'Inizio del progetto' }), apB = h('input',{ type:'text', class:'numin', value:ar0 ? fmtISO(fromDN(ar0[1])) : '', disabled:true, 'aria-label':'Fine del progetto' });
+    c.appendChild(h('div',{ class:'pdx apj'+(apOn ? '' : ' hid'), 'data-tip':'Periodo calcolato dall\'item che inizia per primo a quello che finisce per ultimo: non si modifica, si mostra o si nasconde.' }, h('span',{ class:'grip', style:'visibility:hidden' }, icon('grip')), h('span',{ class:'pc', style:'background:'+gh0, 'aria-hidden':'true' }), apNm, dateBox(apA), dateBox(apB), apEye));
+  })();
   var lanesNow = periodLanes(P.periods), prows = [];
   (P.periods || []).forEach(function(pr, pi){
     var hx = periodHex(pr);
@@ -7290,7 +7304,7 @@ function initItemScale(){
 }
 function applyGroupStyle(){
   var r = document.documentElement;
-  r.setAttribute('data-gf', prefs.gFill || 'one'); r.setAttribute('data-gb', prefs.gFrame === 'none' ? 'none' : 'thin'); r.setAttribute('data-gp', prefs.gPar === 'none' ? 'none' : 'on'); r.setAttribute('data-gfr', prefs.gFrame || 'round'); r.setAttribute('data-be', prefs.barEnd || 'soft');
+  r.setAttribute('data-er', prefs.emptyRows ? '1' : '0'); r.setAttribute('data-gf', prefs.gFill || 'one'); r.setAttribute('data-gb', prefs.gFrame === 'none' ? 'none' : 'thin'); r.setAttribute('data-gp', prefs.gPar === 'none' ? 'none' : 'on'); r.setAttribute('data-gfr', prefs.gFrame || 'round'); r.setAttribute('data-be', prefs.barEnd || 'soft');
 }
 function currentShowLevel(){   /* livello N tale che la vista coincide con «Mostra fino al livello N»; 0 se i gruppi sono stati aperti uno a uno */
   var gs = P.items.filter(function(g){ return g.type === 'group'; }), k;
@@ -7380,7 +7394,7 @@ function openLook(anchor){
   sw.addEventListener('click',function(){ prefs.tooltips = !prefs.tooltips; sw.setAttribute('aria-checked',String(prefs.tooltips)); savePrefs(); hideTip(); });
   c.appendChild(h('h3',{ class:'mt', text:'Opzioni' }));
   c.appendChild(h('div',{ class:'swrow' }, h('span',{ text:'Descrizioni al passaggio (0,6 s)' }), sw));
-  c.appendChild(h('div',{ style:'margin-top:12px' }, h('button',{ class:'btn', type:'button', onclick:function(){ prefs.theme='auto'; prefs.fsize=115; prefs.font='segoe'; prefs.tooltips=true; prefs.density='normal'; prefs.guides=true; prefs.gFill='one'; prefs.gBar='thin'; prefs.gFrame='round'; prefs.todayMode='col'; prefs.gRow=false; prefs.barEnd='soft'; prefs.itemScale=100; prefs.shortcuts=false; applyItemScale(); applyShortcuts(); applyGroupStyle(); applyGuides(); savePrefs(); applyTheme(); applyFont(); applyFontSize(); applyDensity(); closePop(); toast('Preferenze ripristinate'); } }, 'Ripristina predefiniti')));
+  c.appendChild(h('div',{ style:'margin-top:12px' }, h('button',{ class:'btn', type:'button', onclick:function(){ prefs.theme='auto'; prefs.fsize=115; prefs.font='segoe'; prefs.tooltips=true; prefs.density='normal'; prefs.guides=true; prefs.gFill='one'; prefs.gBar='none'; prefs.gFrame='none'; prefs.gPar='on'; prefs.gRow=true; prefs.barEnd='soft'; prefs.itemScale=110; prefs.shortcuts=false; applyItemScale(); applyShortcuts(); applyGroupStyle(); applyGuides(); savePrefs(); applyTheme(); applyFont(); applyFontSize(); applyDensity(); closePop(); toast('Preferenze ripristinate'); } }, 'Ripristina predefiniti')));
   openPopover(anchor, c, true);
   if(popEl) popEl.style.setProperty('--font', selFont.css);
 }

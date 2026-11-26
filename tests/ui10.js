@@ -3,7 +3,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stringify(a)+' exp '+JSON.stringify(b));
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1920,height:900}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
-await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
+await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);
 const A=f=>p.evaluate(f);const AA=(f,a)=>p.evaluate(f,a);
 const W=ms=>p.waitForTimeout(ms);
 // ---- nome e info
@@ -12,7 +12,7 @@ eq(await p.locator('#brandName').textContent(),'Valico','nome nell\'intestazione
 ok(await p.locator('#brandIcon svg rect').count()>=3&&await p.locator('#brandIcon svg polygon').count()===1,'icona: montagna e due barre');
 await p.locator('[data-act="help"]').click();await p.waitForTimeout(150);await p.locator('.pop [data-act="about"]').click();await W(100);
 ok(/valico/i.test(await p.locator('#dlgAbout').textContent())&&/ostacolo/.test(await p.locator('#dlgAbout').textContent()),'testo sul nome nelle Informazioni');
-ok(/0\.9\.0/.test(await p.locator('#abVer').textContent()),'versione 0.3.2');
+ok(/0\.9\.2/.test(await p.locator('#abVer').textContent()),'versione 0.3.2');
 await p.locator('#abClose').click();
 // ---- temi
 const ths=await A(()=>window.GanttApp.themes?window.GanttApp.themes.length:null);
