@@ -915,8 +915,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.7', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.8', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.8: corretto l'export in PDF vettoriale, che apriva due volte la finestra di stampa e quindi due richieste di salvataggio con nomi diversi.",
     "0.9.7: interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.",
     "0.9.6: colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.",
     "0.9.5: la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.",
@@ -6398,12 +6399,13 @@ function expVecDoc(o, b){
 }
 function expPrint(html, title){
   return new Promise(function(res, rej){
-    var fr = document.createElement('iframe'), old = document.title, done = false;
+    var fr = document.createElement('iframe'), old = document.title, done = false, written = false, started = false;   /* il «load» dell'iframe vuoto e quello del documento scritto non devono avviare due stampe */
     fr.setAttribute('aria-hidden', 'true'); fr.setAttribute('tabindex', '-1'); fr.setAttribute('data-exp-print', '1');
     fr.style.cssText = 'position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none';
     function fin(){ if(done) return; done = true; document.title = old; setTimeout(function(){ if(fr.parentNode) fr.parentNode.removeChild(fr); }, 1500); res(); }
     fr.onload = function(){
-      var w = fr.contentWindow; if(!w || done) return;
+      var w = fr.contentWindow; if(!w || done || !written || started) return;
+      started = true;
       try{
         w.onafterprint = fin; document.title = title;
         var go = function(){ try{ w.focus(); w.print(); }catch(e1){ if(!done){ done = true; document.title = old; rej(e1); } return; } setTimeout(fin, 1200); };
@@ -6411,7 +6413,7 @@ function expPrint(html, title){
       }catch(e2){ done = true; document.title = old; rej(e2); }
     };
     document.body.appendChild(fr);
-    var d = fr.contentDocument; d.open(); d.write(html); d.close();
+    var d = fr.contentDocument; d.open(); d.write(html); written = true; d.close();
   });
 }
 async function expRun(o, mode, bIn){

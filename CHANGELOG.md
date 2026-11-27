@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.8
+
+corretto l'export in PDF vettoriale, che apriva due volte la finestra di stampa e quindi due richieste di salvataggio con nomi diversi.
+
 ## 0.9.7
 
 interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.
