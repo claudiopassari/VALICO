@@ -915,8 +915,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.8', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.9', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.9: corretto un errore dello zoom con la maniglia della timeline (visto in WebKit, il motore di Safari) che poteva saltare il ridisegno al rilascio del mouse.",
     "0.9.8: corretto l'export in PDF vettoriale, che apriva due volte la finestra di stampa e quindi due richieste di salvataggio con nomi diversi.",
     "0.9.7: interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.",
     "0.9.6: colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.",
@@ -4855,7 +4856,7 @@ function initTimelineEvents(){
     } else if(zd.mode === 'l') nl = Math.max(0, Math.min(f1 - 0.001, f0 + df)); else nr = Math.min(1, Math.max(f0 + 0.001, f1 + df));
     var days = (nr - nl) * g.n, npx = Math.min(g.pxMax, Math.max(g.pxMin, g.cw / days));
     ui.px = npx; ui.tlForceSL = nl * g.n * npx;
-    if(!zd.raf){ zd.raf = requestAnimationFrame(function(){ zd.raf = 0; renderTimeline(); }); }
+    if(!zd.raf){ var zq = zd; zq.raf = requestAnimationFrame(function(){ zq.raf = 0; renderTimeline(); }); }   /* il rilascio può azzerare zd prima del fotogramma: si usa il riferimento locale */
   });
   function zup(){ if(zd){ zd = null; } }
   th.addEventListener('pointerup', zup); th.addEventListener('pointercancel', zup);
