@@ -1,0 +1,33 @@
+// evidenziazione di giornata/settimana/mese sotto il cursore nel calendario della timeline
+const {chromium}=require('playwright');
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1700,height:800}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(400);const W=ms=>p.waitForTimeout(ms);const ev=(f,a)=>p.evaluate(f,a);
+await ev(()=>GanttApp.act.loadExample());await W(500);
+const info=()=>ev(()=>({hv:[...document.querySelectorAll('#tlHead .tlc.hv')].map(e=>parseFloat(e.style.width)),col:(()=>{const c=document.querySelector('#tlCv > .hovcol');return c&&c.style.display!=='none'?{l:parseFloat(c.style.left),w:parseFloat(c.style.width)}:null})(),px:GanttApp.ui.geo.px}));
+const box=await ev(()=>{const r=document.querySelector('#tlBody').getBoundingClientRect();return {l:r.left,t:r.top}});
+await ev(()=>GanttApp.act.setScale('days'));await W(400);
+await p.mouse.move(box.l+400,box.t+120);await W(150);
+let i=await info();
+ok(i.hv.length>=2,'giorni: più righe di calendario evidenziate '+JSON.stringify(i.hv));
+ok(i.col&&Math.abs(i.col.w-i.px)<0.6,'giorni: colonna larga un giorno '+JSON.stringify(i.col)+' px '+i.px);
+await p.mouse.move(box.l+400+i.px*3,box.t+160);await W(120);
+const i2=await info();ok(i2.col&&i2.col.l>i.col.l+i.px*2,'la colonna segue il cursore');
+await ev(()=>GanttApp.act.setScale('weeks'));await W(400);
+await p.mouse.move(box.l+500,box.t+120);await W(150);
+i=await info();ok(i.col&&Math.abs(i.col.w-i.px*7)<1,'settimane: colonna larga una settimana '+JSON.stringify(i.col));
+await ev(()=>GanttApp.act.setScale('months'));await W(400);
+await p.mouse.move(box.l+300,box.t+120);await W(150);
+i=await info();ok(i.col&&i.col.w>i.px*27&&i.col.w<i.px*32,'mesi: colonna larga un mese '+JSON.stringify(i.col));
+await p.mouse.move(5,5);await W(150);
+i=await info();ok(i.hv.length===0&&!i.col,'uscendo dalla timeline l\'evidenziazione sparisce');
+// preferenza
+await ev(()=>{const p=JSON.parse(localStorage.getItem('gantt.prefs.v1')||'{}');return p});
+await p.click('#tlCmds [data-act="tlopts"]');await W(300);
+ok(await p.locator('.pop >> text=Evidenzia giorno, settimana o mese').count()>=1,'interruttore nel pannello Visualizza');
+await p.locator('.pop .swrow',{hasText:'Evidenzia giorno'}).locator('.switch').click();await W(200);await p.keyboard.press('Escape');await W(150);
+await p.mouse.move(box.l+500,box.t+120);await W(150);
+i=await info();ok(i.hv.length===0&&!i.col,'preferenza disattivata: nessuna evidenziazione');
+console.log('ui70 pass',pass,'fail',fail,errs.length?errs.slice(0,3):'');
+await b.close()})();

@@ -325,6 +325,8 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .trow:nth-child(even){background:var(--stripe)}
 .trow.sel{background:var(--accent2)}
 .trow.emp{background:transparent;border-bottom-color:transparent}
+.hovcol{position:absolute;top:0;bottom:0;pointer-events:none;background:color-mix(in srgb,var(--accent) 11%,transparent);box-shadow:inset 1px 0 0 color-mix(in srgb,var(--accent) 30%,transparent),inset -1px 0 0 color-mix(in srgb,var(--accent) 30%,transparent);z-index:1;display:none}
+.tlc.hv{background:color-mix(in srgb,var(--accent) 24%,transparent)!important;color:var(--text);font-weight:700}
 html[data-er="1"] .trow.emp{border-bottom-color:var(--line)}
 html[data-er="1"] .trow.emp:nth-child(even){background:var(--stripe)}
 #tlBody{overscroll-behavior:contain}
@@ -913,8 +915,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.4', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.5', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.5: la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.",
     "0.9.4: il nome di un gruppo molto corto parte dall\\'inizio del gruppo e prosegue oltre il bordo, intero (non più troncato né spostato a destra).",
     "0.9.3: occhio di visibilità per riga (solo vista) accanto al numero, con occhio globale in intestazione e indicatore nella barra di stato; il tipo di item (attività, milestone, attesa, indicazione) si sceglie anche dal menu del tasto destro; Ctrl+Maiusc+Invio inserisce una riga sopra; correzione: un gruppo ora include le indicazioni (intervalli) che contiene, anche se è l\\'unico figlio; l\\'estensione di un intervallo si vede mentre si trascina il bordo, come per le barre; il nome di un gruppo troppo corto si legge intero a destra.",
     "0.9.2: impostazioni predefinite riviste (margini 1/3 settimane, pannello dettagli chiuso, zoom elenco 110%, intestazione Anno + Mese + settimana dall\'inizio, gruppi con sola parentesi, barre stondate); etichetta delle indicazioni con tre modalità: Adattiva, A lato, Sopra. Le righe vuote sotto l\'ultimo item non sono più colorate (interruttore «Mostra le righe vuote» in Visualizza) e le nuove barre si disegnano in tutta l\'area vuota; il periodo «Progetto» è una riga dell\'elenco dei periodi, con occhio di visibilità.",
@@ -2147,7 +2150,7 @@ var ui = { unsaved:0, rowSel:false, sel:[], anchor:null, cell:null, edit:null, l
 var prefs = loadPrefs();
 
 function loadPrefs(){
-  var d = { theme:'auto', fsize:115, font:'segoe', tooltips:true, detailsOpen:false, itemsOpen:true, author:'', company:'', density:'normal', guides:true, gFill:'one', gBar:'none', gFrame:'none', gPar:'on', todayHl:true, gRow:true, barEnd:'soft', barGap:true, pv:0, itemScale:110, emptyRows:false, shortcuts:false, autosave:false, autosaveMin:1, welcomeOff:false, guideOff:false, tlsec:{}, sc:{} }, s;
+  var d = { theme:'auto', fsize:115, font:'segoe', tooltips:true, detailsOpen:false, itemsOpen:true, author:'', company:'', density:'normal', guides:true, gFill:'one', gBar:'none', gFrame:'none', gPar:'on', todayHl:true, gRow:true, barEnd:'soft', barGap:true, pv:0, itemScale:110, emptyRows:false, hoverCol:true, shortcuts:false, autosave:false, autosaveMin:1, welcomeOff:false, guideOff:false, tlsec:{}, sc:{} }, s;
   try{ s = JSON.parse(localStorage.getItem(PREF_KEY)||'null'); }catch(e){ s = null; }
   if(s && typeof s==='object') Object.keys(d).forEach(function(k){ if(k in s) d[k] = s[k]; });
   if(s && s.groupStyle && !('gFill' in s)){ var mg = { cur:['one','thin'], C:['lvl','thin'], A:['one','lvl'], B:['none','lvl'] }[s.groupStyle]; if(mg){ d.gFill = mg[0]; d.gBar = mg[1]; } }   /* migrazione dai quattro preset */
@@ -3730,7 +3733,7 @@ function tlBand(g, mkl){
   return '<div class="pbnd" style="bottom:calc(var(--tlr)*'+mkl+')">'+out+'</div>';
 }
 function tlDnToX(g, dn){ return (dn - g.a) * g.px; }
-function renderTimeline(){
+function renderTimeline(){ ui.hovKey = null;
   var body = $('#tlBody'); if(!body) return;
   var g = tlGeom(), vr = visRows(), items = P.items, n = Math.max(vr.length + 1, 28), k, i;
   var oldSL = body.scrollLeft, oldST = body.scrollTop, hasD = P.items.some(function(x){ return !!x.start; });
@@ -4602,7 +4605,34 @@ document.addEventListener('mousedown',function(e){
 function initTimelineEvents(){
   var tb = $('#tlBody'), drag = null, tmr = null, last = null;
   function cursorFor(hit){ return hit === 'draw' ? 'crosshair' : hit === 'move' ? 'grab' : (hit === 'left' || hit === 'right') ? 'ew-resize' : ''; }
+  /* evidenziazione della giornata / settimana / mese sotto il cursore: celle del calendario in alto e colonna nel corpo */
+  function hoverClear(){
+    var o = document.querySelectorAll('#tlHead .tlc.hv'), z; for(z = 0; z < o.length; z++) o[z].classList.remove('hv');
+    var c = document.querySelector('#tlCv > .hovcol'); if(c) c.style.display = 'none';
+    ui.hovKey = null;
+  }
+  function hoverAt(e){
+    if(prefs.hoverCol === false || !ui.geo){ if(ui.hovKey) hoverClear(); return; }
+    var cv = $('#tlCv'); if(!cv) return;
+    var x = e.clientX - cv.getBoundingClientRect().left, g = ui.geo, dn = Math.floor(x / g.px) + g.a;
+    if(x < 0 || dn > g.b || dn < g.a){ if(ui.hovKey) hoverClear(); return; }
+    var key = dn + '|' + g.px + '|' + P.view.scale + '|' + (P.view.hdrLevels ? JSON.stringify(P.view.hdrLevels) : '');
+    if(ui.hovKey === key) return;
+    ui.hovKey = key;
+    var cells = document.querySelectorAll('#tlHead .tlc'), z, l, w, best = null, bw = 1e9, prev = document.querySelectorAll('#tlHead .tlc.hv');
+    for(z = 0; z < prev.length; z++) prev[z].classList.remove('hv');
+    for(z = 0; z < cells.length; z++){
+      l = parseFloat(cells[z].style.left); w = parseFloat(cells[z].style.width);
+      if(l <= x && x < l + w){ cells[z].classList.add('hv'); if(w < bw){ bw = w; best = [l, w]; } }
+    }
+    var hc = cv.querySelector(':scope > .hovcol');
+    if(!hc){ hc = document.createElement('div'); hc.className = 'hovcol'; cv.insertBefore(hc, cv.firstChild); }
+    if(best){ hc.style.display = 'block'; hc.style.left = best[0] + 'px'; hc.style.width = best[1] + 'px'; } else hc.style.display = 'none';
+  }
+  tb.addEventListener('mouseleave', hoverClear);
+  var thead = $('#tlHead'); if(thead){ thead.addEventListener('mousemove', hoverAt); thead.addEventListener('mouseleave', hoverClear); }
   tb.addEventListener('mousemove',function(e){
+    hoverAt(e);
     if(drag || e.altKey || ui.altBusy) return;
     var pos = tlPos(e), hit = pos && !pos.none ? tlHit(pos) : (pos && pos.none ? 'draw' : '');
     tb.style.cursor = cursorFor(hit);
@@ -4669,7 +4699,7 @@ function initTimelineEvents(){
     document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); document.removeEventListener('keydown', onKey, true);
     clearInterval(tmr); tmr = null; tb.classList.remove('tldrag'); tb.style.cursor = ''; ui.dragExt = null;
   }
-  function onMove(e){ last = e; if(!drag.moved && Math.abs(e.clientX - drag.x0) < 4) return; drag.moved = true; tb.classList.add('tldrag'); paint(); }
+  function onMove(e){ last = e; hoverAt(e); if(!drag.moved && Math.abs(e.clientX - drag.x0) < 4) return; drag.moved = true; tb.classList.add('tldrag'); paint(); }
   function onKey(e){ if(e.key === 'Escape'){ e.stopPropagation(); e.preventDefault(); stop(); drag = null; renderTimeline(); } }
   function onCtl(e){ if(drag && drag.moved && last && (e.key === 'Control' || e.key === 'Meta')){ last = { clientX:last.clientX, clientY:last.clientY, ctrlKey:e.type === 'keydown' }; paint(); } }
   document.addEventListener('keydown', onCtl); document.addEventListener('keyup', onCtl);
@@ -4889,6 +4919,7 @@ function openTlOpts(anchor){
   b3.appendChild(vRow('Etichetta delle indicazioni', segControl([['adapt','Adattiva'],['side','A lato'],['above','Sopra']], (P.view.indLabel === 'side' || P.view.indLabel === 'above') ? P.view.indLabel : 'adapt', function(v){ setView('indLabel', v); }), 'Adattiva: se l\'indicazione è abbastanza lunga l\'etichetta si legge al centro, interrompendo la linea; altrimenti la linea scende e l\'etichetta si legge appena sopra. A lato: l\'etichetta segue sempre la fine dell\'indicazione. Sopra: l\'etichetta si legge sempre sopra la linea. Si salva nel file di progetto.'));
   b3.appendChild(swRow('Mostra le dipendenze (frecce)', P.view.showDeps !== false, function(v){ setView('showDeps', v); }));
   b3.appendChild(swRow('Evidenzia oggi', prefs.todayHl !== false, function(v){ prefs.todayHl = v; savePrefs(); renderTimeline(); renderToolbarState(); }, 'Colonna del giorno corrente evidenziata a tutta altezza. È indipendente dal marker «Oggi» e si attiva anche dal pulsante nella barra della timeline. È una preferenza personale.'));
+  b3.appendChild(swRow('Evidenzia giorno, settimana o mese sotto il cursore', prefs.hoverCol !== false, function(v){ prefs.hoverCol = v; savePrefs(); if(!v){ var o = document.querySelectorAll('#tlHead .tlc.hv'), z; for(z = 0; z < o.length; z++) o[z].classList.remove('hv'); var c = document.querySelector('#tlCv > .hovcol'); if(c) c.style.display = 'none'; ui.hovKey = null; } }, 'Evidenzia nel calendario la giornata (o la settimana, o il mese, secondo il livello di zoom) sotto il cursore, con una colonna nel corpo della timeline. È una preferenza di questo browser.'));
   b3.appendChild(swRow('Mostra le righe vuote sotto l\'ultimo item', !!prefs.emptyRows, function(v){ prefs.emptyRows = v; savePrefs(); applyGroupStyle(); }, 'Righe a zebra sotto l\'ultimo item. Disattivate di default; il disegno di nuove barre sull\'area vuota funziona comunque. È una preferenza di questo browser.'));
   b3.appendChild(swRow('Attenua il passato', !!P.view.dimPast, function(v){ setView('dimPast', v); }));
   b3.appendChild(swRow('Festivi in colore distinto', P.view.holColor !== false, function(v){ setView('holColor', v); }));

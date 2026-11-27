@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.5
+
+la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.
+
 ## 0.9.4
 
 il nome di un gruppo molto corto parte dall\'inizio del gruppo e prosegue oltre il bordo, intero (non più troncato né spostato a destra).
