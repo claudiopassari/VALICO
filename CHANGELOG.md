@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.6
+
+colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.
+
 ## 0.9.5
 
 la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.

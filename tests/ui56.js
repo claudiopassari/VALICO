@@ -14,7 +14,7 @@ await p.evaluate(()=>{window.__d=GanttApp.core.diag?1:0});
 await p.locator('[data-act="help"]').click();await W(200);await p.locator('.pop [data-act="diag"]').click();await W(400);
 ok(await p.evaluate(()=>document.getElementById('dlgAbout').open&&document.getElementById('abDiag').open),'Diagnostica apre Informazioni sulla sezione');
 const rep=await p.inputValue('#dgText');
-ok(/Valico · diagnostica/.test(rep)&&/Versione: 0\.9\.5/.test(rep),'intestazione e versione');ok(/Errori registrati: 1/.test(rep),'un errore registrato');
+ok(/Valico · diagnostica/.test(rep)&&/Versione: 0\.9\.6/.test(rep),'intestazione e versione');ok(/Errori registrati: 1/.test(rep),'un errore registrato');
 ok(!/Cabina|Rossi|segreto|utente|file:\/\//.test(rep),'nessun contenuto sensibile nel riepilogo: '+rep.split('\n').filter(l=>/errore/.test(l)).join('|'));
 ok(/«…»/.test(rep),'testo tra virgolette oscurato');
 ok(/Progetto: \d+ righe/.test(rep)&&/Schermo:/.test(rep)&&/modalità PC/.test(rep),'ambiente e progetto');

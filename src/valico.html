@@ -915,8 +915,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.5', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.6', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.6: colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.",
     "0.9.5: la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.",
     "0.9.4: il nome di un gruppo molto corto parte dall\\'inizio del gruppo e prosegue oltre il bordo, intero (non più troncato né spostato a destra).",
     "0.9.3: occhio di visibilità per riga (solo vista) accanto al numero, con occhio globale in intestazione e indicatore nella barra di stato; il tipo di item (attività, milestone, attesa, indicazione) si sceglie anche dal menu del tasto destro; Ctrl+Maiusc+Invio inserisce una riga sopra; correzione: un gruppo ora include le indicazioni (intervalli) che contiene, anche se è l\\'unico figlio; l\\'estensione di un intervallo si vede mentre si trascina il bordo, come per le barre; il nome di un gruppo troppo corto si legge intero a destra.",
@@ -2199,8 +2200,8 @@ function cleanSel(){
 /* ===================== Elenco item (modulo 2) ===================== */
 var COLS = [
   { id:'name',     label:'Nome',         tip:'Nome' },
-  { id:'start',    label:'Inizio',       tip:'Data di inizio', w:138, lock:'lockStart' },
-  { id:'end',      label:'Fine',         tip:'Data di fine', w:138, lock:'lockEnd' },
+  { id:'start',    label:'Inizio',       tip:'Data di inizio', w:124, lock:'lockStart' },
+  { id:'end',      label:'Fine',         tip:'Data di fine', w:124, lock:'lockEnd' },
   { id:'deadline', label:'Scadenza',     tip:'Scadenza (data limite): contrattuale o di consegna, non si sposta con i collegamenti; il ritardo rispetto alla fine prevista è segnalato in rosso. Esempio: 15/12/26', w:128, opt:true, adv:true },
   { id:'dur',      label:'Durata',       tip:'Durata in giorni lavorativi', w:82, num:true },
   { id:'hours',    label:'Ore',          tip:'Ore lavorative al giorno dell\'attività (predefinite: quelle del progetto, 8). Valori rapidi: 8, 4 (mezza giornata), 0 (non conteggiata). Non si applicano ad Attese, Milestone e Indicazioni', w:62, num:true, opt:true, adv:true },
@@ -5666,7 +5667,7 @@ async function checkConflict(handle, silent){
 /* ===================== 0.6.0 · Esportazione (PNG, JPEG, PDF, copia come immagine) =====================
    Il disegno è una copia fedele di ciò che si vede (elenco + timeline) serializzata in SVG con foreignObject e
    rasterizzata su canvas; il PDF incorpora la stessa immagine (JPEG) in pagine scritte a mano. Nessuna libreria esterna. */
-var EXPD = { fmt:'png', area:'all', items:true, title:true, theme:'screen', px:3000, dpi:300, paper:'chart', orient:'auto', fit:'page', from:'', to:'', layout:'standard', size:'slide', levels:'all', titleText:'', transp:false, today:true, hdrRev:true, hdrDate:true, cols:null, lCal:true, lMk:true, lPer:true, lDep:true };
+var EXPD = { fmt:'png', area:'all', items:true, title:true, theme:'screen', px:3000, dpi:300, paper:'chart', orient:'auto', fit:'page', from:'', to:'', period:'', layout:'standard', size:'slide', levels:'all', titleText:'', transp:false, today:true, hdrRev:true, hdrDate:true, cols:null, lCal:true, lMk:true, lPer:true, lDep:true };
 function expOpts(){ var o = {}, k, sv = prefs.exp || {}; for(k in EXPD) o[k] = sv[k] !== undefined ? sv[k] : EXPD[k]; return o; }
 function isNativeLay(o){ return !!(o && LAY_CFG[o.layout]); }
 var EXP_PROFILES = [
@@ -6034,18 +6035,38 @@ function lyNotShown(o){   /* con «Tutti i livelli», dichiara gli item che un l
   if(ind) t.push(ind + (ind === 1 ? ' indicazione' : ' indicazioni'));
   return t.length ? 'Non rappresentati in questo layout: ' + t.join(', ') + '.' : '';
 }
+function expWeekSnap(a, b){ return [mondayOf(a), mondayOf(b) + 6]; }   /* ogni esportazione parte da un lunedì e termina a una domenica */
+function expRange(o){   /* intervallo scelto in giorni [a, b], oppure null (tutto) oppure {error} */
+  var ry, ia, ib, pr, k;
+  if(o.area === 'active'){ var ar = activeRange(); return ar ? [ar[0], ar[1]] : { error:'Il progetto non ha date da esportare.' }; }
+  if(o.area === 'period'){
+    for(k = 0; k < (P.periods || []).length; k++) if(P.periods[k].uid === o.period) pr = P.periods[k];
+    if(!pr && (P.periods || []).length && !o.period) pr = P.periods[0];
+    if(!pr) return { error:'Seleziona un periodo.' };
+    ia = toDN(pr.start); ib = toDN(pr.end || pr.start);
+    if(isNaN(ia) || isNaN(ib)) return { error:'Il periodo selezionato non ha date.' };
+    return [Math.min(ia, ib), Math.max(ia, ib)];
+  }
+  if(o.area === 'custom' || (o.from && o.to && isNativeLay(o))){
+    ry = +todayISO().slice(0, 4); ia = parseDateText(o.from, ry, P); ib = parseDateText(o.to, ry, P);
+    if(!ia || !ib) return { error:'Intervallo di date non valido.' };
+    ia = toDN(ia); ib = toDN(ib); if(isNaN(ia) || isNaN(ib) || ib < ia) return { error:'Intervallo di date non valido: la data finale precede quella iniziale.' };
+    return [ia, ib];
+  }
+  return null;
+}
 function expLayout(o){
   var cfg = LAY_CFG[o.layout]; if(!cfg) return null;
   var arr = lyData(o, cfg.def); if(!arr.length) return { error:'Non ci sono item da esportare con questa selezione di livelli.' };
   var dims = LAY_SIZES[o.size] || LAY_SIZES.slide, W = dims[0], Hmin = dims[1], M = 40, virt = virtOn(), a = 1e9, b = -1e9, top = 99, k, pa, pb;
   arr.forEach(function(q){ if(q.s < a) a = q.s; if(q.e > b) b = q.e; if(q.lv < top) top = q.lv; });
-  if(o.from && o.to){
-    var ry = +todayISO().slice(0, 4), ia = parseDateText(o.from, ry, P), ib = parseDateText(o.to, ry, P);
-    if(!ia || !ib) return { error:'Intervallo di date non valido.' };
-    pa = toDN(ia); pb = toDN(ib); if(isNaN(pa) || isNaN(pb) || pb < pa) return { error:'Intervallo di date non valido: la data finale precede quella iniziale.' };
-    a = pa; b = pb;
+  var rgx = expRange(o);
+  if(rgx && rgx.error) return rgx;
+  if(rgx){
+    a = rgx[0]; b = rgx[1];
     arr = arr.filter(function(q){ return q.e >= a && q.s <= b; }); if(!arr.length) return { error:'Nessun item nell\'intervallo indicato.' };
   }else{ a -= 2; b += 2; }
+  pa = expWeekSnap(a, b); a = pa[0]; b = pa[1];
   if(o.layout === 'lanes' || o.layout === 'phases' || o.layout === 'mline'){   /* livello di partenza: il primo con almeno due voci (altrimenti un unico contenitore occuperebbe tutto) */
     var cnt = {}, lvs; arr.forEach(function(q){ if(!q.ms) cnt[q.lv] = (cnt[q.lv] || 0) + 1; });
     lvs = Object.keys(cnt).map(Number).sort(function(x, y){ return x - y; });
@@ -6121,13 +6142,14 @@ function expBuild(o){
       x0 = Math.max(0, x0); x1 = Math.min(g.W, x1);
     }
   }
-  else if(o.area === 'custom'){
-    var ry = +todayISO().slice(0, 4), ia = parseDateText(o.from, ry, P), ib2 = parseDateText(o.to, ry, P);
-    if(!ia || !ib2) return { error:'Intervallo di date non valido.' };
-    a = toDN(ia); b = toDN(ib2); if(isNaN(a) || isNaN(b) || b < a) return { error:'Intervallo di date non valido: la data finale precede quella iniziale.' };
+  else if(o.area === 'custom' || o.area === 'period'){
+    ar = expRange(o); if(ar && ar.error) return ar;
+    a = ar[0]; b = ar[1];
     x0 = Math.max(0, (a - g.a) * g.px); x1 = Math.min(g.W, (b - g.a + 1) * g.px);
     if(x1 <= x0) return { error:'L\'intervallo di date è esterno alla timeline.' };
   }
+  { var wa = expWeekSnap(Math.floor(x0 / g.px + 1e-6) + g.a, Math.ceil(x1 / g.px - 1e-6) + g.a - 1);   /* da lunedì a domenica */
+    x0 = Math.max(0, (wa[0] - g.a) * g.px); x1 = Math.min(g.W, (wa[1] - g.a + 1) * g.px); }
   x0 = Math.floor(x0); x1 = Math.ceil(x1);
   /* colonne dell'elenco: «come a schermo» oppure scelta dell'utente */
   var colList = null;
@@ -6218,7 +6240,7 @@ function expBuild(o){
   var wrap = document.createElement('div'); wrap.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
   var st = document.createElement('style'); st.textContent = expCss() + (tr ? EXP_TRANSP_CSS : ''); wrap.appendChild(st); wrap.appendChild(root);
   var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><foreignObject x="0" y="0" width="' + W + '" height="' + H + '">' + new XMLSerializer().serializeToString(wrap) + '</foreignObject></svg>';
-  return { svg:svg, w:W, h:H, meta:{ top:Ht + headH, rowH:rowH, rows:vr.map(function(i){ return P.items[i].uid; }) } };
+  return { svg:svg, w:W, h:H, meta:{ d0:Math.round(x0 / g.px) + g.a, d1:Math.round(x1 / g.px) + g.a - 1, top:Ht + headH, rowH:rowH, rows:vr.map(function(i){ return P.items[i].uid; }) } };
 }
 /* scala del raster: immagini = larghezza finale in pixel; PDF = risoluzione in dpi sulla carta */
 function expScale(o, b){
@@ -6465,7 +6487,7 @@ function openExport(){
     profSel.value = curProf;
     profSel.addEventListener('change', function(){
       var id = profSel.value, q = pl.filter(function(x){ return x.id === id; })[0]; curProf = id; if(!q){ refresh(); return; }
-      var keep = { titleText:o.titleText, from:o.from, to:o.to }; expApplyProfile(o, q.o); o.titleText = keep.titleText; o.from = keep.from; o.to = keep.to; build(); refresh();
+      var keep = { titleText:o.titleText, from:o.from, to:o.to, period:o.period }; expApplyProfile(o, q.o); o.titleText = keep.titleText; o.from = keep.from; o.to = keep.to; o.period = keep.period; build(); refresh();
     });
     var pdel = h('button',{ type:'button', class:'btn sm', id:'expProfDel', text:'Elimina', title:'Elimina la vista salvata selezionata', onclick:function(){
       var q = pl.filter(function(x){ return x.id === curProf && !x.builtin; })[0]; if(!q) return;
@@ -6538,8 +6560,16 @@ function openExport(){
     from.addEventListener('input', dchg); to.addEventListener('input', dchg); from.addEventListener('change', function(){ dchg(); refresh(); }); to.addEventListener('change', function(){ dchg(); refresh(); });
     S.dr = h('div',{ class:'xrow xdates' }, h('span',{ class:'xl', text:'Intervallo' }), dateBox(from), h('span',{ class:'xsep', text:'–' }), dateBox(to));
     S.sTl = sec('Timeline');
-    S.rArea = row('Area', seg('area', [['all', 'Tutta'], ['active', 'Progetto attivo'], ['custom', 'Intervallo']]));
-    S.sTl.appendChild(S.rArea); S.sTl.appendChild(S.dr);
+    S.rArea = row('Area', seg('area', [['all', 'Tutta'], ['active', 'Inizio–fine lavori'], ['period', 'Periodo'], ['custom', 'Intervallo']]));
+    var pSel = h('select',{ id:'expPer', class:'selbox', 'aria-label':'Periodo da esportare', style:'flex:1;min-width:0' });
+    (P.periods || []).forEach(function(q){ pSel.appendChild(h('option',{ value:q.uid, text:(q.name || 'Periodo senza nome') + (q.start ? ' (' + fmtISOshort(q.start) + (q.end ? ' – ' + fmtISOshort(q.end) : '') + ')' : '') })); });
+    if(!(P.periods || []).length) pSel.appendChild(h('option',{ value:'', text:'Nessun periodo nel progetto' }));
+    if(!o.period || !(P.periods || []).some(function(q){ return q.uid === o.period; })) o.period = (P.periods || []).length ? P.periods[0].uid : '';
+    pSel.value = o.period;
+    pSel.addEventListener('change', function(){ o.period = pSel.value; refresh(); });
+    S.rPer = row('Periodo', pSel);
+    S.sTl.appendChild(S.rArea); S.sTl.appendChild(S.rPer); S.sTl.appendChild(S.dr);
+    S.sTl.appendChild(h('div',{ class:'xinfo', text:'L\'esportazione parte sempre dal lunedì e termina alla domenica della settimana.' }));
     S.lay = h('div',{ class:'xchks xcols2' }, chk('lCal', 'Calendario (festivi, non lavorativi)'), chk('lMk', 'Marker'), chk('lPer', 'Periodi'), chk('lDep', 'Collegamenti'));
     S.chToday = chk('today', 'Giorno di oggi (linea ed evidenziazione)'); S.lay.appendChild(S.chToday);
     S.sTl.appendChild(S.lay); L.appendChild(S.sTl);
@@ -6576,7 +6606,7 @@ function openExport(){
     function sh(el, v){ if(el) el.style.display = v ? '' : 'none'; }
     var pdfAny = o.fmt === 'pdf' || o.fmt === 'pdfv'; S.pdfBox.style.display = pdfAny ? '' : 'none'; S.imgBox.style.display = (pdfAny || xl) ? 'none' : ''; if(S.dpiRow) S.dpiRow.style.display = o.fmt === 'pdf' ? '' : 'none'; if(S.vecNote) S.vecNote.style.display = o.fmt === 'pdfv' ? '' : 'none';
     sh(S.sHdr, !xl); sh(S.rTT, o.title); sh(S.sItems, !xl && !nat); S.rCols.style.display = o.items ? '' : 'none'; S.chips.style.display = o.items && Array.isArray(o.cols) ? '' : 'none';
-    sh(S.sTl, !xl && !rep); sh(S.rArea, !nat); sh(S.dr, nat || o.area === 'custom'); sh(S.chToday, nat && !rep ? true : !nat);
+    sh(S.sTl, !xl && !rep); sh(S.rArea, true); sh(S.rPer, o.area === 'period'); sh(S.dr, o.area === 'custom' || (nat && o.area === 'all')); sh(S.chToday, nat && !rep ? true : !nat);
     S.lay.querySelectorAll('.xchk').forEach(function(x, i){ if(i < 4) x.style.display = nat ? 'none' : ''; });
     var tOk = o.fmt === 'png' || o.fmt === 'svg'; sh(S.chTransp, tOk); sh(S.trNote, tOk && o.transp);
     sh(S.sLay, nat && !xl); sh(S.rTheme, !xl); sh(S.xlNote, xl); sh(S.rLay, !xl);
