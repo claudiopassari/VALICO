@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.9.7
+
+interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.
+
 ## 0.9.6
 
 colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.

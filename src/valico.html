@@ -915,8 +915,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.6', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.9.7', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.9.7: interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.",
     "0.9.6: colonne Inizio e Fine del pannello Item più strette; esportazione con area Inizio–fine lavori, Periodo (a scelta tra quelli del progetto) o Intervallo, anche nei layout dedicati; ogni esportazione parte dal lunedì e termina alla domenica.",
     "0.9.5: la giornata (o la settimana, o il mese, secondo lo zoom) sotto il cursore è evidenziata nel calendario della timeline, con una colonna nel corpo; si disattiva in Visualizza.",
     "0.9.4: il nome di un gruppo molto corto parte dall\\'inizio del gruppo e prosegue oltre il bordo, intero (non più troncato né spostato a destra).",
@@ -1054,6 +1055,7 @@ var ICONS = {
   eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
   eyeoff:'<path d="M3 3l18 18M10.6 5.2A9.6 9.6 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.8C3.8 8.6 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
   close:'<path d="M6 6l12 12M18 6L6 18"/>',
+  gantt:'<rect x="3" y="5" width="9" height="4" rx="2"/><rect x="8" y="10" width="13" height="4" rx="2"/><rect x="5" y="15" width="8" height="4" rx="2"/>',
   bars:'<rect x="3" y="5" width="14" height="5" rx="2"/><rect x="7" y="14" width="14" height="5" rx="2" stroke-dasharray="3 2.4"/>',
   seal:'<path d="M12 3l2.4 1.6 2.9-.2 1.2 2.6 2.5 1.5-.7 2.8.7 2.8-2.5 1.5-1.2 2.6-2.9-.2L12 21l-2.4-1.6-2.9.2-1.2-2.6L3 15.5l.7-2.8L3 9.9l2.5-1.5 1.2-2.6 2.9.2z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.8"/>',
   info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
@@ -3932,6 +3934,7 @@ function tlBars(row, i, k, vr, g){
   var it = P.items[i], s = it.start ? toDN(it.start) : null, e = it.end ? toDN(it.end) : null, grp = isGroupAt(P, i), ms = it.type === 'milestone', fs = 12 * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--k')) || 1);
   if(s === null) return;
   if(!ms && e === null) return;
+  if(!ms && P.view.barsOff) return;   /* barre nascoste (solo vista): restano milestone, marker e periodi */
   if(ms) e = s;
   var x0 = (s - g.a) * g.px, x1 = (e - g.a + 1) * g.px, w = Math.max(x1 - x0, 3), ei = (prefs.barGap !== false && g.px >= 10) ? Math.min(3, Math.max(1.5, g.px * 0.08)) : 0, bw = Math.max(w - ei, 3), col = itemHex(P, i), ink = inkFor(col), u = it.uid;
   var text = it.barLabel || it.name || '';
@@ -4037,7 +4040,7 @@ function depPath(xs, ys, se, xt, yt, te, rh){
 function tlDeps(g){
   var cv = $('#tlCv'); if(!cv) return;
   var old = cv.querySelector('.tdeps'); if(old) old.remove();
-  if(P.view.showDeps === false) return;
+  if(P.view.showDeps === false || P.view.barsOff) return;
   var rows = cv.querySelectorAll('.trow'), vr = visRows(), pos = {}, items = P.items, body = '', lags = '', cal = P.calendar, gpx = 9, kf = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--k')) || 1;
   vr.forEach(function(i, k){ pos[items[i].uid] = { i:i, k:k }; });
   function ex(it, which){   /* x del bordo: 's' inizio, 'e' fine */
@@ -6967,7 +6970,7 @@ function renderToolbarState(){
   if(l) l.classList.toggle('is-disabled', !ui.sel.length);
   ['del','indent','outdent'].forEach(function(a){ var b = $('#itemCmds [data-act="'+a+'"]'); if(b) b.classList.toggle('is-disabled', !ui.sel.length); });
   var vt = document.querySelectorAll('#tlCmds [data-vt]'), z;
-  for(z = 0; z < vt.length; z++){ var kk = vt[z].getAttribute('data-vt'), on = kk === 'showLocks' ? P.view.showLocks !== false : kk === 'periodBand' ? P.view.periodBand !== false : kk === 'periodTint' ? P.view.periodTint !== false : kk === 'markersOn' ? !P.view.markersOff : !!P.view[kk]; vt[z].classList.toggle('on', on); vt[z].setAttribute('aria-pressed', String(on)); }
+  for(z = 0; z < vt.length; z++){ var kk = vt[z].getAttribute('data-vt'), on = kk === 'showLocks' ? P.view.showLocks !== false : kk === 'periodBand' ? P.view.periodBand !== false : kk === 'periodTint' ? P.view.periodTint !== false : kk === 'markersOn' ? !P.view.markersOff : kk === 'barsOn' ? !P.view.barsOff : !!P.view[kk]; vt[z].classList.toggle('on', on); vt[z].setAttribute('aria-pressed', String(on)); }
   var ph = document.querySelectorAll('#tlCmds [data-ph]'), q;
   for(q = 0; q < ph.length; q++){ var po = prefs.todayHl !== false; ph[q].classList.toggle('on', po); ph[q].setAttribute('aria-pressed', String(po)); }
   var sp = document.querySelectorAll('#tlCmds [data-pk]');
@@ -7280,6 +7283,7 @@ var TLC = [
  { sep:true },
  { ic:'mklist', tip:'Elenco dei marker (nuovo marker: Alt+clic nell\'intestazione)', label:'Elenco dei marker…', act:'mkList' },
  { ic:'bandlist', tip:'Fascia dei periodi (nuovo periodo: Alt+trascina nella fascia)', label:'Fascia dei periodi…', act:'band' },
+ { ic:'gantt', tip:'Mostra o nasconde le barre (attività, attese, intervalli e gruppi) e i collegamenti; restano marker, periodi e milestone. Solo vista: i dati non cambiano', label:'Mostra le barre', act:'barsVis', vt:'barsOn' },
  { ic:'marker', tip:'Mostra o nasconde tutti i marker (la visibilità di ciascun marker resta invariata)', label:'Mostra i marker', act:'mkVis', vt:'markersOn' },
  { ic:'band', tip:'Mostra o nasconde tutti i periodi (fascia e colorazione della timeline)', label:'Mostra i periodi', act:'perVis', vt:'periodBand' },
  { ic:'tint', tip:'Colora o non colora la timeline in corrispondenza dei periodi (la fascia dei periodi resta visibile)', label:'Colorazione dei periodi', act:'perTint', vt:'periodTint' },
@@ -7304,6 +7308,7 @@ function tlcAct(it, el){
   else if(it.act === 'breakNW') setView('breakNW', !P.view.breakNW);
   else if(it.act === 'critical'){ setView('showCritical', !P.view.showCritical); if(P.view.showCritical && !P.items.some(function(x){ return x.predecessors && x.predecessors.length; })) toast('Il percorso critico richiede collegamenti tra le attività: senza dipendenze è critico solo l\'item che termina per ultimo.', 5200); }
   else if(it.act === 'band') openPeriods(el, null);
+  else if(it.act === 'barsVis') setView('barsOff', !P.view.barsOff);
   else if(it.act === 'mkVis') setView('markersOff', !P.view.markersOff);
   else if(it.act === 'perVis') setView('periodBand', P.view.periodBand === false);
   else if(it.act === 'perTint') setView('periodTint', P.view.periodTint === false);

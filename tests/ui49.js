@@ -14,7 +14,7 @@ await A(()=>{const A=GanttApp,C=A.core;A.commit('seed',q=>{
 // 1 capsule
 const acts=await A(()=>[...document.querySelectorAll('#tlCmds .tcap')].map(c=>[...c.children].map(e=>e.getAttribute('data-act')||'seg')));
 ok(acts.length===6,'sei capsule: '+JSON.stringify(acts));
-ok(JSON.stringify(acts.slice(2))===JSON.stringify([['tlopts','calendar','todayHl','breakNW'],['mkList','band','mkVis','perVis','perTint'],['link'],['baseline']]),'ordine capsule: '+JSON.stringify(acts.slice(2)));
+ok(JSON.stringify(acts.slice(2))===JSON.stringify([['tlopts','calendar','todayHl','breakNW'],['mkList','band','barsVis','mkVis','perVis','perTint'],['link'],['baseline']]),'ordine capsule: '+JSON.stringify(acts.slice(2)));
 // 2 zoom simmetrico con Ctrl
 await A(()=>GanttApp.act.setScale('weeks'));await W(300);
 await A(()=>{const A=GanttApp;A.act.setScale('days')});await W(300);
