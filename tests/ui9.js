@@ -113,7 +113,7 @@ await p.locator('#tlCmds .tlmore').click();ok(await p.locator('.cmenu .menuitem'
 await p.setViewportSize({width:1920,height:900});await p.waitForTimeout(400);
 // ---- 12. Informazioni
 await p.locator('[data-act="help"]').click();await p.waitForTimeout(150);await p.locator('.pop [data-act="about"]').click();await p.waitForTimeout(100);
-ok((await p.locator('#abNotes li').count())>=5,'novità della versione nella finestra Informazioni');ok(/0\.13\.1/.test(await p.locator('#abVer').textContent()),'versione nella finestra Informazioni');
+ok((await p.locator('#abNotes li').count())>=5,'novità della versione nella finestra Informazioni');ok(/0\.14\.0/.test(await p.locator('#abVer').textContent()),'versione nella finestra Informazioni');
 await p.locator('#abClose').click();
 // ---- 13. nuovo item: evidenziazione allineata
 await A(()=>window.GanttApp.act.insert('end'));await p.waitForTimeout(150);

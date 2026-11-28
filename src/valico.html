@@ -44,6 +44,8 @@ svg{display:block}
 .dirty.saved{background:#2fb067;opacity:1;box-shadow:0 0 0 3px rgba(47,176,103,.22)}
 .dirty.few{background:#f0b429;opacity:1;box-shadow:0 0 0 3px rgba(240,180,41,.28)}
 .dirty.many{background:#ff7a1a;opacity:1;box-shadow:0 0 0 3px rgba(255,122,26,.32)}
+#status .stkind{border:0;background:var(--accent2);color:var(--accent);border-radius:999px;padding:1px 10px;font:inherit;font-weight:650;cursor:pointer}
+#status .stkind:hover{filter:brightness(.96)}
 .pill{border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:2px 10px;font-size:calc(12px*var(--k));cursor:pointer;flex:none}
 .pill:hover{background:var(--hover)}
 .hbtns{display:flex;gap:6px;align-items:center;flex:none}
@@ -724,6 +726,24 @@ dialog::backdrop{background:rgba(0,0,0,.38)}
 .wl-ani .k-1{animation:wlKey 6s ease-in-out infinite}.wl-ani .k-2{animation:wlKey 6s ease-in-out .4s infinite}.wl-ani .k-3{animation:wlKey 6s ease-in-out .8s infinite}
 @media(prefers-reduced-motion:reduce){.wl-ani *{animation:none!important}}
 .wl-f{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#dlgStart,#dlgNew{width:min(640px,94vw)}
+#dlgStart .dlg-b{padding:14px 22px 6px}
+.stlist{display:flex;flex-direction:column;gap:8px;margin:12px 0 8px}
+.stact{display:flex;align-items:center;gap:14px;text-align:left;width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);cursor:pointer;font:inherit}
+.stact:hover,.stact:focus-visible{border-color:var(--accent);background:var(--accent2)}
+.stact .sti{flex:none;width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:var(--accent2);color:var(--accent)}
+.stact .sti svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stact b{display:block;font-size:calc(14px*var(--k))}
+.stact small{display:block;color:var(--muted);font-size:calc(12px*var(--k));margin-top:2px}
+.kcards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.kcard{position:relative;display:flex;flex-direction:column;gap:6px;padding:12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;background:var(--panel2)}
+.kcard input{position:absolute;opacity:0;pointer-events:none}
+.kcard:has(input:checked){border-color:var(--accent);background:var(--accent2)}
+.kcard:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.kcard svg{width:100%;height:auto;display:block}
+.kcard b{font-size:calc(14px*var(--k))}
+.kcard small{color:var(--muted);font-size:calc(12px*var(--k));line-height:1.35}
+@media (max-width:560px){.kcards{grid-template-columns:1fr}}
 .wl-chk{display:flex;align-items:center;gap:8px;margin-right:auto;color:var(--muted);cursor:pointer;font-size:calc(12px*var(--k))}
 .wl-dev{text-align:center;color:var(--muted);font-size:calc(12px*var(--k));padding:6px 0 10px}
 #dlgAbout{width:min(460px,92vw)}
@@ -906,6 +926,29 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
   </div>
 </dialog>
 
+<dialog id="dlgStart" aria-labelledby="stTitle">
+  <div class="dlg-b">
+    <div class="abhero"><span class="ablogo" id="stLogo"></span><div class="abhead"><span class="abname" id="stTitle">Valico</span><span class="abpill" id="stPill"></span></div>
+    <div class="abtag">Che cosa vuoi fare?</div></div>
+    <div class="stlist" id="stList"></div>
+    <div class="wl-strip"><span>Nessun account</span><span>Nessuna raccolta di dati</span><span>Funziona sul tuo computer</span><span>Un solo file, senza installazione</span></div>
+  </div>
+  <div class="dlg-f wl-f">
+    <label class="wl-chk"><input type="checkbox" id="stNever"> Non mostrare più all&rsquo;avvio</label>
+    <button type="button" class="btn" id="stClose">Chiudi</button>
+  </div>
+</dialog>
+
+<dialog id="dlgNew" aria-labelledby="nwTitle">
+  <div class="dlg-h" id="nwTitle">Nuovo progetto</div>
+  <div class="dlg-b">
+    <p class="abp" id="nwInfo"></p>
+    <div class="kcards" id="nwCards" role="radiogroup" aria-label="Tipo di progetto"></div>
+    <div class="note" id="nwSoon" style="display:none">La rappresentazione della roadmap sulla timeline è in preparazione: per ora il progetto si presenta come un cronoprogramma, con scala a mesi e colonne essenziali. Il tipo viene già salvato nel file.</div>
+  </div>
+  <div class="dlg-f"><button type="button" class="btn" id="nwCancel">Annulla</button><button type="button" class="btn primary" id="nwGo">Crea progetto</button></div>
+</dialog>
+
 <dialog id="dlgXlPrev" aria-labelledby="xlpTitle">
   <div class="dlg-h" id="xlpTitle">Importa da Excel</div>
   <div class="dlg-b" id="xlpBody"></div>
@@ -985,8 +1028,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.13.1', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.14.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.14.0: schermata iniziale all\'avvio (Nuovo progetto, Apri un progetto da computer o da cartella sincronizzata, progetto di esempio, guida introduttiva) e tipo di progetto, Cronoprogramma o Roadmap, scelto alla creazione e salvato nel file (project.kind). Il tipo compare accanto al titolo e si cambia con un clic, senza perdere dati e con possibilità di annullare; i file precedenti sono cronoprogrammi. La Roadmap parte con scala a mesi e colonne essenziali (Nome, Inizio, Fine, Scadenza); la sua rappresentazione sulla timeline è in preparazione. La guida a schede si apre dalla schermata iniziale; \'Non mostrare più all\'avvio\' vale per entrambe.",
     "0.13.1: assistente AI, modalità assistita con Copilot: istruzioni passo-passo nella finestra e prompt utilizzabile anche senza testo, per lavorare sull\'email o sul documento già aperto in Copilot (per esempio nel riquadro di Outlook).",
     "0.13.0: assistente AI (menu Altro del pannello Item, disattivato in modo predefinito). Trasforma testo libero, email incollate o dettatura vocale in righe che vengono AGGIUNTE al progetto (in fondo o dopo l\'item selezionato) con lo stesso criterio dell\'importazione da Excel: validazione, anteprima con i problemi rilevati, conferma e un solo passo di annullamento. Fornitori con la propria chiave API (Claude, ChatGPT, Gemini, Perplexity), senza account e senza server di Valico; la chiave non è salvata se non su richiesta esplicita. Microsoft Copilot in tutte le modalità: assistita (Valico prepara il prompt e analizza la risposta incollata, senza alcuna connessione, adatta all\'accesso con l\'account aziendale e al caso della posta di Outlook) e diretta sperimentale tramite la Chat API di Microsoft 365 Copilot (richiede registrazione in Entra ID, consenso amministratore e licenza). La modalità assistita è disponibile per ogni fornitore, anche senza chiave.",
     "0.12.0: collegamenti rigidi. Un collegamento rigido lega in modo esatto due barre a una distanza fissa in giorni lavorativi: spostando una barra si spostano, nei due versi, tutte quelle collegate in modo rigido (insieme rigido). Si crea tenendo premuto Ctrl al completamento del collegamento, o dal menu del collegamento, o scrivendo ! dopo il predecessore (esempio 3SS+2!). Operazione tutto o niente: se una barra dell\'insieme ha una data bloccata o gli scarti sono incompatibili, nulla si sposta e il messaggio indica l\'insieme e la barra che blocca. Gesto a due clic: con Maiusc premuto, rilasciando il mouse la freccia resta agganciata e il clic successivo su una barra crea il collegamento (Esc o rilascio di Maiusc annullano). I collegamenti rigidi hanno tratto spesso e la sigla R; le barre dell\'insieme sono evidenziate alla selezione. Messaggio esplicativo anche per i collegamenti ordinari (quale predecessore impedisce lo spostamento). Selezione ad area additiva: con Ctrl (o Maiusc) all\'inizio del trascinamento si aggiunge alla selezione, anche in zone diverse. Campo Vai a data: calendario con selezione di un giorno (clic) o di un intervallo (trascinamento), anche nel calendario virtuale (giorni G1, G2, …). Colonne del pannello Item riordinabili trascinando l\'intestazione. Nuova colonna calcolata Ore/giorno tot. (ore al giorno × persone). I file delle versioni precedenti si aprono senza modifiche; le versioni precedenti leggono i collegamenti rigidi come flessibili.",
@@ -1195,12 +1239,21 @@ function ensureSysMarkers(p){
   want.forEach(function(w){ if(!p.markers.some(function(m){ return m && m.kind === w[0]; })) miss.push(defMarker(w[0], w[1], w[2])); });
   if(miss.length) p.markers = miss.concat(p.markers);
 }
-function newProject(){
-  var now = new Date().toISOString();
+function newProject(kind){
+  var now = new Date().toISOString(), pj = newProjectBase(now);
+  if(kind === 'roadmap'){   /* 0.14.0: tipo Roadmap, valori proposti: scala a mesi e colonne essenziali (Nome, Inizio, Fine, Scadenza) */
+    pj.project.kind = 'roadmap';
+    pj.view.scale = 'months';
+    pj.view.hiddenColumns = pj.view.hiddenColumns.concat(['dur']);
+    pj.view.shownColumns = ['deadline'];
+  }
+  return pj;
+}
+function newProjectBase(now){
   return {
     schemaVersion: APP.schema,
     app: { name:APP.name, version:APP.version, author:APP.author },
-    project: { id:uid(), title:'Nuovo progetto' },
+    project: { id:uid(), title:'Nuovo progetto', kind:'schedule' },
     saveCounter: 0,
     rev: null,
     revState: 'draft',
@@ -1271,6 +1324,7 @@ function normalizeLoaded(obj){
   p.project.id = typeof p.project.id==='string' && p.project.id ? p.project.id : uid();
   ensureSysMarkers(p);
   p.project.title = typeof p.project.title==='string' && p.project.title ? p.project.title : 'Nuovo progetto';
+  p.project.kind = p.project.kind === 'roadmap' ? 'roadmap' : 'schedule';   /* 0.14.0: i file precedenti non hanno il tipo: sono cronoprogrammi */
   ['assignees','periods','baselines','markers','exportProfiles'].forEach(function(f){ if(!Array.isArray(p[f])) p[f] = clone(base[f]); });
   p.periods.forEach(function(pr){ if(pr && pr.lane !== undefined && !(typeof pr.lane === 'number' && isFinite(pr.lane) && pr.lane >= 0)) delete pr.lane; });
   if(p.calendar.type !== 'virtual') p.markers.forEach(function(m){   /* 0.8.8: la data di inizio/fine lavori vive nel Calendario; il marker ne è solo la rappresentazione */
@@ -6107,11 +6161,12 @@ function unsavedText(){
   return (n > 0 ? (n === 1 ? 'Hai 1 modifica non salvata' : 'Hai ' + n + ' modifiche non salvate') : 'Ci sono modifiche non salvate') + (last ? ' (l\'ultima: «' + last + '»)' : '') + '.';
 }
 function confirmDiscard(what){ return !ui.dirty || window.confirm(unsavedText() + '\nContinuando, ' + (what || 'andranno perse') + '. Continuare senza salvare?'); }
-function newProjectFlow(){
-  if(!confirmDiscard('il progetto attuale verrà sostituito da uno nuovo')) return;
-  P = newProject(); hist.undo.length = 0; hist.redo.length = 0; ui.px = null; ui.tlInit = false; ui.tlA = null; ui.tlHadDates = undefined;
+function newProjectFlow(){ openNewDlg('new'); }
+function createProject(kind){
+  P = newProject(kind); hist.undo.length = 0; hist.redo.length = 0; ui.px = null; ui.tlInit = false; ui.tlA = null; ui.tlHadDates = undefined;
   ui.sel = []; ui.anchor = null; ui.cell = null; ui.edit = null; ui.fileHandle = null; ui.fileName = null; ui.dirty = false; ui.unsaved = 0; ui.loadedCounter = 0;
-  actLog('file', 'Nuovo progetto'); render(); toast('Nuovo progetto');
+  actLog('file', 'Nuovo progetto (' + kindName(projKind(P)) + ')'); render(); toast('Nuovo progetto: ' + kindName(projKind(P)));
+  pulseQuick();
 }
 function loadText(text, handle, name){
   var obj, np;
@@ -6122,6 +6177,7 @@ function loadText(text, handle, name){
   ui.fileHandle = handle || null; ui.fileName = name || null; ui.dirty = false; ui.unsaved = 0; ui.loadedCounter = P.saveCounter; ui.showHid = false;
   if(name && (!obj.project || !obj.project.title)) P.project.title = name.replace(/\.json$/i,'');
   actLog('file', 'Progetto aperto: '+(name || P.project.title)); render(); toast('Progetto aperto: '+(name || P.project.title));
+  closeStart(true);
   return true;
 }
 async function openFlow(){
@@ -7946,6 +8002,7 @@ function loadExample(){
   actLog('file', 'Aperto il progetto di esempio'); render();
   try{ tlGoToday(); }catch(e2){}
   toast('Progetto di esempio: modificalo liberamente, non è collegato ad alcun file.', 5200);
+  closeStart(true);
   return true;
 }
 function openWelcome(){
@@ -7999,7 +8056,10 @@ function closeWelcome(){
   var d = $('#dlgWelcome'); if(!d) return;
   prefs.welcomeOff = !!$('#wlNever').checked; savePrefs();
   if(d.close) d.close(); else d.removeAttribute('open');
-  /* progetto nuovo o vuoto: il campo «Vai a data» lampeggia finché non viene usato (massimo 10 s) */
+  pulseQuick();
+}
+/* progetto nuovo o vuoto: il campo «Vai a data» lampeggia finché non viene usato (massimo 10 s) */
+function pulseQuick(){
   var gq = $('#gtQuick');
   if(gq && !P.items.some(function(x){ return x.start; })){ gq.classList.add('pulse'); setTimeout(function(){ gq.classList.remove('pulse'); }, 10000); }
 }
@@ -8028,9 +8088,81 @@ function initWelcome(){
   $('#wlPriv').addEventListener('click', function(){ openAbout(true); });
   $('#dlgWelcome').addEventListener('cancel', function(){ prefs.welcomeOff = !!$('#wlNever').checked; savePrefs(); });
   /* all'avvio: non nei browser automatizzati (test), salvo ?welcome=1 */
-  var force = /[?&]welcome=1\b/.test(location.search);
-  if((force || !navigator.webdriver) && !prefs.welcomeOff) openWelcome();
+  var force = /[?&]welcome=1\b/.test(location.search), forceS = /[?&]start=1\b/.test(location.search);
+  if(force){ if(!prefs.welcomeOff) openWelcome(); }
+  else if((forceS || !navigator.webdriver) && !prefs.welcomeOff) openStart();   /* 0.14.0: all'avvio si apre la schermata iniziale; la guida a schede si apre da lì */
 }
+/* ===================== 0.14.0 · Schermata iniziale e tipo di progetto ===================== */
+var KINDS = [
+  ['schedule', 'Cronoprogramma', 'Diagramma di Gantt: attività con durata, collegamenti, avanzamento, ore e persone. Per programmare e controllare i lavori.',
+    '<svg viewBox="0 0 160 72" aria-hidden="true"><line x1="6" y1="66" x2="154" y2="66" stroke="var(--line)"/><rect x="10" y="8" width="70" height="9" rx="4" fill="var(--accent)"/><rect x="40" y="24" width="62" height="9" rx="4" fill="var(--accent)" opacity=".7"/><rect x="74" y="40" width="54" height="9" rx="4" fill="var(--accent)" opacity=".5"/><path d="M80 17 V21 H40 M102 33 V37 H74" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="2 2"/><polygon points="132,54 138,60 132,66 126,60" fill="#7a5bd6"/></svg>'],
+  ['roadmap', 'Roadmap', 'Traguardi, fasi e scadenze lungo il tempo, senza il dettaglio delle attività. Per una presentazione direzionale.',
+    '<svg viewBox="0 0 160 72" aria-hidden="true"><line x1="6" y1="34" x2="154" y2="34" stroke="var(--muted)" stroke-width="2"/><line x1="30" y1="28" x2="30" y2="18" stroke="var(--muted)" stroke-dasharray="2 2"/><rect x="16" y="9" width="28" height="6" rx="3" fill="var(--muted)" opacity=".5"/><line x1="76" y1="40" x2="76" y2="50" stroke="var(--muted)" stroke-dasharray="2 2"/><line x1="128" y1="27" x2="128" y2="17" stroke="var(--muted)" stroke-dasharray="2 2"/><rect x="112" y="8" width="32" height="6" rx="3" fill="var(--muted)" opacity=".5"/><circle cx="30" cy="34" r="6" fill="#7a5bd6"/><circle cx="76" cy="34" r="4.5" fill="#1f9d6b"/><circle cx="128" cy="34" r="7" fill="#d9822b"/><rect x="62" y="50" width="30" height="6" rx="3" fill="var(--muted)" opacity=".5"/><rect x="6" y="60" width="52" height="8" rx="3" fill="var(--muted)" opacity=".35"/><rect x="61" y="60" width="93" height="8" rx="3" fill="var(--muted)" opacity=".35"/></svg>']
+];
+function projKind(p){ return p && p.project && p.project.kind === 'roadmap' ? 'roadmap' : 'schedule'; }
+function kindName(k){ return k === 'roadmap' ? 'Roadmap' : 'Cronoprogramma'; }
+function dlgShow(d){ if(d.showModal) d.showModal(); else d.setAttribute('open',''); }
+function dlgHide(d){ if(d.close) d.close(); else d.removeAttribute('open'); }
+var nwMode = 'new';
+function nwCards(){
+  var box = $('#nwCards'); if(!box || box.firstChild) return;
+  KINDS.forEach(function(k){
+    var lb = h('label',{ class:'kcard' }, h('input',{ type:'radio', name:'nwKind', value:k[0] }), h('b',{ text:k[1] }), h('small',{ text:k[2] }));
+    lb.insertBefore((function(){ var w = document.createElement('div'); w.innerHTML = k[3]; return w.firstChild; })(), lb.querySelector('b'));
+    lb.querySelector('input').addEventListener('change', nwSoon);
+    box.appendChild(lb);
+  });
+}
+function nwSoon(){ var r = document.querySelector('#dlgNew input[name="nwKind"]:checked'), n = $('#nwSoon'); if(n) n.style.display = r && r.value === 'roadmap' && nwMode === 'new' ? '' : 'none'; }
+function openNewDlg(mode){
+  var d = $('#dlgNew'); if(!d) return;
+  nwCards(); nwMode = mode === 'change' ? 'change' : 'new';
+  var cur = nwMode === 'change' ? projKind(P) : 'schedule', ch = nwMode === 'change';
+  $('#nwTitle').textContent = ch ? 'Tipo di progetto' : 'Nuovo progetto';
+  $('#nwInfo').textContent = ch ? 'Il cambio non modifica né cancella alcun dato: cambiano solo la rappresentazione e i valori proposti. Si può annullare con Ctrl+Z.' : 'Scegli il tipo di progetto. Si può cambiare in seguito senza perdere dati: i due tipi usano lo stesso file e gli stessi strumenti.';
+  $('#nwGo').textContent = ch ? 'Applica' : 'Crea progetto';
+  Array.prototype.forEach.call(d.querySelectorAll('input[name="nwKind"]'), function(r){ r.checked = r.value === cur; });
+  nwSoon(); dlgShow(d);
+  var c = d.querySelector('input[name="nwKind"]:checked'); if(c) c.focus();
+}
+function nwGo(){
+  var r = document.querySelector('#dlgNew input[name="nwKind"]:checked'), k = r && r.value === 'roadmap' ? 'roadmap' : 'schedule', d = $('#dlgNew');
+  if(nwMode === 'change'){
+    dlgHide(d);
+    if(k !== projKind(P)){ commit('Tipo di progetto: ' + kindName(k), function(p){ p.project.kind = k; }); toast('Tipo di progetto: ' + kindName(k), 3000); }
+    return;
+  }
+  if(!confirmDiscard('il progetto attuale verrà sostituito da uno nuovo')) return;
+  dlgHide(d); closeStart(true); createProject(k);
+}
+function openStart(){
+  var d = $('#dlgStart'); if(!d) return;
+  $('#stPill').textContent = 'v' + APP.version; $('#stNever').checked = !!prefs.welcomeOff;
+  dlgShow(d);
+  var b = d.querySelector('.stact'); if(b) b.focus();
+}
+function closeStart(silent){
+  var d = $('#dlgStart'); if(!d || !d.open) return;
+  prefs.welcomeOff = !!$('#stNever').checked; savePrefs(); dlgHide(d);
+  if(!silent) pulseQuick();
+}
+function initStart(){
+  var logo = $('#stLogo'); if(logo) logo.innerHTML = $('#abLogo').innerHTML;
+  var list = $('#stList'); if(!list) return;
+  [['plus','Nuovo progetto','Cronoprogramma o roadmap', function(){ openNewDlg('new'); }],
+   ['open','Apri un progetto','Da questo computer o da una cartella sincronizzata (SharePoint, OneDrive): il file va prima sincronizzato sul computer', function(){ openFlow(); }],
+   ['bars','Progetto di esempio','Un cronoprogramma già compilato, per esplorare le funzioni', function(){ loadExample(); }],
+   ['help','Guida introduttiva','Le funzioni principali, in schede animate', function(){ closeStart(true); openWelcome(); }]
+  ].forEach(function(a){
+    var b = h('button',{ type:'button', class:'stact', 'data-st':a[1] }, h('span',{ class:'sti' }, icon(a[0])), h('span',null, h('b',{ text:a[1] }), h('small',{ text:a[2] })));
+    b.addEventListener('click', a[3]); list.appendChild(b);
+  });
+  $('#stClose').addEventListener('click', function(){ closeStart(false); });
+  $('#dlgStart').addEventListener('cancel', function(){ prefs.welcomeOff = !!$('#stNever').checked; savePrefs(); pulseQuick(); });
+  $('#nwCancel').addEventListener('click', function(){ dlgHide($('#dlgNew')); });
+  $('#nwGo').addEventListener('click', nwGo);
+}
+
 /* ===================== Diagnostica (0.8.13): errori e ambiente, senza contenuti del progetto ===================== */
 var DIAG = { errs:[], max:50, lastToast:0 };
 function diagClean(t, n){   /* toglie testo libero tra virgolette, percorsi di file e indirizzi: nessun contenuto del progetto deve uscire */
@@ -8107,6 +8239,7 @@ function renderStatus(){
   var s = $('#status'), ver = curRevEntry();
   s.textContent = '';
   s.appendChild(h('span',null, h('b',{ text:APP.name }), '  ·  Software '+APP.version+' ('+fmtDate(new Date(APP.date))+')'));
+  s.appendChild(h('button',{ type:'button', id:'kindPill', class:'stkind', 'data-tip':'Tipo di progetto: ' + kindName(projKind(P)) + '. Clic per cambiarlo (nessun dato viene modificato)', onclick:function(){ openNewDlg('change'); } }, kindName(projKind(P))));
   s.appendChild(h('span',null, 'File: ', h('b',{ text: ui.fileName || 'non ancora salvato' })));
   s.appendChild(h('span',null, P.rev ? ['Rev. ', h('b',{ text:revText(P.rev) }), revIsDraft() ? ' · in lavorazione' : '', ver && ver.issuedAt ? ' (emessa il '+fmtDM(ver.issuedAt)+')' : ''] : 'Nessuna revisione emessa'));
   s.appendChild(h('span',null, 'Ultimo salvataggio: '+ago(P.lastSavedAt)+(ui.dirty?'  ·  modifiche non salvate':'')));
@@ -9000,7 +9133,7 @@ function init(){
   $('#logClose').addEventListener('click',function(){ var d = $('#dlgLog'); if(d.close) d.close(); else d.removeAttribute('open'); });
   $('#logEdit').addEventListener('click',function(e){ ui.logEdit = !ui.logEdit; e.currentTarget.setAttribute('aria-checked',String(ui.logEdit)); buildLog(); });
   if(window.matchMedia){ var mq = window.matchMedia('(prefers-color-scheme: dark)'); var cb = function(){ if(prefs.theme==='auto') applyTheme(); }; if(mq.addEventListener) mq.addEventListener('change',cb); }
-  initWelcome();
+  initWelcome(); initStart();
   setInterval(autoSaveTick, 60000);
   buildThemeCss(); applyTheme(); applyFont(); applyFontSize(); applyDensity(); applyGroupStyle(); applyItemScale(); applyShortcuts(); scRefreshLabels();
   render(); layoutTlCmds();

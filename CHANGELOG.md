@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.14.0
+
+Schermata iniziale all'avvio (Nuovo progetto, Apri un progetto da computer o da cartella sincronizzata, progetto di esempio, guida introduttiva) e tipo di progetto, Cronoprogramma o Roadmap, scelto alla creazione e salvato nel file (`project.kind`). Il tipo compare nella barra di stato e si cambia con un clic, senza perdere dati e con possibilità di annullare; i file precedenti sono cronoprogrammi. La Roadmap parte con scala a mesi e colonne essenziali (Nome, Inizio, Fine, Scadenza); la sua rappresentazione sulla timeline è in preparazione. La guida a schede si apre dalla schermata iniziale; «Non mostrare più all'avvio» vale per entrambe.
+
 ## 0.13.1
 
 Assistente AI, modalità assistita con Copilot: istruzioni passo-passo nella finestra e prompt utilizzabile anche senza testo, per lavorare sull'email o sul documento già aperto in Copilot (per esempio nel riquadro di Outlook).

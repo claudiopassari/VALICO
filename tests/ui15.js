@@ -58,7 +58,7 @@ await AA(()=>{const A=window.GanttApp;A.commit('t',q=>{q.periods.push({uid:'pp',
 const rt=await A(()=>{const A=window.GanttApp;const t=JSON.stringify(A.core.prepareSave(A.P,{}));const before=JSON.parse(t);A.core.loadText(t,null,'x.json');const P=A.P;
   const nota=P.items.find(i=>i.name==='Nota fase');
   return {cov:nota.covers.length,type:nota.type,per:P.periods.length,bl:P.baselines.length,act:!!P.activeBaseline,blN:Object.keys(P.baselines[0].d).length,ver:before.app.version}});
-eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.13.1'],'salvataggio e ricarica: indicazione, periodi, baseline');
+eq([rt.type,rt.cov>=2,rt.per,rt.bl,rt.act,rt.blN>5,rt.ver],['indication',true,1,1,true,true,'0.14.0'],'salvataggio e ricarica: indicazione, periodi, baseline');
 await W(200);
 // ---- Ctrl + trascinamento verticale
 await AA(()=>{const a=window.GanttApp;a.ui.sel=[];a.render()});await W(100);
