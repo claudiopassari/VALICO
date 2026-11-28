@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.13.0
+
+Assistente AI (menu Altro del pannello Item), disattivato in modo predefinito: trasforma testo libero, email incollate o dettatura vocale in righe aggiunte al progetto, con validazione, anteprima, conferma e un solo passo di annullamento. Fornitori con chiave API personale (Claude, ChatGPT, Gemini, Perplexity), senza server di Valico; la chiave non è salvata se non su richiesta. Microsoft Copilot in modalità assistita (prompt da copiare e risposta da incollare, nessuna connessione, valida per l'accesso con account aziendale) e diretta sperimentale tramite la Chat API di Microsoft 365 Copilot. La modalità assistita è disponibile per ogni fornitore.
+
 ## 0.12.0
 
 Collegamenti rigidi: due barre legate a una distanza fissa in giorni lavorativi si spostano insieme nei due versi (insieme rigido), con operazione tutto o niente e messaggio che indica l'insieme e la barra che blocca. Si creano con Ctrl al completamento del collegamento, dal menu del collegamento o con ! nella cella Predecessori. Gesto a due clic con Maiusc (la freccia resta agganciata dopo il rilascio). Tratto spesso e sigla R, evidenziazione dell'insieme alla selezione, messaggio esplicativo anche per i collegamenti ordinari. Selezione ad area additiva con Ctrl o Maiusc, anche in zone diverse. Campo Vai a data con calendario a selezione di giorno o intervallo (anche nel calendario virtuale). Colonne del pannello Item riordinabili trascinando l'intestazione. Nuova colonna calcolata Ore/giorno tot. Compatibile con i file delle versioni precedenti.

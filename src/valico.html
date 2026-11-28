@@ -496,6 +496,7 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .dbox{position:relative;display:inline-flex;align-items:center;flex:none}.dbox .numin{padding-right:calc(26px*var(--k))}
 .dbox .calb{position:absolute;right:3px;top:50%;transform:translateY(-50%);opacity:.6}.dbox .calb:hover{opacity:1}.dbox .calb.on{opacity:1;color:var(--accent)}
 .cinl .calp{margin:0}
+#dlgAi[open]{width:min(860px,96vw)}.aitxt{width:100%;min-height:120px;resize:vertical;font:inherit;box-sizing:border-box}.aidet{margin-top:10px}.aidet summary{cursor:pointer;font-weight:600;padding:4px 0}.aiprev td,.aiprev th{white-space:nowrap}.aiprev td:nth-child(2){white-space:normal}
 #panels .cols .c.hdrag{opacity:.45}.hdmark{position:absolute;top:0;bottom:0;width:3px;background:var(--accent);z-index:30;pointer-events:none}body.hdragging{cursor:grabbing;user-select:none}
 #panels .cols .c[data-hcol]:not([data-hcol=name]){cursor:grab}
 .rngcal .d{user-select:none}.rngcal[data-v] .grid{grid-template-columns:repeat(7,1fr)}.rngcal .d{white-space:nowrap}.rngcal .d.rg{background:var(--accent-soft,rgba(37,99,235,.18));border-radius:0}.rngcal .d.rge{background:var(--accent);color:#fff}
@@ -911,6 +912,12 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
   <div class="dlg-f"><button type="button" class="btn" id="xlpNo">Annulla</button><button type="button" class="btn primary" id="xlpGo">Importa come nuovo progetto</button></div>
 </dialog>
 
+<dialog id="dlgAi" aria-labelledby="aiTitle" class="dlgai">
+  <div class="dlg-h" id="aiTitle">Assistente AI</div>
+  <div class="dlg-b" id="aiBody"></div>
+  <div class="dlg-f" id="aiFoot"></div>
+</dialog>
+
 <dialog id="dlgSaveAs" aria-labelledby="saTitle">
   <div class="dlg-h" id="saTitle">Salva con nome</div>
   <div class="dlg-b">
@@ -978,8 +985,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.12.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.13.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.13.0: assistente AI (menu Altro del pannello Item, disattivato in modo predefinito). Trasforma testo libero, email incollate o dettatura vocale in righe che vengono AGGIUNTE al progetto (in fondo o dopo l\'item selezionato) con lo stesso criterio dell\'importazione da Excel: validazione, anteprima con i problemi rilevati, conferma e un solo passo di annullamento. Fornitori con la propria chiave API (Claude, ChatGPT, Gemini, Perplexity), senza account e senza server di Valico; la chiave non è salvata se non su richiesta esplicita. Microsoft Copilot in tutte le modalità: assistita (Valico prepara il prompt e analizza la risposta incollata, senza alcuna connessione, adatta all\'accesso con l\'account aziendale e al caso della posta di Outlook) e diretta sperimentale tramite la Chat API di Microsoft 365 Copilot (richiede registrazione in Entra ID, consenso amministratore e licenza). La modalità assistita è disponibile per ogni fornitore, anche senza chiave.",
     "0.12.0: collegamenti rigidi. Un collegamento rigido lega in modo esatto due barre a una distanza fissa in giorni lavorativi: spostando una barra si spostano, nei due versi, tutte quelle collegate in modo rigido (insieme rigido). Si crea tenendo premuto Ctrl al completamento del collegamento, o dal menu del collegamento, o scrivendo ! dopo il predecessore (esempio 3SS+2!). Operazione tutto o niente: se una barra dell\'insieme ha una data bloccata o gli scarti sono incompatibili, nulla si sposta e il messaggio indica l\'insieme e la barra che blocca. Gesto a due clic: con Maiusc premuto, rilasciando il mouse la freccia resta agganciata e il clic successivo su una barra crea il collegamento (Esc o rilascio di Maiusc annullano). I collegamenti rigidi hanno tratto spesso e la sigla R; le barre dell\'insieme sono evidenziate alla selezione. Messaggio esplicativo anche per i collegamenti ordinari (quale predecessore impedisce lo spostamento). Selezione ad area additiva: con Ctrl (o Maiusc) all\'inizio del trascinamento si aggiunge alla selezione, anche in zone diverse. Campo Vai a data: calendario con selezione di un giorno (clic) o di un intervallo (trascinamento), anche nel calendario virtuale (giorni G1, G2, …). Colonne del pannello Item riordinabili trascinando l\'intestazione. Nuova colonna calcolata Ore/giorno tot. (ore al giorno × persone). I file delle versioni precedenti si aprono senza modifiche; le versioni precedenti leggono i collegamenti rigidi come flessibili.",
     "0.11.0: pannello di esportazione in tre blocchi (Cosa esportare, Area e contenuto, Formato e uscita) con la copia rapida dell\'immagine in evidenza accanto all\'anteprima; esportazione in Excel completa (tutti i campi modificabili: tipo, scadenza, ore al giorno, persone, etichetta, con calendario a barre semplificate, fogli Guida ed Elenchi con tendine); modello Excel scaricabile dal menu di salvataggio; importazione da Excel con anteprima degli errori riga per riga e nessuna modifica al progetto aperto fino alla conferma.",
     "0.10.0: pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare; campo Vai a data nella barra della timeline (la timeline si estende fino a date lontane); colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt+frecce) e gruppo Carico di lavoro con valori rapidi per ore e persone; trascinamento ad area sulle righe del pannello Item (Alt), selezione dell\'intervallo date trascinando nel calendario, tasti 1-4 per scegliere il tipo mentre si disegna, suggerimento sui nomi troncati; gli item dentro un gruppo nascosto sono attenuati; esportazione dal lunedì alla domenica con margini; benvenuto in due righe di schede.",
@@ -2372,6 +2380,7 @@ function loadPrefs(){
   }
   if(d.gFrame === 'lines') d.gFrame = 'none'; if(d.gPar !== 'none') d.gPar = 'on'; d.gBar = d.gFrame === 'none' ? 'none' : 'thin'; d.todayHl = d.todayHl !== false; delete d.todayMode;   /* 0.8.9 */   /* 0.8.4: eliminati «per livello» */
   if((d.pv || 0) < 2){ d.gRow = true; d.pv = 2; }   /* 0.8.4: evidenziazione righe di gruppo attiva di default */
+  d.ai = (s && s.ai && typeof s.ai === 'object') ? s.ai : {};
   return d;
 }
 function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} }
@@ -3406,6 +3415,7 @@ function openMore(anchor){
     { sep:true },
     { label:'Unisci assegnatari…', fn:function(){ openMerge(anchor); } },
     { label:'Report ore e maestranze…', fn:openHoursReport },
+    { label:'Assistente AI…', fn:openAssistant },
     { sep:true },
     { label:'Espandi tutti i gruppi', fn:function(){ setAllCollapsed(false); } },
     { label:'Comprimi tutti i gruppi', fn:function(){ setAllCollapsed(true); } }
@@ -7486,6 +7496,305 @@ function downloadXlsxTemplate(){
   toast('Modello scaricato: contiene la tabella da compilare, il calendario e il foglio Guida.', 5200);
 }
 
+/* ===================== Assistente AI (0.13.0) =====================
+   Trasforma testo libero (appunti, email, verbali, dettatura) in righe da AGGIUNGERE al progetto, con lo stesso criterio dell'importazione da Excel:
+   validazione, anteprima, conferma, un solo passo di annullamento. Disattivato in modo predefinito. Nessun server di Valico: le richieste partono dal browser
+   verso il fornitore scelto, con la chiave dell'utente (che non è salvata se non su richiesta esplicita). Modalità assistita (Copilot e qualunque altro):
+   Valico prepara il prompt e analizza la risposta incollata, senza alcuna connessione. */
+var AI_PROV = {
+  claude:     { name:'Claude (Anthropic)', model:'claude-sonnet-5-5', link:'https://console.anthropic.com/', linkText:'console.anthropic.com', key:true },
+  openai:     { name:'ChatGPT (OpenAI)', model:'gpt-5.5', link:'https://platform.openai.com/api-keys', linkText:'platform.openai.com/api-keys', key:true },
+  gemini:     { name:'Gemini (Google)', model:'gemini-3.6-flash', link:'https://aistudio.google.com/apikey', linkText:'aistudio.google.com/apikey', key:true },
+  perplexity: { name:'Perplexity (facoltativo)', model:'sonar-pro', link:'https://www.perplexity.ai/settings/api', linkText:'perplexity.ai/settings/api', key:true },
+  copilot:    { name:'Microsoft Copilot (modalità assistita, senza chiave)', link:'https://m365.cloud.microsoft/chat', linkText:'m365.cloud.microsoft/chat', assisted:true },
+  graph:      { name:'Microsoft 365 Copilot (diretta, sperimentale)', graph:true }
+};
+var AI_SCOPES = 'Sites.Read.All Mail.Read People.Read.All OnlineMeetingTranscript.Read.All Chat.Read ChannelMessage.Read.All ExternalItem.Read.All';
+function aiCfg(){ var a = prefs.ai; if(!a || typeof a !== 'object') a = prefs.ai = {}; if(!a.models) a.models = {}; if(!a.keys) a.keys = {}; return a; }
+function aiKey(pv){ var a = aiCfg(); return (ui.aiKeys && ui.aiKeys[pv]) || (a.remember && a.keys[pv]) || ''; }
+function aiModel(pv){ var a = aiCfg(); return (a.models[pv] || '').trim() || (AI_PROV[pv] && AI_PROV[pv].model) || ''; }
+function aiSystemText(){
+  return 'Sei un assistente che trasforma testi liberi (appunti, email, verbali, elenchi) in righe di un cronoprogramma.\n'
+    + 'Rispondi esclusivamente con un oggetto JSON valido, senza testo prima o dopo e senza blocchi di codice.\n'
+    + 'Formato: {"items":[{...}],"warnings":["..."]}\n'
+    + 'Ogni elemento di "items" ha questi campi (tutti facoltativi tranne name):\n'
+    + '- name: nome breve dell\'attività\n'
+    + '- type: "task" (attività, predefinito), "milestone" (traguardo senza durata), "wait" (attesa), "indication" (nota o indicazione, senza dipendenze)\n'
+    + '- level: livello gerarchico da 1 a 3; un elemento seguito da elementi di livello maggiore ne è il gruppo (i gruppi non hanno date proprie)\n'
+    + '- start, end: date ISO AAAA-MM-GG, solo se il testo le indica o si ricavano senza ambiguità da riferimenti relativi alla data odierna\n'
+    + '- duration: durata in giorni lavorativi (intero), in alternativa a end\n'
+    + '- deadline: scadenza, data ISO\n'
+    + '- assignee: persona o impresa responsabile; hoursPerDay: ore al giorno (numero); crew: numero di persone; progress: avanzamento da 0 a 100; label: etichetta breve; notes: note (massimo 150 caratteri)\n'
+    + '- predecessors: numeri di riga dei predecessori (da 1, nell\'ordine di "items"), esempio "2" oppure "2FS+1, 3SS" (tipi FS, SS, FF, SF; ritardo in giorni lavorativi)\n'
+    + 'Regole: non inventare date, durate o persone assenti dal testo; omettere i campi sconosciuti; una sola riga per attività; riportare in "warnings" le ambiguità e le informazioni non utilizzate.';
+}
+function aiUserText(txt){
+  var t = new Date(), iso = t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2), wd = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][t.getDay()];
+  return 'Data odierna: ' + iso + ' (' + wd + ').\n' + (virtOn() ? 'Il progetto usa un calendario virtuale: non indicare date, solo duration e predecessors.\n' : 'Le durate sono in giorni lavorativi del calendario del progetto.\n')
+    + 'Testo da trasformare:\n"""\n' + txt + '\n"""';
+}
+function aiHttp(url, opts, label){
+  var ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, tm = setTimeout(function(){ if(ctl) ctl.abort(); }, 120000);
+  if(ctl) opts.signal = ctl.signal;
+  return fetch(url, opts).then(function(r){
+    clearTimeout(tm);
+    return r.text().then(function(tx){
+      var j = null; try{ j = JSON.parse(tx); }catch(e){}
+      if(!r.ok){
+        var m = j && ((j.error && (j.error.message || (typeof j.error === 'string' ? j.error : ''))) || j.message) || tx.slice(0, 200);
+        throw new Error(label + ': ' + (r.status === 401 || r.status === 403 ? 'chiave non valida o senza permessi' : r.status === 429 ? 'limite di richieste o credito esaurito' : r.status === 404 ? 'modello non trovato (controlla il nome del modello)' : 'errore ' + r.status) + (m ? ' (' + String(m).slice(0, 200) + ')' : ''));
+      }
+      return j;
+    });
+  }, function(e){
+    clearTimeout(tm);
+    throw new Error(label + ': ' + (e && e.name === 'AbortError' ? 'tempo scaduto' : 'richiesta non riuscita (rete assente, richiesta bloccata dal browser per CORS o da un\'estensione). Si può usare la modalità assistita'));
+  });
+}
+function aiCall(pv, key, model, system, user){
+  var P_ = AI_PROV[pv], lab = P_.name.replace(/ \(.*$/, '');
+  if(pv === 'claude') return aiHttp('https://api.anthropic.com/v1/messages', { method:'POST', headers:{ 'content-type':'application/json', 'x-api-key':key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+    body:JSON.stringify({ model:model, max_tokens:8000, system:system, messages:[{ role:'user', content:user }] }) }, lab).then(function(j){ return (j.content || []).filter(function(c){ return c.type === 'text'; }).map(function(c){ return c.text; }).join(''); });
+  if(pv === 'openai' || pv === 'perplexity') return aiHttp(pv === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://api.perplexity.ai/chat/completions', { method:'POST', headers:{ 'content-type':'application/json', 'authorization':'Bearer ' + key },
+    body:JSON.stringify({ model:model, messages:[{ role:'system', content:system }, { role:'user', content:user }] }) }, lab).then(function(j){ var m = j && j.choices && j.choices[0] && j.choices[0].message; return m ? String(m.content || '') : ''; });
+  if(pv === 'gemini') return aiHttp('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', { method:'POST', headers:{ 'content-type':'application/json', 'x-goog-api-key':key },
+    body:JSON.stringify({ systemInstruction:{ parts:[{ text:system }] }, contents:[{ role:'user', parts:[{ text:user }] }], generationConfig:{ responseMimeType:'application/json' } }) }, lab).then(function(j){
+      var c = j && j.candidates && j.candidates[0]; return c && c.content && c.content.parts ? c.content.parts.map(function(x){ return x.text || ''; }).join('') : ''; });
+  return Promise.reject(new Error('Fornitore non supportato.'));
+}
+/* Microsoft 365 Copilot Chat API (Microsoft Graph, anteprima): accesso con l'account aziendale (OAuth con PKCE) e conversazione sincrona.
+   Richiede una registrazione applicazione in Entra ID (tipo «applicazione a pagina singola») con URI di reindirizzamento uguale all'indirizzo da cui è aperto Valico, consenso dell'amministratore e licenza Copilot. */
+function aiB64u(buf){ var s = '', a = new Uint8Array(buf), i; for(i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function aiGraphLogin(){
+  var a = aiCfg(), cid = (a.graphClientId || '').trim(), tn = (a.graphTenant || '').trim() || 'organizations';
+  if(!cid) return Promise.reject(new Error('Indica l\'ID applicazione (client) della registrazione in Entra ID.'));
+  if(!/^https?:$/.test(location.protocol)) return Promise.reject(new Error('Questa modalità richiede che Valico sia aperto da un indirizzo web (per esempio la versione pubblicata su GitHub Pages) registrato come URI di reindirizzamento. Da file locale non è utilizzabile: si può usare la modalità assistita.'));
+  var red = location.origin + location.pathname, ver = aiB64u(crypto.getRandomValues(new Uint8Array(32))), st = aiB64u(crypto.getRandomValues(new Uint8Array(12)));
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(ver)).then(function(dg){
+    var url = 'https://login.microsoftonline.com/' + encodeURIComponent(tn) + '/oauth2/v2.0/authorize?client_id=' + encodeURIComponent(cid) + '&response_type=code&redirect_uri=' + encodeURIComponent(red)
+      + '&response_mode=query&scope=' + encodeURIComponent(AI_SCOPES) + '&state=' + st + '&code_challenge=' + aiB64u(dg) + '&code_challenge_method=S256';
+    var w = window.open(url, 'valicoMsLogin', 'width=520,height=680'); if(!w) throw new Error('Il browser ha bloccato la finestra di accesso: consenti i popup per questa pagina.');
+    return new Promise(function(res, rej){
+      var t0 = Date.now(), iv = setInterval(function(){
+        var q = null; try{ if(w.closed){ clearInterval(iv); rej(new Error('Accesso annullato.')); return; } if(w.location.origin === location.origin) q = w.location.search; }catch(e){}
+        if(q){ clearInterval(iv); w.close(); var pr = new URLSearchParams(q); if(pr.get('error')) rej(new Error('Accesso non riuscito: ' + (pr.get('error_description') || pr.get('error')))); else if(pr.get('state') !== st) rej(new Error('Risposta di accesso non valida.')); else res(pr.get('code')); }
+        else if(Date.now() - t0 > 180000){ clearInterval(iv); try{ w.close(); }catch(e){} rej(new Error('Tempo scaduto per l\'accesso.')); }
+      }, 400);
+    });
+  }).then(function(code){
+    var body = new URLSearchParams({ client_id:cid, grant_type:'authorization_code', code:code, redirect_uri:red, code_verifier:ver, scope:AI_SCOPES });
+    return aiHttp('https://login.microsoftonline.com/' + encodeURIComponent(tn) + '/oauth2/v2.0/token', { method:'POST', headers:{ 'content-type':'application/x-www-form-urlencoded' }, body:body.toString() }, 'Microsoft Entra ID');
+  }).then(function(j){ if(!j || !j.access_token) throw new Error('Microsoft Entra ID: token non ricevuto.'); ui.aiGraph = { token:j.access_token, exp:Date.now() + (j.expires_in || 3000) * 1000 }; return ui.aiGraph.token; });
+}
+function aiGraphChat(prompt){
+  var go = function(tk){
+    var hd = { 'content-type':'application/json', 'authorization':'Bearer ' + tk };
+    return aiHttp('https://graph.microsoft.com/beta/copilot/conversations', { method:'POST', headers:hd, body:'{}' }, 'Microsoft 365 Copilot').then(function(c){
+      if(!c || !c.id) throw new Error('Microsoft 365 Copilot: conversazione non creata.');
+      return aiHttp('https://graph.microsoft.com/beta/copilot/conversations/' + encodeURIComponent(c.id) + '/chat', { method:'POST', headers:hd, body:JSON.stringify({ message:{ text:prompt }, locationHint:{ timeZone:'Europe/Rome' } }) }, 'Microsoft 365 Copilot');
+    }).then(function(j){ var ms = j && j.messages || []; if(!ms.length) throw new Error('Microsoft 365 Copilot: risposta vuota.'); return String(ms[ms.length - 1].text || ''); });
+  };
+  var g = ui.aiGraph; return (g && g.exp > Date.now() + 60000) ? go(g.token) : aiGraphLogin().then(go);
+}
+/* estrae l'oggetto JSON dalla risposta (anche con testo, blocchi di codice o ragionamenti attorno) */
+function aiParse(text){
+  var t = String(text || '').replace(/<think>[\s\S]*?<\/think>/g, '').trim(), j = null, k, a, b, cand;
+  if(!t) throw new Error('La risposta è vuota.');
+  var fence = /```(?:json)?\s*([\s\S]*?)```/i.exec(t); if(fence) t = fence[1].trim();
+  function tryP(s){ try{ return JSON.parse(s); }catch(e){ return null; } }
+  j = tryP(t);
+  if(j === null){
+    a = t.indexOf('{'); b = t.lastIndexOf('}'); if(a >= 0 && b > a) j = tryP(t.slice(a, b + 1));
+    if(j === null){ a = t.indexOf('['); b = t.lastIndexOf(']'); if(a >= 0 && b > a) j = tryP(t.slice(a, b + 1)); }
+  }
+  if(j === null) throw new Error('Non trovo un JSON valido nella risposta. Controlla che sia stata copiata per intero.');
+  var arr = Array.isArray(j) ? j : (j.items || j.rows || j.attivita || j.righe || j.tasks), warn = !Array.isArray(j) && Array.isArray(j.warnings) ? j.warnings.map(String) : [];
+  if(!Array.isArray(arr)) throw new Error('Il JSON non contiene l\'elenco «items».');
+  if(arr.length > 500) throw new Error('La risposta contiene più di 500 righe: suddividi il testo.');
+  var rows = [];
+  arr.forEach(function(r){
+    if(!r || typeof r !== 'object') return;
+    function g(){ var i, v; for(i = 0; i < arguments.length; i++){ v = r[arguments[i]]; if(v !== undefined && v !== null && v !== '') return v; } return ''; }
+    var nm = String(g('name', 'nome', 'attivita', 'attività', 'title', 'titolo')).trim(); if(!nm) return;
+    rows.push({ name:nm, type:String(g('type', 'tipo')).toLowerCase(), level:g('level', 'livello'), start:g('start', 'inizio'), end:g('end', 'fine'), duration:g('duration', 'durata'), deadline:g('deadline', 'scadenza'),
+      assignee:g('assignee', 'assegnatario', 'responsabile'), hours:g('hoursPerDay', 'ore', 'hours'), crew:g('crew', 'persone'), progress:g('progress', 'avanzamento'), label:g('label', 'etichetta'), notes:g('notes', 'note'), preds:g('predecessors', 'predecessori', 'preds') });
+  });
+  if(!rows.length) throw new Error('Nessuna riga utilizzabile nella risposta.');
+  return { rows:rows, warnings:warn };
+}
+function aiIso(p, v){ v = String(v == null ? '' : v).trim(); if(!v) return ''; if(/^\d{4}-\d{2}-\d{2}/.test(v)){ if(virtOn(p)) return ''; return fmtReal(v.slice(0, 10)); } return v; }
+/* aggiunge le righe a p a partire dall'indice ins; base = livello della prima riga; restituisce i problemi rilevati */
+function aiApply(p, rows, ins, base){
+  var issues = [], made = [], prev = ins > 0 ? p.items[ins - 1].level : 0;
+  rows.forEach(function(r){
+    var rel = Math.max(1, Math.min(5, Math.round(+r.level || 1))), lv = Math.max(1, Math.min(5, base + rel - 1));
+    if(lv > prev + 1) lv = prev + 1; if(lv < 1) lv = 1; prev = lv;
+    made.push(mkItem(r.name, lv));
+  });
+  Array.prototype.splice.apply(p.items, [ins, 0].concat(made));
+  rows.forEach(function(r, k){
+    var it = made[k], n = k + 1;
+    function put(col, text, lab){ if(text === '' || text === undefined || text === null) return; try{ setField(p, it.uid, col, text); }catch(e){ issues.push({ row:n, col:lab, msg:'«' + String(text).slice(0, 40) + '»: ' + e.message }); } }
+    var tp = r.type || '';
+    if(/mile/.test(tp)) put('type', 'milestone', 'Tipo'); else if(/indic/.test(tp)) put('type', 'indication', 'Tipo'); else if(/attes|wait/.test(tp)) put('type', 'wait', 'Tipo');
+    var gp = isGroupAt(p, findIdx(p, it.uid)), msn = it.type === 'milestone';
+    if(!gp){ put('start', aiIso(p, r.start), 'Inizio'); if(!msn) put('end', aiIso(p, r.end), 'Fine'); }
+    put('deadline', aiIso(p, r.deadline), 'Scadenza');
+    var dur = (gp || msn) ? '' : String(r.duration === undefined ? '' : r.duration).trim();
+    if(dur && !(it.start && it.end)) put('dur', /^\d+([.,]\d+)?$/.test(dur) ? String(Math.max(1, Math.round(parseFloat(dur.replace(',', '.'))))) : dur, 'Durata');
+    if(!gp && it.type === 'task'){ put('hours', String(r.hours === undefined ? '' : r.hours).replace(',', '.'), 'Ore al giorno'); put('crew', String(r.crew === undefined ? '' : r.crew), 'Persone'); }
+    if(!gp && it.type !== 'indication') put('progress', r.progress === '' ? '' : String(Math.round(+r.progress)), '%');
+    put('assignee', r.assignee, 'Assegnatario'); put('label', r.label, 'Etichetta'); put('notes', String(r.notes || '').slice(0, 150), 'Note');
+    var pr = String(r.preds === undefined ? '' : r.preds).trim();
+    if(pr && it.type !== 'indication'){
+      pr = pr.split(/[;,]+/).map(function(tk){ tk = tk.trim(); var m = /^(\d+)(.*)$/.exec(tk); if(!m) return tk; var q = +m[1]; if(q < 1 || q > rows.length || q === n){ issues.push({ row:n, col:'Predecessori', msg:'la riga «' + m[1] + '» non è valida: collegamento ignorato' }); return ''; } return (ins + q) + m[2]; }).filter(Boolean).join(', ');
+      put('preds', pr, 'Predecessori');
+    }
+  });
+  return { issues:issues, uids:made.map(function(x){ return x.uid; }) };
+}
+/* prova a secco su una copia del progetto: il progetto aperto, la cronologia e l'interfaccia restano intatti */
+function aiDryRun(rows, ins, base){
+  var old = { P:P, u:hist.undo, r:hist.redo, render:render, toast:toast, dirty:ui.dirty, unsaved:ui.unsaved, sel:ui.sel, anchor:ui.anchor, cell:ui.cell, edit:ui.edit, acts:ACT.length }, out = { issues:[], items:[] };
+  P = JSON.parse(JSON.stringify(P)); hist.undo = []; hist.redo = []; render = function(){}; toast = function(){};
+  try{
+    var res = null;
+    commit('Anteprima assistente AI', function(p){ res = aiApply(p, rows, ins, base); });
+    out.issues = res ? res.issues : [{ row:'', col:'', msg:'Anteprima non riuscita.' }];
+    if(res) res.uids.forEach(function(u){ var i = findIdx(P, u); if(i >= 0){ var x = P.items[i]; out.items.push({ name:x.name, level:x.level, type:x.type, start:x.start, end:x.end, dur:x.duration, assignee:x.assignee, preds:predText(P, x), grp:isGroupAt(P, i) }); } });
+  }finally{
+    P = old.P; hist.undo = old.u; hist.redo = old.r; render = old.render; toast = old.toast; ui.dirty = old.dirty; ui.unsaved = old.unsaved; ui.sel = old.sel; ui.anchor = old.anchor; ui.cell = old.cell; ui.edit = old.edit; ACT.length = old.acts; calInvalidate();
+  }
+  return out;
+}
+function aiPlace(where){
+  var base = 1, ins = P.items.length;
+  if(where === 'after'){
+    var sel = ui.sel && ui.sel.length ? findIdx(P, ui.sel[ui.sel.length - 1]) : -1;
+    if(sel >= 0){ ins = isGroupAt(P, sel) ? blockEnd(P, sel) : sel + 1; base = P.items[sel].level; }
+  }
+  return { ins:ins, base:base };
+}
+var aiState = { text:'', where:'end', rows:null, warn:[], resp:'', busy:false, rec:null };
+function openAssistant(){
+  var d = $('#dlgAi'); if(!d) return;
+  aiState.rows = null; aiRender();
+  if(d.showModal) d.showModal(); else d.setAttribute('open', '');
+}
+function aiClose(){ var d = $('#dlgAi'); aiStopVoice(); if(d) d.close ? d.close() : d.removeAttribute('open'); }
+function aiStopVoice(){ if(aiState.rec){ try{ aiState.rec.stop(); }catch(e){} aiState.rec = null; } }
+function aiRender(){
+  var b = $('#aiBody'), f = $('#aiFoot'), a = aiCfg(); if(!b || !f) return;
+  b.textContent = ''; f.textContent = '';
+  if(!a.enabled){
+    b.appendChild(h('p',{ class:'abp' }, h('b',{ text:'Assistente AI: disattivato.' }), ' Trasforma testo libero (appunti, email, verbali, dettatura) in righe del cronoprogramma, che saranno mostrate in anteprima e aggiunte solo dopo la conferma, con un solo passo di annullamento.'));
+    b.appendChild(h('div',{ class:'xlp-warn', text:'Riservatezza: il testo inserito viene inviato al fornitore scelto (Anthropic, OpenAI, Google, Perplexity) con la tua chiave personale. Valico non ha server e non vede né conserva i dati. Con Copilot in modalità assistita non parte alcuna connessione da Valico: copi e incolli tu. Non inserire informazioni che le regole aziendali non consentono di condividere con servizi esterni.' }));
+    var ck = h('input',{ type:'checkbox', id:'aiAck' });
+    b.appendChild(h('label',{ class:'saopt' }, ck, h('span',{ text:'Ho compreso e voglio attivare l\'assistente.' })));
+    f.appendChild(h('button',{ class:'btn', type:'button', onclick:aiClose, text:'Chiudi' }));
+    var on = h('button',{ class:'btn primary', type:'button', disabled:true, text:'Attiva', onclick:function(){ a.enabled = true; savePrefs(); aiRender(); } });
+    ck.addEventListener('change', function(){ on.disabled = !ck.checked; }); f.appendChild(on); return;
+  }
+  if(aiState.rows){ aiRenderPreview(b, f); return; }
+  var pv = a.provider && AI_PROV[a.provider] ? a.provider : 'claude', def = AI_PROV[pv];
+  var sel = h('select',{ class:'inp', id:'aiProv', 'aria-label':'Fornitore' }); Object.keys(AI_PROV).forEach(function(k){ sel.appendChild(h('option',{ value:k, selected:k === pv, text:AI_PROV[k].name })); });
+  sel.addEventListener('change', function(){ aiKeepText(); a.provider = sel.value; savePrefs(); aiRender(); });
+  b.appendChild(h('label',{ class:'gtf' }, h('span',{ text:'Fornitore' }), sel));
+  if(def.key){
+    var mod = h('input',{ class:'inp', type:'text', id:'aiModel', value:a.models[pv] || '', placeholder:def.model, 'aria-label':'Modello' });
+    mod.addEventListener('change', function(){ a.models[pv] = mod.value.trim(); savePrefs(); });
+    b.appendChild(h('label',{ class:'gtf' }, h('span',{ text:'Modello (i nomi cambiano: verifica sul sito del fornitore)' }), mod));
+    var key = h('input',{ class:'inp', type:'password', id:'aiKey', value:aiKey(pv), autocomplete:'off', placeholder:'Chiave API personale', 'aria-label':'Chiave API' });
+    key.addEventListener('input', function(){ (ui.aiKeys = ui.aiKeys || {})[pv] = key.value.trim(); if(a.remember){ a.keys[pv] = key.value.trim(); savePrefs(); } });
+    b.appendChild(h('label',{ class:'gtf' }, h('span',{ text:'Chiave API' }), key));
+    var rem = h('input',{ type:'checkbox', id:'aiRem', checked:!!a.remember });
+    rem.addEventListener('change', function(){ a.remember = rem.checked; if(!rem.checked) a.keys = {}; else a.keys[pv] = aiKey(pv); savePrefs(); });
+    b.appendChild(h('label',{ class:'saopt' }, rem, h('span',{ text:'Ricorda la chiave su questo computer (salvata in chiaro nelle preferenze del browser; sconsigliato su computer condivisi)' })));
+    b.appendChild(h('div',{ class:'note' }, 'La chiave si crea sul sito del fornitore: ', h('a',{ href:def.link, target:'_blank', rel:'noopener', text:def.linkText }), '. Le richieste partono direttamente dal browser; se il fornitore le blocca (CORS) usa la modalità assistita.'));
+  } else if(def.graph){
+    var cid = h('input',{ class:'inp', type:'text', id:'aiCid', value:a.graphClientId || '', placeholder:'ID applicazione (client) della registrazione in Entra ID', 'aria-label':'ID applicazione' });
+    cid.addEventListener('change', function(){ a.graphClientId = cid.value.trim(); savePrefs(); });
+    var tn = h('input',{ class:'inp', type:'text', id:'aiTen', value:a.graphTenant || '', placeholder:'organizations (predefinito) oppure ID tenant', 'aria-label':'Tenant' });
+    tn.addEventListener('change', function(){ a.graphTenant = tn.value.trim(); savePrefs(); });
+    b.appendChild(h('label',{ class:'gtf' }, h('span',{ text:'ID applicazione' }), cid)); b.appendChild(h('label',{ class:'gtf' }, h('span',{ text:'Tenant' }), tn));
+    b.appendChild(h('div',{ class:'xlp-warn', text:'Modalità sperimentale, non verificata su un tenant reale. Richiede: registrazione applicazione in Entra ID (tipo «applicazione a pagina singola»), URI di reindirizzamento uguale all\'indirizzo da cui è aperto Valico (non funziona da file locale), consenso dell\'amministratore ai permessi Graph delegati richiesti dalla Chat API (' + AI_SCOPES.replace(/ /g, ', ') + ') e licenza Microsoft 365 Copilot. In caso contrario usa la modalità assistita.' }));
+  } else {
+    b.appendChild(h('div',{ class:'note' }, 'Modalità assistita: Valico prepara il testo da incollare in ', h('a',{ href:def.link, target:'_blank', rel:'noopener', text:def.linkText }), ' (accesso con l\'account aziendale) e analizza la risposta che incolli qui sotto. Nessuna connessione parte da Valico.'));
+  }
+  var ta = h('textarea',{ class:'inp aitxt', id:'aiTxt', rows:'8', maxlength:'30000', placeholder:'Incolla qui il testo (appunti, email, verbale) oppure dettalo con il microfono.', 'aria-label':'Testo da trasformare' }); ta.value = aiState.text;
+  ta.addEventListener('input', function(){ aiState.text = ta.value; });
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var mic = h('button',{ class:'btn', type:'button', id:'aiMic', disabled:!SR, 'data-tip':SR ? 'Dettatura vocale in italiano. Nel browser Chrome e in quelli basati su Chromium l\'audio è elaborato dal servizio di riconoscimento vocale del fornitore del browser.' : 'Dettatura non disponibile in questo browser', text:'Dettatura' });
+  mic.addEventListener('click', function(){
+    if(aiState.rec){ aiStopVoice(); mic.textContent = 'Dettatura'; return; }
+    var rc = new SR(); rc.lang = 'it-IT'; rc.continuous = true; rc.interimResults = false;
+    rc.onresult = function(ev){ var s = '', i; for(i = ev.resultIndex; i < ev.results.length; i++) if(ev.results[i].isFinal) s += ev.results[i][0].transcript + ' '; if(s){ ta.value = (ta.value ? ta.value.replace(/\s*$/, ' ') : '') + s; aiState.text = ta.value; } };
+    rc.onend = function(){ aiState.rec = null; mic.textContent = 'Dettatura'; }; rc.onerror = function(e){ toast('Dettatura interrotta: ' + (e && e.error || 'errore'), 3800); };
+    try{ rc.start(); aiState.rec = rc; mic.textContent = 'Ferma la dettatura'; }catch(e){ toast('Dettatura non avviabile.', 3000); }
+  });
+  b.appendChild(h('div',{ class:'sub2', text:'Testo' })); b.appendChild(ta);
+  var hasSel = ui.sel && ui.sel.length && findIdx(P, ui.sel[ui.sel.length - 1]) >= 0, wh = h('select',{ class:'inp', id:'aiWhere', 'aria-label':'Posizione' }, h('option',{ value:'end', text:'in fondo al progetto' }), h('option',{ value:'after', disabled:!hasSel, text:'dopo l\'item selezionato' }));
+  wh.value = aiState.where === 'after' && hasSel ? 'after' : 'end'; wh.addEventListener('change', function(){ aiState.where = wh.value; });
+  b.appendChild(h('div',{ style:'display:flex;gap:10px;align-items:flex-end;margin-top:8px;flex-wrap:wrap' }, h('label',{ class:'gtf', style:'flex:1;min-width:200px' }, h('span',{ text:'Aggiungi' }), wh), mic));
+  if(!def.graph){
+    var det = h('details',{ class:'aidet', open:!!def.assisted }, h('summary',{ text:def.assisted ? 'Copilot: copia il prompt e incolla la risposta' : 'Senza chiave: copia il prompt e incolla la risposta' }));
+    var cp = h('button',{ class:'btn', type:'button', id:'aiCopy', text:'Copia il prompt', onclick:function(){
+      var t = ($('#aiTxt').value || '').trim(); if(!t){ toast('Inserisci prima il testo da trasformare.', 3000); return; }
+      var full = aiSystemText() + '\n\n' + aiUserText(t);
+      var done = function(){ toast('Prompt copiato. Incollalo nell\'assistente e poi incolla qui la risposta.', 5000); };
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(done, function(){ aiShowPrompt(full); }); else aiShowPrompt(full);
+    } });
+    var ra = h('textarea',{ class:'inp aitxt', id:'aiResp', rows:'5', placeholder:'Incolla qui la risposta (JSON).', 'aria-label':'Risposta dell\'assistente' }); ra.value = aiState.resp; ra.addEventListener('input', function(){ aiState.resp = ra.value; });
+    det.appendChild(h('div',{ style:'margin:8px 0' }, cp)); det.appendChild(ra);
+    det.appendChild(h('div',{ style:'margin-top:8px' }, h('button',{ class:'btn', type:'button', id:'aiParse', text:'Analizza la risposta incollata', onclick:function(){ aiFromResponse(ra.value); } })));
+    b.appendChild(det);
+  }
+  f.appendChild(h('button',{ class:'btn', type:'button', onclick:function(){ a.enabled = false; savePrefs(); aiRender(); }, text:'Disattiva l\'assistente' }));
+  f.appendChild(h('button',{ class:'btn', type:'button', onclick:aiClose, text:'Chiudi' }));
+  if(!def.assisted) f.appendChild(h('button',{ class:'btn primary', type:'button', id:'aiGo', disabled:aiState.busy, text:aiState.busy ? 'Elaborazione…' : 'Genera le righe', onclick:aiGenerate }));
+}
+function aiKeepText(){ var t = $('#aiTxt'), r = $('#aiResp'); if(t) aiState.text = t.value; if(r) aiState.resp = r.value; }
+function aiShowPrompt(full){
+  var ta = h('textarea',{ class:'inp aitxt', rows:'8', readonly:true }); ta.value = full; var b = $('#aiBody'); if(b) b.appendChild(h('div',{ class:'note' }, 'Copia non riuscita: seleziona e copia il testo seguente.', ta)); ta.focus(); ta.select();
+}
+function aiGenerate(){
+  aiKeepText(); var a = aiCfg(), pv = a.provider || 'claude', def = AI_PROV[pv], txt = (aiState.text || '').trim();
+  if(!txt){ toast('Inserisci il testo da trasformare.', 3000); return; }
+  var user = aiUserText(txt), system = aiSystemText(), pr;
+  if(def.graph) pr = aiGraphChat(system + '\n\n' + user);
+  else { var key = aiKey(pv); if(!key){ toast('Inserisci la chiave API del fornitore.', 3500); return; } pr = aiCall(pv, key, aiModel(pv), system, user); }
+  aiState.busy = true; var g = $('#aiGo'); if(g){ g.disabled = true; g.textContent = 'Elaborazione…'; }
+  pr.then(function(out){ aiState.busy = false; aiFromResponse(out); }, function(e){ aiState.busy = false; aiRender(); toast(e && e.message ? e.message : 'Richiesta non riuscita.', 9000); });
+}
+function aiFromResponse(text){
+  var parsed; try{ parsed = aiParse(text); }catch(e){ toast(e.message, 7000); aiRender(); return; }
+  var pl = aiPlace(aiState.where), dr = aiDryRun(parsed.rows, pl.ins, pl.base);
+  aiState.rows = parsed.rows; aiState.warn = parsed.warnings; aiState.dry = dr; aiState.pl = pl; aiRender();
+}
+function aiRenderPreview(b, f){
+  var dr = aiState.dry, rows = aiState.rows;
+  b.appendChild(h('p',{ class:'abp' }, h('b',{ text:rows.length + (rows.length === 1 ? ' riga' : ' righe') }), ' da aggiungere ' + (aiState.pl.ins >= P.items.length ? 'in fondo al progetto' : 'dopo la riga ' + aiState.pl.ins) + '. Nulla è stato modificato finché non confermi.'));
+  if(aiState.warn.length) b.appendChild(h('div',{ class:'xlp-warn' }, h('b',{ text:'Note dell\'assistente: ' }), aiState.warn.join(' · ')));
+  if(!dr.issues.length) b.appendChild(h('div',{ class:'xlp-ok', text:'Nessun problema rilevato nei valori.' }));
+  else {
+    b.appendChild(h('div',{ class:'xlp-warn', text:dr.issues.length + (dr.issues.length === 1 ? ' valore da verificare' : ' valori da verificare') + ': i valori non validi restano vuoti.' }));
+    var ti = h('table',{ class:'tbl xlp-t' }, h('thead', null, h('tr', null, h('th',{ text:'Riga' }), h('th',{ text:'Campo' }), h('th',{ text:'Problema' })))), tbi = h('tbody');
+    dr.issues.slice(0, 100).forEach(function(q){ tbi.appendChild(h('tr', null, h('td',{ text:String(q.row) }), h('td',{ text:q.col }), h('td',{ text:q.msg }))); }); ti.appendChild(tbi); b.appendChild(h('div',{ class:'xlp-wrap' }, ti));
+  }
+  var t = h('table',{ class:'tbl xlp-t aiprev' }, h('thead', null, h('tr', null, ['#', 'Nome', 'Tipo', 'Inizio', 'Fine', 'Durata', 'Assegnatario', 'Predecessori'].map(function(x){ return h('th',{ text:x }); })))), tb = h('tbody');
+  dr.items.forEach(function(x, i){
+    tb.appendChild(h('tr', null, h('td',{ text:String(i + 1) }), h('td',{ style:'padding-left:' + (6 + (x.level - 1) * 14) + 'px' + (x.grp ? ';font-weight:600' : ''), text:x.name }), h('td',{ text:x.grp ? 'gruppo' : ({ task:'attività', milestone:'milestone', wait:'attesa', indication:'indicazione' }[x.type] || x.type) }),
+      h('td',{ text:x.start ? fmtISO(x.start) : '' }), h('td',{ text:x.end && x.type !== 'milestone' ? fmtISO(x.end) : '' }), h('td',{ text:x.dur && !x.grp ? String(x.dur) : '' }), h('td',{ text:x.assignee || '' }), h('td',{ text:x.preds || '' })));
+  });
+  t.appendChild(tb); b.appendChild(h('div',{ class:'xlp-wrap' }, t));
+  f.appendChild(h('button',{ class:'btn', type:'button', onclick:function(){ aiState.rows = null; aiRender(); }, text:'Indietro' }));
+  f.appendChild(h('button',{ class:'btn primary', type:'button', id:'aiOk', text:'Aggiungi ' + rows.length + (rows.length === 1 ? ' riga' : ' righe'), onclick:function(){
+    var pl = aiPlace(aiState.where), made = null, n = aiState.rows.length;
+    commit('Aggiungi righe da assistente AI', function(p){ var r = aiApply(p, aiState.rows, pl.ins, pl.base); made = r.uids; });
+    if(made){ ui.sel = made.slice(); ui.anchor = made[0]; actLog('edit', 'Assistente AI: aggiunte ' + n + ' righe'); aiState.rows = null; aiState.text = ''; aiState.resp = ''; aiClose(); render(); toast('Aggiunte ' + n + (n === 1 ? ' riga' : ' righe') + '. Annulla con Ctrl+Z.', 5200); }
+  } }));
+}
+
 function download(text,name){
   var blob = new Blob([text],{ type:'application/json' }), a = h('a',{ href:URL.createObjectURL(blob), download:name });
   document.body.appendChild(a); a.click(); a.remove();
@@ -8704,7 +9013,7 @@ function init(){
 }
 
 window.GanttApp = {
-  core:{ opSetRigid:opSetRigid, rigidSet:rigidSet, rigidLagNow:rigidLagNow, buildExample:buildExample, expScale:expScale, opToVirtual:opToVirtual, opToReal:opToReal, todayDN:todayDN, virtOn:virtOn, VBASE:VBASE, parseDateText:parseDateText, criticalSet:criticalSet, devVal:devVal, calInvalidate:calInvalidate, toDN:toDN, fromDN:fromDN, isWork:isWork, nextWork:nextWork, prevWork:prevWork, addWork:addWork, startFromEnd:startFromEnd, workBetween:workBetween, easterDN:easterDN, holidaysIT:holidaysIT, parseDateText:parseDateText, fmtISO:fmtISO, finalize:finalize, retimeAll:retimeAll, setField:setField, cellText:cellText, canEdit:canEdit, parsePreds:parsePreds, predText:predText, opInsert:opInsert, opDelete:opDelete, opDuplicate:opDuplicate, opLevel:opLevel, opMove:opMove, opDrop:opDrop, dropRange:dropRange, opLock:opLock, opBarRange:opBarRange, opBarMove:opBarMove, tlExtent:tlExtent, isoWeek:isoWeek, mondayOf:mondayOf, opMergeAssignees:opMergeAssignees, topsOf:topsOf, blockEnd:blockEnd, findIdx:findIdx, diff:diff, applyChanges:applyChanges, prepareSave:prepareSave, normalizeLoaded:normalizeLoaded, nextRev:nextRev, baseName:baseName, revFileName:revFileName, newProject:newProject, newItem:newItem, loadText:loadText, PALETTE:PALETTE, opLink:opLink, opSplit:opSplit, opUnlink:opUnlink, opCover:opCover, assigneeReport:assigneeReport, opSaveBaseline:opSaveBaseline, baselineReport:baselineReport, snapBaseline:snapBaseline, wouldCycle:wouldCycle, applyDeps:applyDeps },
+  core:{ aiParse:aiParse, opSetRigid:opSetRigid, rigidSet:rigidSet, rigidLagNow:rigidLagNow, buildExample:buildExample, expScale:expScale, opToVirtual:opToVirtual, opToReal:opToReal, todayDN:todayDN, virtOn:virtOn, VBASE:VBASE, parseDateText:parseDateText, criticalSet:criticalSet, devVal:devVal, calInvalidate:calInvalidate, toDN:toDN, fromDN:fromDN, isWork:isWork, nextWork:nextWork, prevWork:prevWork, addWork:addWork, startFromEnd:startFromEnd, workBetween:workBetween, easterDN:easterDN, holidaysIT:holidaysIT, parseDateText:parseDateText, fmtISO:fmtISO, finalize:finalize, retimeAll:retimeAll, setField:setField, cellText:cellText, canEdit:canEdit, parsePreds:parsePreds, predText:predText, opInsert:opInsert, opDelete:opDelete, opDuplicate:opDuplicate, opLevel:opLevel, opMove:opMove, opDrop:opDrop, dropRange:dropRange, opLock:opLock, opBarRange:opBarRange, opBarMove:opBarMove, tlExtent:tlExtent, isoWeek:isoWeek, mondayOf:mondayOf, opMergeAssignees:opMergeAssignees, topsOf:topsOf, blockEnd:blockEnd, findIdx:findIdx, diff:diff, applyChanges:applyChanges, prepareSave:prepareSave, normalizeLoaded:normalizeLoaded, nextRev:nextRev, baseName:baseName, revFileName:revFileName, newProject:newProject, newItem:newItem, loadText:loadText, PALETTE:PALETTE, opLink:opLink, opSplit:opSplit, opUnlink:opUnlink, opCover:opCover, assigneeReport:assigneeReport, opSaveBaseline:opSaveBaseline, baselineReport:baselineReport, snapBaseline:snapBaseline, wouldCycle:wouldCycle, applyDeps:applyDeps },
   get P(){ return P; }, hist:hist, ui:ui, commit:commit, undo:undo, redo:redo, addItem:addItem, deleteSelected:deleteSelected, render:render, MAX_UNDO:MAX_UNDO, renderItems:renderItems, renderTimeline:renderTimeline,
   act:{ expCanvas:expCanvas, expVecDoc:expVecDoc, expVecPlan:expVecPlan, expPrint:expPrint, expOpts:expOpts, expBuild:expBuild, expRun:expRun, tlFitAll:tlFitAll, loadExample:loadExample, openWelcome:openWelcome, closeWelcome:closeWelcome, pickColorFor:pickColorFor, openShortcuts:openShortcuts, openLog:openLog, setScale:setScale, setView:setView, tlGoToday:tlGoToday, openCalendar:openCalendar, openMarkers:openMarkers, openTlOpts:openTlOpts, openDatePicker:openDatePicker, pickDate:pickDate, saveFlow:saveFlow, layoutItemCmds:layoutItemCmds, layoutTlCmds:layoutTlCmds, deselectAll:deselectAll, tlEditLabel:tlEditLabel, startTitleEdit:startTitleEdit, insert:actInsert, del:actDelete, level:actLevel, move:actMove, dup:actDuplicate, lock:actLock, startEdit:startEdit, endEdit:endEdit, visRows:visRows }
 };
