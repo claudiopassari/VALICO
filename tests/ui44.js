@@ -9,7 +9,7 @@ await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localS
 await p.evaluate(()=>window.GanttApp.act.loadExample());await W(500);
 await p.locator('[data-act="export"]').click();await W(700);
 // ---- Output: il formato sta nel pannello Output
-const sec=await p.evaluate(()=>{const secs=[...document.querySelectorAll('#expBody .xsec')];const out=secs.find(s=>/^Output/i.test(s.querySelector('.xh').textContent));const all=[...document.querySelectorAll('#expBody .xseg')].map(x=>x.querySelector('[data-v="xlsx"]')?1:0);return {has:!!out,fmtIn:out?!!out.querySelector('.xseg [data-v="png"]'):false,old:secs.some(s=>/Risoluzione e uscita/.test(s.textContent.slice(0,40))),fmtBefore:(()=>{const x=document.querySelector('#expBody .xseg [data-v="xlsx"]');return !!x&&!x.closest('.xsec')})()}});
+const sec=await p.evaluate(()=>{const secs=[...document.querySelectorAll('#expBody .xsec')];const out=secs.find(s=>s.classList.contains('xs3'));const all=[...document.querySelectorAll('#expBody .xseg')].map(x=>x.querySelector('[data-v="xlsx"]')?1:0);return {has:!!out,fmtIn:out?!!out.querySelector('.xseg [data-v="png"]'):false,old:secs.some(s=>/Risoluzione e uscita/.test(s.textContent.slice(0,40))),fmtBefore:(()=>{const x=document.querySelector('#expBody .xseg [data-v="xlsx"]');return !!x&&!x.closest('.xsec')})()}});
 ok(sec.has,'sezione Output');ok(sec.fmtIn,'formato dentro Output');ok(!sec.old,'vecchio titolo assente');ok(!sec.fmtBefore,'formato non più fuori dalle sezioni');
 // ---- colonne: Nome bloccato
 await p.locator('#expRows,#expBody').first();

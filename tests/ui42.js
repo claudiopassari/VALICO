@@ -10,8 +10,8 @@ ok(!(await p.evaluate(()=>document.getElementById('dlgWelcome').open)),'browser 
 // avvio forzato
 await p.goto(url+'?welcome=1');await W(500);
 ok(await p.evaluate(()=>document.getElementById('dlgWelcome').open),'?welcome=1 apre la finestra');
-ok(await p.locator('#dlgWelcome .wl-card').count()===15,'quindici schede presentate');
-ok(await p.locator('#dlgWelcome svg.wl-ani').count()===15,'quindici animazioni SVG');
+ok(await p.locator('#dlgWelcome .wl-card').count()===16,'sedici schede presentate');
+ok(await p.locator('#dlgWelcome svg.wl-ani').count()===16,'quindici animazioni SVG');
 ok((await p.locator('#dlgWelcome').innerText()).includes('Claudio Passari'),'nota dello sviluppatore');
 ok((await p.locator('#dlgWelcome').textContent()).includes('Il valico è il punto'),'spiegazione del nome');
 ok(await p.locator('#dlgWelcome #wlLogo svg').count()===1,'logo presente');

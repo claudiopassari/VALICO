@@ -12,7 +12,7 @@ eq(await p.locator('#brandName').textContent(),'Valico','nome nell\'intestazione
 ok(await p.locator('#brandIcon svg rect').count()>=3&&await p.locator('#brandIcon svg polygon').count()===1,'icona: montagna e due barre');
 await p.locator('[data-act="help"]').click();await p.waitForTimeout(150);await p.locator('.pop [data-act="about"]').click();await W(100);
 ok(/valico/i.test(await p.locator('#dlgAbout').textContent())&&/ostacolo/.test(await p.locator('#dlgAbout').textContent()),'testo sul nome nelle Informazioni');
-ok(/0\.10\.0/.test(await p.locator('#abVer').textContent()),'versione 0.3.2');
+ok(/0\.11\.0/.test(await p.locator('#abVer').textContent()),'versione 0.3.2');
 await p.locator('#abClose').click();
 // ---- temi
 const ths=await A(()=>window.GanttApp.themes?window.GanttApp.themes.length:null);

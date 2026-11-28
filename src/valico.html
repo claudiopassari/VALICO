@@ -474,6 +474,18 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .placehint{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:90;background:var(--accent);color:var(--onacc);padding:8px 16px;border-radius:999px;font-size:calc(12.5px*var(--k));box-shadow:0 6px 20px rgba(0,0,0,.25);pointer-events:none}body.placing #pTimeline,body.placing #pTimeline *{cursor:crosshair!important}.xlay{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.xlayb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:10px;font:inherit;font-size:calc(11.5px*var(--k));cursor:pointer}.xlayb:hover{background:var(--hover)}.xlayb.on{border-color:var(--accent);background:var(--accent2);color:var(--accent);font-weight:650}.xlayb .xlayi{display:block;line-height:0}.xlaybox{margin:0 0 12px}.xchks{display:flex;flex-direction:column;gap:6px}.xchk{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:calc(13px*var(--k))}.xsep{color:var(--muted)}
 .xinfo{color:var(--muted);font-size:calc(11.5px*var(--k));margin:4px 0 0}.xprog{color:var(--accent);font-size:calc(12px*var(--k));min-height:1em;margin-top:6px}.xmsg{font-size:calc(12px*var(--k));margin-top:6px;min-height:1.2em}.xmsg.err{color:var(--danger)}
 .dlgexp[open]{display:flex;flex-direction:column;width:min(97vw,1900px);max-width:97vw;height:min(94vh,1200px);max-height:94vh}.dlgexp .dlg-b{flex:1;min-height:0;overflow:hidden;padding:8px 20px 12px}.expwrap{display:grid;grid-template-columns:minmax(400px,480px) minmax(0,1fr);gap:22px;align-items:stretch;height:100%}.expl{min-height:0;overflow:auto;padding-right:8px}.expr{min-width:0;min-height:0;display:flex;flex-direction:column}.xprev{flex:1;min-height:0;border:1px solid var(--line);border-radius:12px;background:repeating-conic-gradient(var(--panel2) 0% 25%,var(--panel) 0% 50%) 0 0/16px 16px;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:10px}.xprevimg{max-width:100%;height:auto;display:block;box-shadow:0 2px 14px rgba(0,0,0,.18);background:#fff}.xprevmsg{margin:auto;color:var(--muted);font-size:calc(12.5px*var(--k));text-align:center;padding:30px 12px}
+.xblk{margin:0 0 16px;padding:10px 12px 4px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.xbh{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-weight:700}
+.xbn{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--onacc);font-size:calc(11px*var(--k))}
+.xbt{font-size:calc(13px*var(--k))}.xbh small{font-weight:500;color:var(--muted)}
+.xblk>.xsec:first-of-type,.xblk>.xrow.xprof{border-top:0;margin-top:0}
+.xrh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}.xrh .xh{margin:0}
+.btn.xcopy{display:inline-flex;align-items:center;gap:7px;font-weight:650;background:var(--accent2);color:var(--accent);border-color:var(--accent)}
+.btn.xcopy svg{width:16px;height:16px}.btn.xcopy:hover:not(:disabled){background:var(--accent);color:var(--onacc)}.btn.xcopy:disabled{opacity:.5}
+@keyframes xlb{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.55)}}
+.xlayb.on .xlayi rect{transform-box:fill-box;transform-origin:left center;animation:xlb 2.8s ease-in-out infinite}
+.xlayb.on .xlayi rect:nth-child(2n){animation-delay:-.7s}.xlayb.on .xlayi rect:nth-child(3n){animation-delay:-1.4s}
+@media(prefers-reduced-motion:reduce){.xlayb.on .xlayi rect{animation:none}}
 .xh{font-size:calc(11px*var(--k));text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:2px 0 8px;font-weight:650}.xsec{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.xchips{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 6px}.xchip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:3px 11px;font:inherit;font-size:calc(11.5px*var(--k));cursor:pointer}.xprev.xck{background-image:conic-gradient(#d0d0d4 25%,#fff 0 50%,#d0d0d4 0 75%,#fff 0);background-size:16px 16px}
 .xchip.locked{cursor:default;opacity:.8}.xchipsbox{margin:0 0 4px}.xadvtg{display:block;border:0;background:transparent;color:var(--muted);font:inherit;font-size:calc(11.5px*var(--k));cursor:pointer;padding:2px 0;margin:2px 0 6px}.xadvtg:hover{color:var(--text)}.pop h3.sub{margin:10px 0 4px}.advtg{display:flex;width:100%;align-items:center;border:0;border-top:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:calc(10.5px*var(--k));text-transform:uppercase;letter-spacing:.07em;padding:10px 2px 4px;margin-top:8px;cursor:pointer}.advtg:hover{color:var(--text)}.advbox[hidden]{display:none}
 .xchip.on{background:var(--accent2);border-color:var(--accent);color:var(--accent);font-weight:650}.xcols2{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-bottom:8px}.xprof{gap:6px}.xprof .selbox{flex:1;min-width:0}.btn.sm{height:calc(var(--ctl-h)*.85);padding:0 10px;font-size:calc(12px*var(--k))}.xrowin{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.xsave{margin-top:-4px}
@@ -628,6 +640,8 @@ dialog::backdrop{background:rgba(0,0,0,.38)}
 .tledit{position:absolute;z-index:9;top:2px;height:calc(100% - 5px);border:1px solid var(--accent);border-radius:7px;padding:0 8px;background:var(--panel);outline:none;box-shadow:0 0 0 3px var(--accent2);font-weight:600}
 .abv h4{margin:14px 0 6px;font-size:calc(11px*var(--k));text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 .abv ul{margin:0;padding-left:18px}.abv li{margin:3px 0}
+#dlgXlPrev{width:min(760px,94vw)}#dlgXlPrev .dlg-b{max-height:68vh;overflow:auto}
+.xlp-ok{color:var(--accent);font-weight:650;margin:6px 0}.xlp-warn{color:#c2410c;font-weight:650;margin:6px 0 8px}.xlp-wrap{max-height:36vh;overflow:auto;border:1px solid var(--line);border-radius:8px}.xlp-t{width:100%}.xlp-t td,.xlp-t th{padding:4px 8px;text-align:left;vertical-align:top}
 #dlgWelcome{width:min(1180px,96vw)}
 #dlgWelcome .dlg-b{max-height:82vh;overflow:auto;padding:14px 22px 6px}
 .wl-lead{margin:2px auto 14px;max-width:62ch;text-align:center;line-height:1.5;color:var(--muted)}
@@ -885,6 +899,12 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
   </div>
 </dialog>
 
+<dialog id="dlgXlPrev" aria-labelledby="xlpTitle">
+  <div class="dlg-h" id="xlpTitle">Importa da Excel</div>
+  <div class="dlg-b" id="xlpBody"></div>
+  <div class="dlg-f"><button type="button" class="btn" id="xlpNo">Annulla</button><button type="button" class="btn primary" id="xlpGo">Importa come nuovo progetto</button></div>
+</dialog>
+
 <dialog id="dlgSaveAs" aria-labelledby="saTitle">
   <div class="dlg-h" id="saTitle">Salva con nome</div>
   <div class="dlg-b">
@@ -952,8 +972,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.10.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.11.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.11.0: pannello di esportazione in tre blocchi (Cosa esportare, Area e contenuto, Formato e uscita) con la copia rapida dell\'immagine in evidenza accanto all\'anteprima; esportazione in Excel completa (tutti i campi modificabili: tipo, scadenza, ore al giorno, persone, etichetta, con calendario a barre semplificate, fogli Guida ed Elenchi con tendine); modello Excel scaricabile dal menu di salvataggio; importazione da Excel con anteprima degli errori riga per riga e nessuna modifica al progetto aperto fino alla conferma.",
     "0.10.0: pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare; campo Vai a data nella barra della timeline (la timeline si estende fino a date lontane); colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt+frecce) e gruppo Carico di lavoro con valori rapidi per ore e persone; trascinamento ad area sulle righe del pannello Item (Alt), selezione dell\'intervallo date trascinando nel calendario, tasti 1-4 per scegliere il tipo mentre si disegna, suggerimento sui nomi troncati; gli item dentro un gruppo nascosto sono attenuati; esportazione dal lunedì alla domenica con margini; benvenuto in due righe di schede.",
     "0.9.9: corretto un errore dello zoom con la maniglia della timeline (visto in WebKit, il motore di Safari) che poteva saltare il ridisegno al rilascio del mouse.",
     "0.9.8: corretto l'export in PDF vettoriale, che apriva due volte la finestra di stampa e quindi due richieste di salvataggio con nomi diversi.",
@@ -6677,6 +6698,7 @@ function openExport(){
   function chk(key, lab){ var i = h('input',{ type:'checkbox' }); i.checked = !!o[key]; i.addEventListener('change', function(){ o[key] = i.checked; refresh(); }); return h('label',{ class:'xchk' }, i, h('span',{ text:lab })); }
   function head(t){ return h('div',{ class:'xh', text:t }); }
   function sec(t){ var s = h('div',{ class:'xsec' }); s.appendChild(head(t)); return s; }
+  function blk(n, t, sub){ var b = h('div',{ class:'xblk' }); b.appendChild(h('div',{ class:'xbh' }, h('span',{ class:'xbn', text:String(n) }), h('span',{ class:'xbt', text:t }), sub ? h('small',{ text:sub }) : null)); return b; }
   function build(){
     body.textContent = ''; S = {};
     var wrap = h('div',{ class:'expwrap' }), L = h('div',{ class:'expl' }), R = h('div',{ class:'expr' });
@@ -6703,7 +6725,9 @@ function openExport(){
     } }));
     var psave = h('button',{ type:'button', class:'btn sm', id:'expProfSave', text:'Salva vista…', onclick:function(){ saveRow.style.display = saveRow.style.display === 'none' ? '' : 'none'; if(saveRow.style.display === '') nameIn.focus(); } });
     var isSaved = pl.some(function(x){ return x.id === curProf && !x.builtin; }); if(!isSaved) pdel.style.display = 'none';
-    L.appendChild(h('div',{ class:'xrow xprof' }, profSel, psave, pdel)); L.appendChild(saveRow);
+    S.b1 = blk(1, 'Cosa esportare', 'vista e layout'); S.b2 = blk(2, 'Area e contenuto', 'quali date e quali elementi'); S.b3 = blk(3, 'Formato e uscita', 'tipo di file e qualità');
+    L.appendChild(S.b1); L.appendChild(S.b2); L.appendChild(S.b3);
+    S.b1.appendChild(h('div',{ class:'xrow xprof' }, profSel, psave, pdel)); S.b1.appendChild(saveRow);
     /* layout */
     var tilesBox = h('div',{ class:'xlay' }), ldesc = h('div',{ class:'xinfo' });
     LAYOUTS.forEach(function(Ly){
@@ -6711,13 +6735,13 @@ function openExport(){
       var ic = h('span',{ class:'xlayi' }); ic.innerHTML = '<svg viewBox="0 0 64 30" width="64" height="30" fill="currentColor" aria-hidden="true">' + Ly[3] + '</svg>';
       b.appendChild(ic); b.appendChild(h('span',{ text:Ly[1] })); tilesBox.appendChild(b);
     });
-    S.rLay = h('div',{ class:'xlaybox' }, tilesBox, ldesc); S.ldesc = ldesc; S.tiles = tilesBox; L.appendChild(S.rLay);
+    S.rLay = h('div',{ class:'xlaybox' }, tilesBox, ldesc); S.ldesc = ldesc; S.tiles = tilesBox; S.b1.appendChild(S.rLay);
     /* intestazione */
     var ttIn = h('input',{ type:'text', class:'numin', id:'expTitle', style:'flex:1;min-width:0', placeholder:P.project.title || 'Titolo', 'aria-label':'Testo del titolo', maxlength:'120' });
     ttIn.value = o.titleText || ''; ttIn.addEventListener('input', function(){ o.titleText = ttIn.value; schedPrev(); }); ttIn.addEventListener('change', function(){ o.titleText = ttIn.value; refresh(); });
     S.sHdr = sec('Intestazione');
     S.sHdr.appendChild(h('div',{ class:'xchks xcols2' }, chk('title', 'Intestazione con titolo'), chk('hdrRev', 'Revisione'), chk('hdrDate', 'Data di esportazione')));
-    S.rTT = row('Titolo', ttIn); S.sHdr.appendChild(S.rTT); L.appendChild(S.sHdr);
+    S.rTT = row('Titolo', ttIn); S.sHdr.appendChild(S.rTT); S.sHdr.classList.add('xs2');
     /* elenco */
     S.sItems = sec('Elenco degli item');
     S.chItems = chk('items', 'Includi l\'elenco'); S.sItems.appendChild(S.chItems);
@@ -6753,14 +6777,14 @@ function openExport(){
     });
     S.sItems.appendChild(S.rCols); S.sItems.appendChild(chips); S.chips = chips; drawChips();
     S.sItems.appendChild(h('div',{ class:'xinfo', text:'Tutte le colonne sono selezionabili, anche quelle nascoste a schermo. «Come a schermo» riproduce quelle visibili.' }));
-    L.appendChild(S.sItems);
+    S.sItems.classList.add('xs2');
     /* timeline */
     var from = h('input',{ type:'text', class:'numin', id:'expFrom', placeholder:'da', 'aria-label':'Data iniziale' }), to = h('input',{ type:'text', class:'numin', id:'expTo', placeholder:'a', 'aria-label':'Data finale' });
     from.value = o.from || ''; to.value = o.to || '';
     function dchg(){ o.from = from.value; o.to = to.value; schedPrev(); }
     from.addEventListener('input', dchg); to.addEventListener('input', dchg); from.addEventListener('change', function(){ dchg(); refresh(); }); to.addEventListener('change', function(){ dchg(); refresh(); });
     S.dr = h('div',{ class:'xrow xdates' }, h('span',{ class:'xl', text:'Intervallo' }), dateBox(from), h('span',{ class:'xsep', text:'–' }), dateBox(to));
-    S.sTl = sec('Timeline');
+    S.sArea = sec('Area temporale'); S.sTl = sec('Contenuto della timeline');
     S.rArea = row('Area', seg('area', [['all', 'Tutta'], ['active', 'Inizio–fine lavori'], ['period', 'Periodo'], ['custom', 'Intervallo']]));
     var pSel = h('select',{ id:'expPer', class:'selbox', 'aria-label':'Periodo da esportare', style:'flex:1;min-width:0' });
     (P.periods || []).forEach(function(q){ pSel.appendChild(h('option',{ value:q.uid, text:(q.name || 'Periodo senza nome') + (q.start ? ' (' + fmtISOshort(q.start) + (q.end ? ' – ' + fmtISOshort(q.end) : '') + ')' : '') })); });
@@ -6769,20 +6793,21 @@ function openExport(){
     pSel.value = o.period;
     pSel.addEventListener('change', function(){ o.period = pSel.value; refresh(); });
     S.rPer = row('Periodo', pSel);
-    S.sTl.appendChild(S.rArea); S.sTl.appendChild(S.rPer); S.sTl.appendChild(S.dr);
-    S.sTl.appendChild(h('div',{ class:'xinfo', text:'L\'esportazione parte sempre dal lunedì e termina alla domenica della settimana.' }));
+    S.sArea.appendChild(S.rArea); S.sArea.appendChild(S.rPer); S.sArea.appendChild(S.dr);
+    S.sArea.appendChild(h('div',{ class:'xinfo', text:'L\'esportazione parte sempre dal lunedì e termina alla domenica della settimana.' }));
     S.lay = h('div',{ class:'xchks xcols2' }, chk('lCal', 'Calendario (festivi, non lavorativi)'), chk('lMk', 'Marker'), chk('lPer', 'Periodi'), chk('lDep', 'Collegamenti'));
     S.chToday = chk('today', 'Giorno di oggi (linea ed evidenziazione)'); S.lay.appendChild(S.chToday);
-    S.sTl.appendChild(S.lay); L.appendChild(S.sTl);
+    S.sTl.appendChild(S.lay);
     S.rSize = row('Dimensione', seg('size', [['slide', 'Slide 16:9'], ['a4', 'A4 orizz.'], ['a3', 'A3 orizz.'], ['auto', 'In base al contenuto']]));
     S.rLev = row('Livelli', seg('levels', [['all', 'Tutti'], ['1', '1'], ['2', '1–2'], ['3', '1–3'], ['4', '1–4']]));
-    S.sLay = sec('Impaginazione'); S.sLay.appendChild(S.rSize); S.sLay.appendChild(S.rLev); L.appendChild(S.sLay);
+    S.sLay = sec('Impaginazione'); S.sLay.appendChild(S.rSize); S.sLay.appendChild(S.rLev);
+    [S.sArea, S.sHdr, S.sItems, S.sTl, S.sLay].forEach(function(x){ S.b2.appendChild(x); });
     S.rTheme = row('Colori', seg('theme', [['screen', 'Come a schermo'], ['light', 'Chiari (stampa)']]));
     /* risoluzione */
     var pxIn = h('input',{ type:'number', class:'numin', id:'expPx', min:'400', max:'15000', step:'100', style:'width:92px', 'aria-label':'Larghezza in pixel' }); pxIn.value = o.px;
     pxIn.addEventListener('change', function(){ var v = Math.max(400, Math.min(15000, Math.round(+pxIn.value) || 3000)); o.px = v; pxIn.value = v; S.pxSeg.querySelectorAll('.xsegb').forEach(function(x){ x.classList.toggle('on', +x.getAttribute('data-v') === v); }); refresh(); });
     S.pxSeg = seg('px', [[1600, '1600'], [3000, '3000'], [4500, '4500'], [6000, '6000']], function(){ pxIn.value = o.px; });
-    S.sRes = sec('Output'); S.sRes.appendChild(row('Formato', seg('fmt', [['png', 'PNG'], ['jpg', 'JPEG'], ['svg', 'SVG'], ['pdfv', 'PDF vettoriale'], ['pdf', 'PDF immagine'], ['xlsx', 'Excel']])));
+    S.sRes = h('div',{ class:'xsec xs3' }); S.sRes.appendChild(row('Formato', seg('fmt', [['png', 'PNG'], ['jpg', 'JPEG'], ['svg', 'SVG'], ['pdfv', 'PDF vettoriale'], ['pdf', 'PDF immagine'], ['xlsx', 'Excel']])));
     S.chTransp = chk('transp', 'Sfondo trasparente (senza colore di fondo, righe alternate e griglia)'); S.sRes.appendChild(S.chTransp);
     S.trNote = h('div',{ class:'xinfo', text:'Con lo sfondo trasparente scegli i colori in base al documento di destinazione: «Chiari» per fondi chiari, «Come a schermo» per fondi scuri. Il JPEG non supporta la trasparenza.' }); S.sRes.appendChild(S.trNote);
     S.sRes.appendChild(S.rTheme);
@@ -6794,27 +6819,28 @@ function openExport(){
     S.dpiRow = row('Risoluzione', seg('dpi', [[96, '96 dpi'], [150, '150 dpi'], [200, '200 dpi'], [300, '300 dpi'], [450, '450 dpi']])); S.pdfBox.appendChild(S.dpiRow);
     S.vecNote = h('div',{ class:'xinfo', id:'expVecNote', text:'Il PDF vettoriale usa la stampa del browser: nella finestra che si apre scegli come destinazione «Salva come PDF» (le intestazioni e i piè di pagina del browser non compaiono). Testo selezionabile, font reali, nessuna perdita di nitidezza. Il «PDF immagine» è più rapido ma non è scalabile.' }); S.pdfBox.appendChild(S.vecNote);
     S.sRes.appendChild(S.imgBox); S.sRes.appendChild(S.pdfBox);
-    S.xlNote = h('div',{ class:'xinfo', text:'Il file Excel contiene l\'elenco degli item (livello, nome, tipo, date, durata, avanzamento, assegnatario, predecessori, note), non il diagramma. Si può reimportare da «Altre opzioni di salvataggio» → Importa da Excel.' });
-    S.sRes.appendChild(S.xlNote); L.appendChild(S.sRes);
+    S.xlNote = h('div',{ class:'xinfo', text:'Il file Excel contiene la tabella di tutti i campi modificabili (non quelli calcolati), un calendario con barre semplificate come ausilio visivo e i fogli Guida ed Elenchi con le tendine. Solo i dati della tabella contano alla reimportazione (Importa da Excel crea un nuovo progetto, con anteprima degli errori).' });
+    S.sRes.appendChild(S.xlNote); S.b3.appendChild(S.sRes);
     /* anteprima */
     S.prevBox = h('div',{ class:'xprev', id:'expPrev', 'aria-label':'Anteprima' }); S.prevMsg = h('div',{ class:'xprevmsg', text:'' });
     S.info = h('div',{ class:'xinfo', role:'status', id:'expInfo' });
-    R.appendChild(h('div',{ class:'xh', text:'Anteprima' })); R.appendChild(S.prevBox); R.appendChild(S.info); R.appendChild(pr); R.appendChild(msg);
+    cpy.classList.add('xcopy'); cpy.textContent = ''; cpy.appendChild(icon('copy')); cpy.appendChild(h('span',{ text:'Copia come immagine' }));
+    R.appendChild(h('div',{ class:'xrh' }, h('div',{ class:'xh', text:'Anteprima' }), cpy)); R.appendChild(S.prevBox); R.appendChild(S.info); R.appendChild(pr); R.appendChild(msg);
     wrap.appendChild(L); wrap.appendChild(R); body.appendChild(wrap);
   }
   function refresh(){
     var xl = o.fmt === 'xlsx', nat = isNativeLay(o), rep = o.layout === 'report', pph = o.layout === 'perphase';
     function sh(el, v){ if(el) el.style.display = v ? '' : 'none'; }
     var pdfAny = o.fmt === 'pdf' || o.fmt === 'pdfv'; S.pdfBox.style.display = pdfAny ? '' : 'none'; S.imgBox.style.display = (pdfAny || xl) ? 'none' : ''; if(S.dpiRow) S.dpiRow.style.display = o.fmt === 'pdf' ? '' : 'none'; if(S.vecNote) S.vecNote.style.display = o.fmt === 'pdfv' ? '' : 'none';
-    sh(S.sHdr, !xl); sh(S.rTT, o.title); sh(S.sItems, !xl && !nat); S.rCols.style.display = o.items ? '' : 'none'; S.chips.style.display = o.items && Array.isArray(o.cols) ? '' : 'none';
-    sh(S.sTl, !xl && !rep); sh(S.rArea, true); sh(S.rPer, o.area === 'period'); sh(S.dr, o.area === 'custom' || (nat && o.area === 'all')); sh(S.chToday, nat && !rep ? true : !nat);
+    sh(S.b2, !xl); sh(S.sHdr, !xl); sh(S.rTT, o.title); sh(S.sItems, !xl && !nat); S.rCols.style.display = o.items ? '' : 'none'; S.chips.style.display = o.items && Array.isArray(o.cols) ? '' : 'none';
+    sh(S.sTl, !xl && !rep); sh(S.sArea, !xl && !rep); sh(S.rArea, true); sh(S.rPer, o.area === 'period'); sh(S.dr, o.area === 'custom' || (nat && o.area === 'all')); sh(S.chToday, nat && !rep ? true : !nat);
     S.lay.querySelectorAll('.xchk').forEach(function(x, i){ if(i < 4) x.style.display = nat ? 'none' : ''; });
     var tOk = o.fmt === 'png' || o.fmt === 'svg'; sh(S.chTransp, tOk); sh(S.trNote, tOk && o.transp);
     sh(S.sLay, nat && !xl); sh(S.rTheme, !xl); sh(S.xlNote, xl); sh(S.rLay, !xl);
     S.ldesc.textContent = LAYOUTS.filter(function(Ly){ return Ly[0] === o.layout; })[0][2] + (nat ? ' L\'elenco degli item e i collegamenti non fanno parte di questo layout.' : '') + (pph && o.fmt !== 'pdf' && o.fmt !== 'pdfv' ? ' Le pagine separate richiedono il formato PDF: con gli altri formati si esporta l\'immagine intera.' : '');
     S.tiles.querySelectorAll('.xlayb').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-v') === o.layout); });
     var sv = {}, k; for(k in EXPD) sv[k] = clone(o[k]); prefs.exp = sv; savePrefs();
-    cpy.disabled = o.fmt === 'pdf' || o.fmt === 'pdfv' || xl || o.fmt === 'svg'; cpy.classList.toggle('is-disabled', cpy.disabled);
+    cpy.disabled = o.fmt === 'pdf' || o.fmt === 'pdfv' || xl || o.fmt === 'svg'; cpy.classList.toggle('is-disabled', cpy.disabled); cpy.setAttribute('data-tip', cpy.disabled ? 'La copia diretta è disponibile per PNG e JPEG' : 'Copia l\'immagine negli appunti, pronta da incollare in un\'email o in una presentazione');
     schedPrev();
   }
   function schedPrev(){ clearTimeout(prevTimer); prevTimer = setTimeout(drawPrev, 350); S.info.textContent = o.fmt === 'xlsx' ? '' : 'Aggiornamento anteprima…'; }
@@ -6846,7 +6872,7 @@ function openExport(){
     go.disabled = false; cpy.disabled = o.fmt === 'pdf' || o.fmt === 'pdfv' || o.fmt === 'xlsx' || o.fmt === 'svg';
   }
   go.onclick = function(){ run('file'); }; cpy.onclick = function(){ run('copy'); };
-  var f = $('#expFoot'); f.textContent = ''; f.appendChild(cl); f.appendChild(cpy); f.appendChild(go);
+  var f = $('#expFoot'); f.textContent = ''; f.appendChild(cl); f.appendChild(go);
   build(); refresh();
   d.onclose = function(){ clearTimeout(prevTimer); prevTok++; };
   if(d.showModal) d.showModal(); else d.setAttribute('open', '');
@@ -6880,50 +6906,142 @@ function zipStore(files){
 }
 function xe(t){ return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, ''); }
 function xlCol(n){ var s = ''; n++; while(n > 0){ var m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; }
-var XL_HEAD = ['N.', 'Livello', 'Nome', 'Tipo', 'Inizio', 'Fine', 'Durata (gg lav.)', '%', 'Assegnatario', 'Predecessori', 'Note'];
-function buildXlsx(p){
-  var virt = p.calendar && p.calendar.type === 'virtual', rows = '', i, j, it, c, grp, lv, XF_NAME = 4, XF_GRP = 14, XF_D = 2, XF_DG = 3;
+var XL_TYPES = ['Attività', 'Milestone', 'Indicazione', 'Attesa', 'Gruppo'];
+var XL_HEAD = ['N.', 'Livello', 'Tipo', 'Nome', 'Inizio', 'Fine', 'Scadenza', 'Durata (gg lav.)', 'Ore al giorno', 'Persone', '%', 'Assegnatario', 'Predecessori', 'Etichetta', 'Note'];
+var XL_W = [6, 8, 13, 44, 12, 12, 12, 11, 10, 9, 6, 20, 15, 20, 32];
+var XL_CAL0 = 16;   /* indice (da 0) della prima colonna del calendario: P è un distanziatore */
+/* cartella di lavoro Excel: foglio «Cronoprogramma» (tabella dei campi non calcolati + calendario con barre semplificate),
+   «Guida» ed «Elenchi». tpl = modello vuoto. Le barre del calendario sono formattazione condizionale: Valico non le rilegge. */
+function buildXlsx(p, tpl){
+  var virt = p.calendar && p.calendar.type === 'virtual', n = p.items.length, i, j, it, grp, lv;
+  var XF_NAME = 4, XF_GRP = 14, XF_D = 2, XF_DG = 3, XF_DAY = 15, XF_TTL = 16, XF_MON = 17, XF_WRAP = 18, XF_GH = 19;
   function cs(r, col, v, s){ return '<c r="' + xlCol(col) + r + '" t="inlineStr"' + (s ? ' s="' + s + '"' : '') + '><is><t xml:space="preserve">' + xe(v) + '</t></is></c>'; }
   function cn(r, col, v, s){ return '<c r="' + xlCol(col) + r + '"' + (s ? ' s="' + s + '"' : '') + '><v>' + v + '</v></c>'; }
-  rows += '<row r="1" ht="22" customHeight="1">' + XL_HEAD.map(function(t, k){ return cs(1, k, t, 1); }).join('') + '</row>';
-  for(i = 0; i < p.items.length; i++){
-    it = p.items[i]; grp = isGroupAt(p, i); lv = Math.max(0, Math.min(4, it.level - 1)); j = i + 2;
+  function ce(r, col, s){ return '<c r="' + xlCol(col) + r + '"' + (s ? ' s="' + s + '"' : '') + '/>'; }
+  var nrows = tpl ? 100 : n, last = Math.max(nrows, 1) + 2, lastV = tpl ? 300 : n + 200;   /* le tendine e le barre valgono anche per le righe aggiunte in coda */
+  /* intervallo del calendario */
+  var c0 = null, c1 = null, ncal = 0;
+  if(!virt){
+    p.items.forEach(function(x){ var a = x.start ? toDN(x.start) : null, b = x.end ? toDN(x.end) : a; if(a === null) return; if(c0 === null || a < c0) c0 = a; if(c1 === null || b > c1) c1 = b; });
+    if(c0 === null || tpl){ var t0 = todayDN(p); if(t0 === null) t0 = toDN('2026-01-05'); c0 = mondayOf(t0); c1 = c0 + 7 * 26 - 1; }
+    else { c0 = mondayOf(c0); c1 = mondayOf(c1) + 6; }
+    if(c1 - c0 + 1 > 730) c1 = c0 + 729;
+    ncal = c1 - c0 + 1;
+  }
+  var cL = XL_CAL0 + ncal - 1, lastCol = xlCol(Math.max(14, ncal ? cL : 14));
+  var rows = '';
+  /* riga 1: titolo e mesi */
+  var r1 = cs(1, 0, tpl ? 'Modello di cronoprogramma Valico' : (p.project && p.project.title ? p.project.title : 'Cronoprogramma'), XF_TTL), k, mn = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+  for(k = 0; k < ncal; k++){ var dd = new Date((c0 + k) * 864e5); if(k === 0 || dd.getUTCDate() === 1) r1 += cs(1, XL_CAL0 + k, mn[dd.getUTCMonth()] + ' ' + dd.getUTCFullYear(), XF_MON); }
+  rows += '<row r="1" ht="24" customHeight="1">' + r1 + '</row>';
+  /* riga 2: intestazioni e giorni */
+  var r2 = XL_HEAD.map(function(t, q){ return cs(2, q, t, 1); }).join('');
+  for(k = 0; k < ncal; k++) r2 += cn(2, XL_CAL0 + k, c0 + k + 25569, XF_DAY);
+  rows += '<row r="2" ht="22" customHeight="1">' + r2 + '</row>';
+  for(i = 0; i < nrows; i++){
+    j = i + 3; it = p.items[i];
+    if(!it){ rows += '<row r="' + j + '">' + cn(j, 0, i + 1, 0) + '</row>'; continue; }
+    grp = isGroupAt(p, i); lv = Math.max(0, Math.min(4, it.level - 1));
     var base = grp ? XF_GRP : 0, tp = grp ? 'Gruppo' : it.type === 'milestone' ? 'Milestone' : it.type === 'indication' ? 'Indicazione' : it.type === 'wait' ? 'Attesa' : 'Attività';
-    c = cn(j, 0, i + 1, base) + cn(j, 1, it.level, base) + cs(j, 2, it.name || '', XF_NAME + lv * 2 + (grp ? 1 : 0)) + cs(j, 3, tp, base);
-    [['start', 4], ['end', 5]].forEach(function(q){
+    var c = cn(j, 0, i + 1, base) + cn(j, 1, it.level, base) + cs(j, 2, tp, base) + cs(j, 3, it.name || '', XF_NAME + lv * 2 + (grp ? 1 : 0));
+    [['start', 4], ['end', 5], ['deadline', 6]].forEach(function(q){
       var v = it[q[0]];
-      if(!v) c += '<c r="' + xlCol(q[1]) + j + '"' + (grp ? ' s="' + XF_GRP + '"' : '') + '/>';
+      if(!v) c += ce(j, q[1], grp ? XF_GRP : 0);
       else if(virt) c += cs(j, q[1], fmtISO(v), base);
       else c += cn(j, q[1], toDN(v) + 25569, grp ? XF_DG : XF_D);
     });
-    c += it.duration ? cn(j, 6, it.duration, base) : '<c r="G' + j + '"' + (grp ? ' s="' + XF_GRP + '"' : '') + '/>';
-    c += cn(j, 7, Math.round(it.progress || 0), base);
-    c += cs(j, 8, it.assignee || '', base) + cs(j, 9, it.type === 'indication' ? '' : predText(p, it), base) + cs(j, 10, it.notes || '', base);
+    c += it.duration && !grp ? cn(j, 7, it.duration, base) : ce(j, 7, grp ? XF_GRP : 0);
+    c += it.type === 'task' && !grp && it.hoursPerDay != null ? cn(j, 8, it.hoursPerDay, base) : ce(j, 8, grp ? XF_GRP : 0);
+    c += it.type === 'task' && !grp && it.crew != null ? cn(j, 9, it.crew, base) : ce(j, 9, grp ? XF_GRP : 0);
+    c += cn(j, 10, Math.round(it.progress || 0), base);
+    c += cs(j, 11, it.assignee || '', base) + cs(j, 12, it.type === 'indication' ? '' : predText(p, it), base) + cs(j, 13, it.barLabel || '', base) + cs(j, 14, it.notes || '', base);
     rows += '<row r="' + j + '">' + c + '</row>';
   }
-  var sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/>'
-    + '<cols><col min="1" max="1" width="6" customWidth="1"/><col min="2" max="2" width="8" customWidth="1"/><col min="3" max="3" width="42" customWidth="1"/><col min="4" max="4" width="13" customWidth="1"/><col min="5" max="6" width="13" customWidth="1"/><col min="7" max="7" width="16" customWidth="1"/><col min="8" max="8" width="7" customWidth="1"/><col min="9" max="9" width="18" customWidth="1"/><col min="10" max="10" width="18" customWidth="1"/><col min="11" max="11" width="40" customWidth="1"/></cols>'
-    + '<sheetData>' + rows + '</sheetData><autoFilter ref="A1:K' + (p.items.length + 1) + '"/></worksheet>';
+  var cols = '<cols>' + XL_W.map(function(w, q){ return '<col min="' + (q + 1) + '" max="' + (q + 1) + '" width="' + w + '" customWidth="1"/>'; }).join('') + '<col min="16" max="16" width="2" customWidth="1"/>' + (ncal ? '<col min="' + (XL_CAL0 + 1) + '" max="' + (XL_CAL0 + ncal) + '" width="2.7" customWidth="1"/>' : '') + '</cols>';
+  /* barre semplificate: formattazione condizionale sul calendario */
+  var cf = '';
+  if(ncal){
+    var rng = xlCol(XL_CAL0) + '3:' + xlCol(cL) + lastV, F = xlCol(XL_CAL0) + '$2';
+    cf = '<conditionalFormatting sqref="' + rng + '">'
+      + '<cfRule type="expression" dxfId="0" priority="1" stopIfTrue="1"><formula>' + xe('AND($C3="Milestone",' + F + '=$E3)') + '</formula></cfRule>'
+      + '<cfRule type="expression" dxfId="1" priority="2" stopIfTrue="1"><formula>' + xe('AND($C3="Gruppo",' + F + '>=$E3,' + F + '<=$F3,$E3<>"")') + '</formula></cfRule>'
+      + '<cfRule type="expression" dxfId="2" priority="3" stopIfTrue="1"><formula>' + xe('AND($C3="Attesa",' + F + '>=$E3,' + F + '<=$F3,$E3<>"")') + '</formula></cfRule>'
+      + '<cfRule type="expression" dxfId="3" priority="4" stopIfTrue="1"><formula>' + xe('AND($C3="Indicazione",' + F + '>=$E3,' + F + '<=$F3,$E3<>"")') + '</formula></cfRule>'
+      + '<cfRule type="expression" dxfId="4" priority="5" stopIfTrue="1"><formula>' + xe('AND(' + F + '>=$E3,' + F + '<=$F3,$E3<>"",$F3<>"")') + '</formula></cfRule>'
+      + '<cfRule type="expression" dxfId="5" priority="6"><formula>' + xe('WEEKDAY(' + F + ',2)>5') + '</formula></cfRule>'
+      + '</conditionalFormatting>';
+  }
+  /* tendine e controlli */
+  var asg = [], seenA = {};
+  p.items.forEach(function(x){ var a = (x.assignee || '').trim(); if(a && !seenA[a]){ seenA[a] = 1; asg.push(a); } });
+  function dv(attrs, sq, f1, f2){ return '<dataValidation ' + attrs + ' allowBlank="1" showErrorMessage="1" sqref="' + sq + '"><formula1>' + xe(f1) + '</formula1>' + (f2 !== undefined ? '<formula2>' + xe(f2) + '</formula2>' : '') + '</dataValidation>'; }
+  var dvs = [
+    dv('type="list" errorTitle="Tipo non valido" error="Scegli un valore dell\'elenco: Attività, Milestone, Indicazione, Attesa o Gruppo."', 'C3:C' + lastV, 'Elenchi!$A$2:$A$6'),
+    dv('type="whole" operator="between" errorTitle="Livello non valido" error="Il livello è un numero intero da 1 a 5."', 'B3:B' + lastV, '1', '5'),
+    dv('type="decimal" operator="between" errorStyle="warning" errorTitle="Ore al giorno" error="Le ore al giorno sono un numero da 0 a 24."', 'I3:I' + lastV, '0', '24'),
+    dv('type="whole" operator="between" errorStyle="warning" errorTitle="Persone" error="Le persone sono un numero intero da 0 a 999."', 'J3:J' + lastV, '0', '999'),
+    dv('type="decimal" operator="between" errorStyle="warning" errorTitle="Avanzamento" error="L\'avanzamento è un numero da 0 a 100."', 'K3:K' + lastV, '0', '100')
+  ];
+  if(!virt) dvs.push(dv('type="date" operator="greaterThan" errorStyle="warning" errorTitle="Data non valida" error="Indica una data nel formato gg/mm/aaaa."', 'E3:G' + lastV, '36526'));
+  if(asg.length) dvs.push(dv('type="list" errorStyle="warning" errorTitle="Assegnatario" error="Il nome non è nell\'elenco: puoi comunque usarlo."', 'L3:L' + lastV, 'Elenchi!$B$2:$B$' + (asg.length + 1)));
+  var sheet1 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0" showGridLines="1" tabSelected="1"><pane xSplit="4" ySplit="2" topLeftCell="E3" activePane="bottomRight" state="frozen"/><selection pane="bottomRight" activeCell="E3" sqref="E3"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/>'
+    + cols + '<sheetData>' + rows + '</sheetData><autoFilter ref="A2:O' + last + '"/>' + cf + '<dataValidations count="' + dvs.length + '">' + dvs.join('') + '</dataValidations><pageMargins left="0.5" right="0.5" top="0.6" bottom="0.6" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="landscape" fitToHeight="0"/></worksheet>';
+  /* Guida */
+  var G = [
+    ['Modello di cronoprogramma Valico', XF_TTL],
+    ['Questo file contiene la tabella dei campi di Valico e, a destra, un calendario con barre semplificate. Si può compilare in Excel e importare in Valico (Importa da Excel): l\'importazione crea sempre un nuovo progetto.', XF_WRAP],
+    ['Come compilare', XF_GH],
+    ['1. Una riga per ogni item. La colonna Nome è obbligatoria: le righe senza nome vengono ignorate.', XF_WRAP],
+    ['2. Livello (da 1 a 5) definisce la gerarchia: un item di livello maggiore appartiene al gruppo di livello inferiore che lo precede. Un gruppo non ha date proprie: si calcolano dagli item che contiene, quindi Inizio, Fine, Durata, Ore e Persone dei gruppi vanno lasciati vuoti.', XF_WRAP],
+    ['3. Tipo: Attività, Milestone, Indicazione, Attesa (tendina). Il valore Gruppo è informativo: un item diventa gruppo quando contiene righe di livello maggiore.', XF_WRAP],
+    ['4. Date nel formato gg/mm/aaaa. Una milestone ha solo l\'Inizio. La Scadenza è la data limite contrattuale o di consegna.', XF_WRAP],
+    ['5. Durata in giorni lavorativi. Se sono indicati sia Inizio sia Fine, la durata viene ricalcolata da Valico secondo il calendario del progetto.', XF_WRAP],
+    ['6. Ore al giorno (predefinito 8) e Persone (predefinito 1) sono facoltative e valgono per le sole attività. Le ore-uomo si calcolano in Valico (durata × ore al giorno × persone).', XF_WRAP],
+    ['7. % è l\'avanzamento da 0 a 100.', XF_WRAP],
+    ['8. Predecessori: i numeri della colonna N. delle righe precedenti, separati da virgola, con tipo e ritardo facoltativi. Esempi: 3 (fine-inizio), 5FS+2, 7SS-1. Tipi: FS, SS, FF, SF. Il ritardo è in giorni lavorativi.', XF_WRAP],
+    ['9. Etichetta è il testo mostrato sulla barra; se vuota si usa il nome.', XF_WRAP],
+    ['Il calendario a destra', XF_GH],
+    ['Le barre colorate sono un ausilio visivo e si aggiornano da sole in base a Inizio e Fine: non vanno dipinte a mano e Valico non le legge. Contano solo i dati della tabella.', XF_WRAP],
+    ['Avvertenze', XF_GH],
+    ['Non rinominare né eliminare le intestazioni della riga 2 e non cambiare l\'ordine delle righe dopo aver indicato i predecessori (i numeri fanno riferimento alla colonna N.). Si possono aggiungere righe in fondo.', XF_WRAP],
+    ['In Valico, prima di confermare l\'importazione compare un riepilogo con gli eventuali errori riga per riga: i valori non validi vengono lasciati vuoti.', XF_WRAP]
+  ];
+  if(virt) G.push(['In questo progetto il calendario è virtuale (giorni numerati): le date sono scritte come testo e il calendario a barre non è presente.', XF_WRAP]);
+  var sheet2 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0" showGridLines="0"/></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols><col min="1" max="1" width="120" customWidth="1"/></cols><sheetData>'
+    + G.map(function(g, q){ return '<row r="' + (q + 1) + '">' + cs(q + 1, 0, g[0], g[1]) + '</row>'; }).join('') + '</sheetData></worksheet>';
+  /* Elenchi */
+  var er = '<row r="1">' + cs(1, 0, 'Tipo', 1) + cs(1, 1, 'Assegnatari', 1) + '</row>', m = Math.max(XL_TYPES.length, asg.length);
+  for(k = 0; k < m; k++) er += '<row r="' + (k + 2) + '">' + (XL_TYPES[k] ? cs(k + 2, 0, XL_TYPES[k], 0) : '') + (asg[k] ? cs(k + 2, 1, asg[k], 0) : '') + '</row>';
+  var sheet3 = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols><col min="1" max="2" width="24" customWidth="1"/></cols><sheetData>' + er + '</sheetData></worksheet>';
   var xfs = '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
-    + '<xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>'
+    + '<xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>'
     + '<xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'
     + '<xf numFmtId="164" fontId="1" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/>';
-  var k, g;
-  for(k = 0; k < 5; k++) for(g = 0; g < 2; g++) xfs += '<xf numFmtId="0" fontId="' + g + '" fillId="' + (g ? 3 : 0) + '" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment indent="' + k + '"/></xf>';
-  xfs += '<xf numFmtId="0" fontId="1" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"/>';
-  var styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/></numFmts>'
-    + '<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts>'
-    + '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2F5597"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEEF2F8"/><bgColor indexed="64"/></patternFill></fill></fills>'
+  var g2;
+  for(k = 0; k < 5; k++) for(g2 = 0; g2 < 2; g2++) xfs += '<xf numFmtId="0" fontId="' + g2 + '" fillId="' + (g2 ? 3 : 0) + '" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment indent="' + k + '"/></xf>';
+  xfs += '<xf numFmtId="0" fontId="1" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"/>'                                                                                       /* 14 gruppo */
+    + '<xf numFmtId="165" fontId="4" fillId="3" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center"/></xf>'            /* 15 giorno */
+    + '<xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/>'                                                                                                  /* 16 titolo */
+    + '<xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1"/>'                                                                                                  /* 17 mese */
+    + '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf>'                                                  /* 18 testo a capo */
+    + '<xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1"/>';                                                                                                  /* 19 titolo sezione */
+  function dx(rgb){ return '<dxf><fill><patternFill patternType="solid"><fgColor rgb="' + rgb + '"/><bgColor rgb="' + rgb + '"/></patternFill></fill></dxf>'; }
+  var styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="d"/></numFmts>'
+    + '<fonts count="6"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="14"/><name val="Calibri"/></font><font><sz val="8"/><color rgb="FF595959"/><name val="Calibri"/></font><font><b/><sz val="12"/><name val="Calibri"/></font></fonts>'
+    + '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2F5597"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE9EEF7"/><bgColor indexed="64"/></patternFill></fill></fills>'
     + '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
-    + '<cellXfs count="' + (4 + 10 + 1) + '">' + xfs + '</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
-  var NS = 'http://schemas.openxmlformats.org/';
+    + '<cellXfs count="20">' + xfs + '</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>'
+    + '<dxfs count="6">' + dx('FF1F3A63') + dx('FF5B6B86') + dx('FFF2C94C') + dx('FFE5A23C') + dx('FF2F7DF6') + dx('FFEDEDED') + '</dxfs></styleSheet>';
+  var NS = 'http://schemas.openxmlformats.org/', hd = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
   return zipStore([
-    { name:'[Content_Types].xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>' },
-    { name:'_rels/.rels', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + NS + 'officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>' },
-    { name:'xl/workbook.xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="' + NS + 'officeDocument/2006/relationships"><sheets><sheet name="Cronoprogramma" sheetId="1" r:id="rId1"/></sheets></workbook>' },
-    { name:'xl/_rels/workbook.xml.rels', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + NS + 'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="' + NS + 'officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
+    { name:'[Content_Types].xml', text:hd + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>' },
+    { name:'_rels/.rels', text:hd + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + NS + 'officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>' },
+    { name:'xl/workbook.xml', text:hd + '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="' + NS + 'officeDocument/2006/relationships"><bookViews><workbookView activeTab="0"/></bookViews><sheets><sheet name="Cronoprogramma" sheetId="1" r:id="rId1"/><sheet name="Guida" sheetId="2" r:id="rId2"/><sheet name="Elenchi" sheetId="3" r:id="rId3"/></sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">Cronoprogramma!$A$2:$O$' + last + '</definedName></definedNames></workbook>' },
+    { name:'xl/_rels/workbook.xml.rels', text:hd + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="' + NS + 'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="' + NS + 'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="' + NS + 'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/><Relationship Id="rId4" Type="' + NS + 'officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
     { name:'xl/styles.xml', text:styles },
-    { name:'xl/worksheets/sheet1.xml', text:sheet }
+    { name:'xl/worksheets/sheet1.xml', text:sheet1 },
+    { name:'xl/worksheets/sheet2.xml', text:sheet2 },
+    { name:'xl/worksheets/sheet3.xml', text:sheet3 }
   ]);
 }
 /* lettura */
@@ -6975,6 +7093,7 @@ async function readXlsx(buf){
       else if(v){ if(t === 's') val = { s:sst[+v.textContent] || '' }; else if(t === 'str' || t === 'e') val = { s:v.textContent }; else if(t === 'b') val = { s:v.textContent === '1' ? 'sì' : 'no' }; else { var nv = parseFloat(v.textContent); val = isNaN(nv) ? { s:v.textContent } : { n:nv }; } }
       if(val) row[xlColIdx(ce.getAttribute('r'))] = val;
     }
+    row._r = rows[r].getAttribute('r') ? +rows[r].getAttribute('r') : r + 1;
     out.push(row);
   }
   return out;
@@ -6984,23 +7103,100 @@ function xlMap(head){
   var m = {};
   head.forEach(function(c, i){
     if(!c || c.s === undefined) return; var h2 = xlNorm(c.s);
+    if(/ore uomo|manh/.test(h2)) return;   /* colonna calcolata: ignorata */
     if(m.name === undefined && /^(nome|attivita|task|name|descrizione|voce|lavorazione)\b/.test(h2)) m.name = i;
     else if(m.level === undefined && /^(livello|level|lvl)$/.test(h2)) m.level = i;
     else if(m.id === undefined && /^(n|n\.|#|id|nr|num|numero)$/.test(h2)) m.id = i;
     else if(m.type === undefined && /^(tipo|type)$/.test(h2)) m.type = i;
+    else if(m.deadline === undefined && /(scadenza|deadline)/.test(h2)) m.deadline = i;
     else if(m.start === undefined && /(^|\s)(inizio|start|data inizio|dal)(\s|$)/.test(h2)) m.start = i;
     else if(m.end === undefined && /(^|\s)(fine|end|termine|data fine|al|finish)(\s|$)/.test(h2)) m.end = i;
+    else if(m.hours === undefined && /^(ore|ore al giorno|ore giorno|hours)(\s|$)/.test(h2)) m.hours = i;
+    else if(m.crew === undefined && /(^persone|squadra|crew|componenti)/.test(h2)) m.crew = i;
     else if(m.dur === undefined && /(durata|duration|giorni)/.test(h2)) m.dur = i;
     else if(m.progress === undefined && /(^%|avanzamento|progress|completamento)/.test(h2)) m.progress = i;
     else if(m.assignee === undefined && /(assegnatario|risorsa|resource|responsabile|assignee)/.test(h2)) m.assignee = i;
     else if(m.preds === undefined && /(predecessor|dipendenz|depend)/.test(h2)) m.preds = i;
+    else if(m.label === undefined && /(etichetta|label)/.test(h2)) m.label = i;
     else if(m.notes === undefined && /(note|notes|commenti)/.test(h2)) m.notes = i;
   });
   return m;
 }
+/* Costruisce il nuovo progetto dalle righe del foglio senza toccare quello aperto (prova a secco): restituisce progetto, righe e problemi.
+   Il progetto aperto, la cronologia e lo stato dell'interfaccia vengono ripristinati al termine. */
+function xlBuild(data, map, name){
+  var old = { P:P, u:hist.undo, r:hist.redo, render:render, toast:toast, dirty:ui.dirty, unsaved:ui.unsaved, sel:ui.sel, anchor:ui.anchor, cell:ui.cell, edit:ui.edit, acts:ACT.length };
+  var issues = [], items = [], idMap = {}, np = newProject(), pv = 0, lvs = [];
+  np.project.title = String(name || 'Importato').replace(/\.xlsx?$/i, '');
+  function cellText(row, key){ var c = map[key] !== undefined ? row[map[key]] : null; return c ? (c.s !== undefined ? String(c.s).trim() : String(c.n)) : ''; }
+  function cellDate(row, key){
+    var c = map[key] !== undefined ? row[map[key]] : null; if(!c) return '';
+    if(c.n !== undefined){ if(c.n > 20000 && c.n < 80000) return fmtReal(fromDN(Math.round(c.n) - 25569)); return String(Math.round(c.n)); }
+    return String(c.s).trim();
+  }
+  var fracProg = false;
+  data.forEach(function(row){ var c = map.progress !== undefined ? row[map.progress] : null; if(c && c.n !== undefined && c.n > 0 && c.n <= 1 && c.n % 1 !== 0) fracProg = true; });
+  P = np; hist.undo = []; hist.redo = []; render = function(){}; toast = function(){};
+  try{
+    commit('Importa da Excel', function(p){
+      data.forEach(function(row, k){
+        var nm = row[map.name].s !== undefined ? String(row[map.name].s) : String(row[map.name].n), lead = /^\s*/.exec(nm)[0].length, lv = 1, it;
+        if(map.level !== undefined && row[map.level] && row[map.level].n !== undefined) lv = Math.max(1, Math.min(5, Math.round(row[map.level].n)));
+        else if(lead) lv = Math.min(5, 1 + Math.floor(lead / 2));
+        if(lv > pv + 1){ issues.push({ row:row._r, col:'Livello', msg:'livello ' + lv + ' dopo il livello ' + pv + ': ridotto a ' + (pv + 1) }); lv = pv + 1; }
+        pv = lv; lvs.push(lv);
+        it = mkItem(nm.trim(), lv); p.items.push(it); items.push(it);
+        if(map.id !== undefined && row[map.id]){ idMap[String(row[map.id].n !== undefined ? row[map.id].n : row[map.id].s).trim()] = k + 1; }
+      });
+      data.forEach(function(row, k){
+        var it = items[k], tp = cellText(row, 'type').toLowerCase();
+        function put(col, text, lab){ if(text === '' || text === undefined) return; try{ setField(p, it.uid, col, text); }catch(e){ issues.push({ row:row._r, col:lab, msg:'«' + String(text).slice(0, 40) + '»: ' + e.message }); } }
+        if(/mile/.test(tp)) put('type', 'milestone', 'Tipo'); else if(/indic/.test(tp)) put('type', 'indication', 'Tipo'); else if(/attes/.test(tp)) put('type', 'wait', 'Tipo');
+        else if(tp && !/^(attivit|task|gruppo|group)/.test(tp)) issues.push({ row:row._r, col:'Tipo', msg:'«' + tp.slice(0, 30) + '» non riconosciuto: trattato come attività' });
+        var gp = isGroupAt(p, findIdx(p, it.uid)), msn = it.type === 'milestone';
+        if(!gp){ put('start', cellDate(row, 'start'), 'Inizio'); if(!msn) put('end', cellDate(row, 'end'), 'Fine'); }
+        put('deadline', cellDate(row, 'deadline'), 'Scadenza');
+        var dur = (gp || msn) ? '' : cellText(row, 'dur'); if(dur && !(it.start && it.end)) put('dur', /^\d+([.,]\d+)?$/.test(dur) ? String(Math.round(parseFloat(dur.replace(',', '.')))) : dur, 'Durata');
+        if(!gp && it.type === 'task'){ put('hours', cellText(row, 'hours').replace(',', '.'), 'Ore al giorno'); put('crew', cellText(row, 'crew'), 'Persone'); }
+        var pc = map.progress !== undefined ? row[map.progress] : null; if(gp) pc = null;
+        if(pc && pc.n !== undefined) put('progress', String(Math.round(fracProg ? pc.n * 100 : pc.n)), '%'); else if(pc && pc.s) put('progress', pc.s, '%');
+        put('assignee', cellText(row, 'assignee'), 'Assegnatario'); put('label', cellText(row, 'label'), 'Etichetta'); put('notes', cellText(row, 'notes'), 'Note');
+        var pr = cellText(row, 'preds');
+        if(pr){
+          var hasId = map.id !== undefined;
+          pr = pr.split(/[;,]+/).map(function(tk){ tk = tk.trim(); var m = /^(\d+)(.*)$/.exec(tk); if(!m) return tk; var n = hasId ? idMap[m[1]] : +m[1]; if(!n){ issues.push({ row:row._r, col:'Predecessori', msg:'la riga «' + m[1] + '» non esiste nella colonna N.' }); return ''; } return n + m[2]; }).filter(Boolean).join(';');
+          put('preds', pr, 'Predecessori');
+        }
+      });
+    });
+  }finally{
+    var built = P;
+    P = old.P; hist.undo = old.u; hist.redo = old.r; render = old.render; toast = old.toast; ui.dirty = old.dirty; ui.unsaved = old.unsaved; ui.sel = old.sel; ui.anchor = old.anchor; ui.cell = old.cell; ui.edit = old.edit; ACT.length = old.acts;
+    np = built; calInvalidate();
+  }
+  var ng = 0, nm = 0; np.items.forEach(function(x, i){ if(isGroupAt(np, i)) ng++; else if(x.type === 'milestone') nm++; });
+  return { np:np, rows:items.length, groups:ng, miles:nm, issues:issues };
+}
+function xlShowPreview(file, res, onOk){
+  var d = $('#dlgXlPrev'), b = $('#xlpBody'); if(!d || !b) return;
+  b.textContent = '';
+  b.appendChild(h('p',{ class:'abp', text:'File: ' + file.name }));
+  b.appendChild(h('p',{ class:'abp' }, h('b', { text:res.rows + (res.rows === 1 ? ' riga' : ' righe') }), ' da importare (' + res.groups + (res.groups === 1 ? ' gruppo' : ' gruppi') + ', ' + res.miles + (res.miles === 1 ? ' milestone' : ' milestone') + '). Verrà creato un nuovo progetto: quello aperto non viene toccato finché non confermi.'));
+  if(!res.issues.length) b.appendChild(h('div',{ class:'xlp-ok', text:'Nessun problema rilevato.' }));
+  else {
+    b.appendChild(h('div',{ class:'xlp-warn', text:res.issues.length + (res.issues.length === 1 ? ' valore da verificare' : ' valori da verificare') + ': i valori non validi restano vuoti nel nuovo progetto.' }));
+    var t = h('table',{ class:'tbl xlp-t' }, h('thead', null, h('tr', null, h('th',{ text:'Riga Excel' }), h('th',{ text:'Colonna' }), h('th',{ text:'Problema' }))));
+    var tb = h('tbody'); res.issues.slice(0, 200).forEach(function(q){ tb.appendChild(h('tr', null, h('td',{ text:String(q.row || '') }), h('td',{ text:q.col }), h('td',{ text:q.msg }))); });
+    t.appendChild(tb); b.appendChild(h('div',{ class:'xlp-wrap' }, t));
+    if(res.issues.length > 200) b.appendChild(h('div',{ class:'xinfo', text:'Mostrati i primi 200 problemi su ' + res.issues.length + '.' }));
+  }
+  $('#xlpGo').onclick = function(){ d.close ? d.close() : d.removeAttribute('open'); onOk(); };
+  $('#xlpNo').onclick = function(){ d.close ? d.close() : d.removeAttribute('open'); };
+  if(d.showModal) d.showModal(); else d.setAttribute('open', '');
+  setTimeout(function(){ $('#xlpGo').focus(); }, 30);
+}
 async function importXlsxFile(file){
-  if(!confirmDiscard('l\'importazione sostituisce il progetto attuale e queste modifiche andranno perse')) return;
-  var rows, warn = 0, firstWarn = '';
+  var rows;
   try{ rows = await readXlsx(await file.arrayBuffer()); }catch(e){ toast('Importazione non riuscita: ' + (e && e.message ? e.message : e), 6500); return; }
   var hi = -1, map = null, r;
   for(r = 0; r < Math.min(rows.length, 30); r++){ var mm = xlMap(rows[r] || []); if(mm.name !== undefined){ hi = r; map = mm; break; } }
@@ -7008,48 +7204,19 @@ async function importXlsxFile(file){
   var data = rows.slice(hi + 1).filter(function(row){ return row && row[map.name] && ((row[map.name].s !== undefined && String(row[map.name].s).trim() !== '') || row[map.name].n !== undefined); });
   if(!data.length){ toast('Importazione non riuscita: nessuna riga con un nome.', 6000); return; }
   if(data.length > 5000){ toast('Il file ha più di 5000 righe: importazione annullata.', 6000); return; }
-  function cellText(row, key){ var c = map[key] !== undefined ? row[map[key]] : null; return c ? (c.s !== undefined ? String(c.s).trim() : String(c.n)) : ''; }
-  function cellDate(row, key){
-    var c = map[key] !== undefined ? row[map[key]] : null; if(!c) return '';
-    if(c.n !== undefined){ if(c.n > 20000 && c.n < 80000) return fmtReal(fromDN(Math.round(c.n) - 25569)); return String(Math.round(c.n)); }
-    return String(c.s).trim();
-  }
-  var fracProg = false, anyProg = false;
-  data.forEach(function(row){ var c = map.progress !== undefined ? row[map.progress] : null; if(c && c.n !== undefined){ anyProg = true; if(c.n > 0 && c.n <= 1 && c.n % 1 !== 0) fracProg = true; } });
-  var np = newProject(); np.project.title = String(file.name || 'Importato').replace(/\.xlsx?$/i, '');
-  P = np; hist.undo.length = 0; hist.redo.length = 0; ui.px = null; ui.tlInit = false; ui.tlA = null; ui.tlHadDates = undefined;
-  ui.sel = []; ui.anchor = null; ui.cell = null; ui.edit = null; ui.fileHandle = null; ui.fileName = null; ui.dirty = false; ui.unsaved = 0; ui.loadedCounter = 0;
-  var idMap = {}, items = [];
-  commit('Importa da Excel', function(p){
-    data.forEach(function(row, k){
-      var nm = row[map.name].s !== undefined ? String(row[map.name].s) : String(row[map.name].n), lead = /^\s*/.exec(nm)[0].length, lv = 1, it;
-      if(map.level !== undefined && row[map.level] && row[map.level].n !== undefined) lv = Math.max(1, Math.min(5, Math.round(row[map.level].n)));
-      else if(lead) lv = Math.min(5, 1 + Math.floor(lead / 2));
-      it = mkItem(nm.trim(), lv); p.items.push(it); items.push(it);
-      if(map.id !== undefined && row[map.id]){ idMap[String(row[map.id].n !== undefined ? row[map.id].n : row[map.id].s).trim()] = k + 1; }
-    });
-    data.forEach(function(row, k){
-      var it = items[k], tp = cellText(row, 'type').toLowerCase();
-      function put(col, text){ if(text === '' || text === undefined) return; try{ setField(p, it.uid, col, text); }catch(e){ warn++; if(!firstWarn) firstWarn = 'riga ' + (hi + 2 + k) + ': ' + e.message; } }
-      if(/mile/.test(tp)) put('type', 'milestone'); else if(/indic/.test(tp)) put('type', 'indication'); else if(/attes/.test(tp)) put('type', 'wait');
-      var gp = isGroupAt(p, findIdx(p, it.uid));
-      var msn = it.type === 'milestone';
-      if(!gp){ put('start', cellDate(row, 'start')); if(!msn) put('end', cellDate(row, 'end')); }
-      var dur = (gp || msn) ? '' : cellText(row, 'dur'); if(dur && !(it.start && it.end)) put('dur', /^\d+([.,]\d+)?$/.test(dur) ? String(Math.round(parseFloat(dur.replace(',', '.')))) : dur);
-      var pc = map.progress !== undefined ? row[map.progress] : null;
-      if(gp) pc = null;
-      if(pc && pc.n !== undefined) put('progress', String(Math.round(fracProg ? pc.n * 100 : pc.n))); else if(pc && pc.s) put('progress', pc.s);
-      put('assignee', cellText(row, 'assignee')); put('notes', cellText(row, 'notes'));
-      var pr = cellText(row, 'preds');
-      if(pr){
-        var hasId = map.id !== undefined;
-        pr = pr.split(/[;,]+/).map(function(tk){ tk = tk.trim(); var m = /^(\d+)(.*)$/.exec(tk); if(!m) return tk; var n = hasId ? idMap[m[1]] : +m[1]; return (n || m[1]) + m[2]; }).join(';');
-        put('preds', pr);
-      }
-    });
+  var res = xlBuild(data, map, file.name);
+  xlShowPreview(file, res, function(){
+    if(!confirmDiscard('l\'importazione sostituisce il progetto attuale e queste modifiche andranno perse')) return;
+    var fin = xlBuild(data, map, file.name);   /* nuova costruzione: il progetto è indipendente da quello della prova */
+    P = fin.np; hist.undo.length = 0; hist.redo.length = 0; ui.px = null; ui.tlInit = false; ui.tlA = null; ui.tlHadDates = undefined;
+    ui.sel = []; ui.anchor = null; ui.cell = null; ui.edit = null; ui.fileHandle = null; ui.fileName = null; ui.dirty = true; ui.unsaved = 1; ui.loadedCounter = 0;
+    actLog('file', 'Importato da Excel: ' + file.name); render();
+    toast('Importate ' + fin.rows + ' righe da Excel' + (fin.issues.length ? ' (' + fin.issues.length + ' valori da verificare).' : '.'), fin.issues.length ? 7000 : 4200);
   });
-  actLog('file', 'Importato da Excel: ' + file.name); render();
-  toast('Importate ' + items.length + ' righe da Excel.' + (warn ? ' ' + warn + ' valori non importati (' + firstWarn + ').' : ''), warn ? 9000 : 4200);
+}
+function downloadXlsxTemplate(){
+  var b = buildXlsx(P, true); downloadBlob(b, 'Valico_modello_cronoprogramma.xlsx');
+  toast('Modello scaricato: contiene la tabella da compilare, il calendario e il foglio Guida.', 5200);
 }
 
 function download(text,name){
@@ -7230,6 +7397,8 @@ var WL_ROWS = [
     'Blocca l\'inizio o la fine di un\'attività con il lucchetto: quella data resta ferma anche se trascini o colleghi altre barre.'],
   ['Ore e persone', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect class="w-bar" x="14" y="16" width="70" height="12" rx="4"/><text class="w-tx" x="92" y="26">8 h × 3 pers.</text><rect class="w-bar r-1" x="14" y="40" width="110" height="9" rx="3" fill="#2fb457"/><text class="w-tx" x="14" y="68" style="fill:var(--text);font-weight:700">ore-uomo: giorni × ore × pers.</text>'),
     'Indica ore al giorno e persone per ogni attività: le ore-uomo si calcolano da sole. L\'ordine delle colonne si sceglie dal pannello Colonne.'],
+  ['Excel in andata e ritorno', WL_SVG('<rect class="w-pg" x="14" y="8" width="132" height="62" rx="5"/><rect x="14" y="8" width="132" height="12" rx="5" fill="#1f7a46"/><line x1="52" y1="20" x2="52" y2="70" stroke="var(--line)"/><rect class="w-bar2" x="20" y="28" width="26" height="5" rx="2"/><rect class="w-bar2" x="20" y="42" width="22" height="5" rx="2"/><rect class="w-bar2" x="20" y="56" width="26" height="5" rx="2"/><rect class="w-bar a-b1" x="58" y="27" width="46" height="7" rx="2"/><rect class="w-bar a-b2" x="76" y="41" width="50" height="7" rx="2"/><rect class="w-bar a-b3" x="96" y="55" width="40" height="7" rx="2"/>'),
+    'Esporta in Excel la tabella con un calendario a barre, oppure scarica il modello dal menu di salvataggio: compilato da altri, si reimporta come nuovo progetto, con l\'elenco degli errori prima di confermare.'],
   ['Calendario rispettato', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect x="62" y="6" width="24" height="68" fill="var(--muted)" opacity=".16"/><text class="w-tx" x="64" y="82">sab dom</text><rect class="w-bar" x="12" y="28" width="50" height="14" rx="4"/><rect class="w-bar" x="86" y="28" width="56" height="14" rx="4"/><path d="M62 35 H86" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="3 3"/>'),
     'Le barre possono interrompersi nei giorni non lavorativi (fine settimana, festività) seguendo il calendario del progetto. Si attiva dal pannello Mostra.'],
   ['Su smartphone', WL_SVG('<rect x="58" y="4" width="44" height="76" rx="8" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.6"/><g class="ph-s"><rect class="w-bar" x="64" y="16" width="26" height="6" rx="2"/><rect class="w-bar2" x="72" y="28" width="24" height="6" rx="2"/><rect class="w-bar" x="66" y="40" width="22" height="6" rx="2"/><rect class="w-bar2" x="76" y="52" width="20" height="6" rx="2"/><rect class="w-bar" x="68" y="64" width="24" height="6" rx="2"/><rect class="w-bar2" x="64" y="76" width="26" height="6" rx="2"/></g>'),
@@ -7416,6 +7585,7 @@ function buildHeader(){
       h('div',{ class:'menuitem', onclick:function(){ closePop(); saveFlow({ mode:'overwrite' }); } }, 'Sovrascrivi', h('span',{ class:'k', text:scKeys('save') })),
       h('div',{ class:'menuitem', onclick:function(){ closePop(); openSaveAs(); } }, 'Salva con nome…'),
       h('div',{ class:'menuitem', onclick:function(){ closePop(); $('#xlsxInput').click(); } }, 'Importa da Excel (.xlsx)…'),
+      h('div',{ class:'menuitem', onclick:function(){ closePop(); downloadXlsxTemplate(); } }, 'Scarica il modello Excel (con guida)'),
       h('div',{ style:'border-top:1px solid var(--line);margin:6px 0 2px;padding-top:6px' }, swRow('Salvataggio automatico', !!prefs.autosave, function(v){ setAutosave(v); }, 'Sovrascrive il file collegato a intervalli regolari. Richiede un file già salvato e Chrome o Edge.'),
         h('div',{ class:'vrow' }, h('span',{ text:'Intervallo' }), segControl([[1,'1 min'],[2,'2 min'],[5,'5 min'],[10,'10 min']], +prefs.autosaveMin || 1, function(v){ prefs.autosaveMin = v; ui.lastAuto = Date.now(); savePrefs(); renderHeader(); })),
         h('div',{ class:'xinfo', text:autoReason() || 'Il salvataggio non cambia la revisione.' })));

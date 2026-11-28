@@ -3,7 +3,7 @@ const {chromium}=require('playwright');const seed=require('./seed21.js');const f
 let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('dialog',d=>d.accept());
 await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:true,density:'normal',itemScale:100,gFrame:'round',gBar:'thin',gPar:'on',gRow:true,pv:2}))}catch(e){}});await p.goto('file://'+process.cwd()+'/app.html');await seed(p);await p.waitForTimeout(300);
-const W=t=>p.waitForTimeout(t);const D='/tmp/valico-tests/';
+const W=t=>p.waitForTimeout(t);const D='/tmp/claude-0/-home-claude/fd0a8c60-c582-5ddb-9fa6-fefd84f40864/scratchpad/gt/';
 await p.locator('[data-act="export"]').click();await W(300);
 const seg=(v)=>p.locator('#dlgExp .xsegb[data-v="'+v+'"]').first();
 async function dl(label){const [d]=await Promise.all([p.waitForEvent('download',{timeout:60000}),p.locator('#expGo').click()]);const path=D+'out72_'+label;await d.saveAs(path);return {name:d.suggestedFilename(),buf:fs.readFileSync(path),path};}
@@ -33,7 +33,7 @@ await seg('svg').click();await W(300);
 r=await dl('d.svg');const sv=r.buf.toString('utf8');const m=sv.match(/<svg[^>]* width="(\d+)"/);
 ok(m&&+m[1]>0,'svg valido');ok(sv.includes('Titolo prova'),'titolo personalizzato nell\'SVG');ok(!sv.includes('Esportato il'),'data di esportazione omessa');
 const wNarrow=+m[1];
-await seg('all').click();await W(200);
+await p.locator('#dlgExp .xrow:has(.xl:text-is("Colonne")) .xsegb[data-v="all"]').click();await W(200);
 r=await dl('e.svg');const m2=r.buf.toString('utf8').match(/<svg[^>]* width="(\d+)"/);ok(+m2[1]>wNarrow,'colonne «come a schermo» più larghe di una sola: '+m2[1]+' > '+wNarrow);
 // 5 livelli: calendario/marker/collegamenti
 await p.locator('#dlgExp .xchk:has-text("Marker") input').uncheck();await W(200);

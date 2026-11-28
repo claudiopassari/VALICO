@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.11.0
+
+Pannello di esportazione in tre blocchi (Cosa esportare, Area e contenuto, Formato e uscita) con la copia rapida dell'immagine in evidenza accanto all'anteprima. Esportazione in Excel completa: tutti i campi modificabili (tipo, scadenza, ore al giorno, persone, etichetta), calendario con barre semplificate, fogli Guida ed Elenchi con tendine. Modello Excel scaricabile dal menu di salvataggio. Importazione da Excel con anteprima degli errori riga per riga e nessuna modifica al progetto aperto fino alla conferma.
+
 ## 0.10.0
 
 Pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare. Campo Vai a data nella barra della timeline, con estensione automatica fino a date lontane. Colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt e frecce), gruppo Carico di lavoro e valori rapidi per ore e persone. Selezione ad area delle righe (Alt e trascinamento), intervallo di date selezionabile trascinando nel calendario, tasti da 1 a 4 per scegliere il tipo di item mentre si disegna, suggerimento sui nomi troncati. Gli item di un gruppo nascosto sono attenuati. Esportazione dal lunedi alla domenica con margini. Finestra di benvenuto in due righe di schede.

@@ -14,9 +14,9 @@ const titles=await p.evaluate(()=>[...document.querySelectorAll('#wlRows .wl-car
 console.log(JSON.stringify(titles));
 ok(await p.locator('#wlRows .wl-track').count()===2,'due righe di schede');
 const n1=await p.evaluate(()=>document.querySelectorAll('#wlRows .wl-track')[0].children.length), n2=await p.evaluate(()=>document.querySelectorAll('#wlRows .wl-track')[1].children.length);
-ok(n1===5&&n2===10,'schede per riga: '+n1+', '+n2);
+ok(n1===5&&n2===11,'schede per riga: '+n1+', '+n2);
 ['Disegna e annota','Seleziona','Collega','Cambia l\'etichetta','Esporta e copia','Date bloccate','Ore e persone','Calendario rispettato','Su smartphone','Scorciatoie da tastiera','Gruppi leggibili','Controlla il piano','Calendari su misura','Progetti in file e revisioni','Personalizza'].forEach(t=>ok(titles.indexOf(t)>=0,'scheda: '+t));
-ok(await p.locator('#wlRows .wl-card svg.wl-ani').count()===15,'un\'animazione per scheda');
+ok(await p.locator('#wlRows .wl-card svg.wl-ani').count()===16,'un\'animazione per scheda');
 const wtxt=await p.locator('#wlRows').textContent();
 ok(!/critic|intervall/i.test(wtxt),'nessun cenno a percorso critico o intervallo');
 // caroselli: ogni riga ha frecce proprie
