@@ -7,7 +7,7 @@ await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localS
 const acts=await p.evaluate(()=>[...document.querySelectorAll('#tlCmds .tcap')].map(c=>[...c.children].map(e=>e.getAttribute('data-act')||'seg')));
 console.log(JSON.stringify(acts));
 ok(acts.length===6,'sei capsule: '+acts.length);
-ok(JSON.stringify(acts[2])===JSON.stringify(['tlopts','calendar','todayHl','breakNW']),'ordine: Visualizza, Calendario, Evidenzia oggi, Interrompi barre');
+ok(JSON.stringify(acts[2])===JSON.stringify(['tlopts','calendar','mostra']),'ordine: Visualizza, Calendario, Mostra');
 ok(JSON.stringify(acts[5])===JSON.stringify(['baseline']),'Baseline isolata');
 ok(await p.locator('#tlCmds .seg button',{hasText:'Estesa'}).count()===0,'Compatta/Estesa fuori dalla barra');
 const bx=await p.evaluate(()=>{const g=document.querySelector('#tlCmds .vgap.far').getBoundingClientRect();return g.width});ok(bx>=18,'distanza della baseline: '+bx);

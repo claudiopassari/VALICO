@@ -122,8 +122,9 @@ await ev(()=>GanttApp.act&&0);
 const nI=await ev(()=>GanttApp.P.items.filter(x=>x.type==='indication').length);
 const gIdx=await ev(()=>GanttApp.P.items.findIndex(x=>x.level===1));
 await p.locator('#itemsBody .row .c-name').nth(0).click();await W(200);
-ok(await p.locator('#itemCmds [data-act="ind"]').count()===1,'pulsante Nuova indicazione');
-await p.locator('#itemCmds [data-act="ind"]').click();await W(400);
+ok(await p.locator('#itemCmds [data-act="ind"]').count()===0,'il pulsante Nuova indicazione non è più nella barra');
+await p.locator('#itemsBody .row .c-name').nth(0).click({button:'right'});await W(250);
+await p.locator('.cmenu .menuitem').filter({hasText:'Nuova indicazione'}).first().click();await W(400);
 const ni=await ev(()=>{const A=GanttApp.P;const i=A.items.findIndex(x=>x.type==='indication');return {i,lv:A.items[i].level,pl:A.items[0].level,n:A.items.filter(x=>x.type==='indication').length}});
 eq(ni.n,nI+1,'indicazione creata');ok(ni.lv===ni.pl+1,'dentro il gruppo selezionato (livello figlio) '+JSON.stringify(ni));
 // menu riga
@@ -145,14 +146,14 @@ ok(/lo/.test(lab4.ind)&&/up/.test(lab4.lab)&&!/gap/.test(lab4.ind),'opzione «so
 await p.click('#tlCmds [data-act="tlopts"]');await W(300);ok(await p.locator('.pop >> text=Etichetta delle indicazioni').count()>=1,'opzione in Visualizza');await p.keyboard.press('Escape');
 // ---------- interruttori generali marker / periodi
 const nm0=await ev(()=>document.querySelectorAll('#tlHead .mtag').length);ok(nm0>0,'marker visibili');
-ok(await p.locator('#tlCmds [data-act="mkVis"]').count()===1&&await p.locator('#tlCmds [data-act="perVis"]').count()===1,'pulsanti generali marker e periodi nella barra');
-await p.locator('#tlCmds [data-act="mkVis"]').click();await W(300);
+ok(await p.locator('#mostraFly [data-act="mkVis"]').count()===1&&await p.locator('#mostraFly [data-act="perVis"]').count()===1,'pulsanti generali marker e periodi nella barra');
+await p.locator('#mostraFly [data-act="mkVis"]').dispatchEvent('click');await W(300);
 eq(await ev(()=>document.querySelectorAll('#tlHead .mtag').length),0,'tutti i marker nascosti insieme');
 ok(await ev(()=>GanttApp.P.markers.every(m=>!m.hidden)),'la visibilità del singolo marker non cambia');
 await p.click('#tlCmds [data-act="mkList"]');await W(300);ok(await p.locator('.mkset .switch[aria-checked="false"]').count()>=1,'interruttore generale nel pannello dei marker');await p.keyboard.press('Escape');await W(150);
-await p.locator('#tlCmds [data-act="mkVis"]').click();await W(300);ok(await ev(()=>document.querySelectorAll('#tlHead .mtag').length)===nm0,'marker di nuovo visibili');
-await p.locator('#tlCmds [data-act="perVis"]').click();await W(300);
+await p.locator('#mostraFly [data-act="mkVis"]').dispatchEvent('click');await W(300);ok(await ev(()=>document.querySelectorAll('#tlHead .mtag').length)===nm0,'marker di nuovo visibili');
+await p.locator('#mostraFly [data-act="perVis"]').dispatchEvent('click');await W(300);
 eq(await ev(()=>[document.querySelectorAll('#tlHead .pseg[data-p]').length,document.querySelectorAll('#tlBody .tper').length]),[0,0],'tutti i periodi nascosti (fascia e tinta)');
-await p.locator('#tlCmds [data-act="perVis"]').click();await W(300);ok(await ev(()=>document.querySelectorAll('#tlHead .pseg[data-p]').length)>=2,'periodi di nuovo visibili');
+await p.locator('#mostraFly [data-act="perVis"]').dispatchEvent('click');await W(300);ok(await ev(()=>document.querySelectorAll('#tlHead .pseg[data-p]').length)>=2,'periodi di nuovo visibili');
 ok(pe.length===0,'nessun errore JS: '+pe.join('|'));
 console.log('pass',pass,'fail',fail);await b.close();})();

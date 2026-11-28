@@ -14,9 +14,9 @@ ok(r.tag!==null&&Math.abs(r.tag-r.ln)<0.6,'marker: etichetta sulla linea');
 ok(await p.evaluate(()=>GanttApp.P.markers.filter(m=>m.kind==='today')[0].color.c==='blu'),'marker Oggi blu di default');
 // 2) evidenziazione: colonna indipendente
 ok(r.col&&Math.abs(r.col[1]-r.px)<0.01&&Math.abs(r.col[0]-t0)<0.6,'evidenziazione: colonna di un giorno '+JSON.stringify(r));ok(r.hdr>=1,'cella intestazione evidenziata');
-const btn=p.locator('#tlCmds [data-ph]');ok(await btn.count()===1,'pulsante Evidenzia oggi in barra');ok(await btn.getAttribute('aria-pressed')==='true','pulsante attivo di default');
-await btn.click();await W(300);r=await info();ok(r.col===null&&r.hdr===0&&r.ln!==null,'evidenziazione spenta: marker intatto '+JSON.stringify(r));ok(r.hl===false,'preferenza salvata');
-await btn.click();await W(300);r=await info();ok(r.col!==null&&r.ln!==null,'entrambi attivi insieme');
+const btn=p.locator('#mostraFly [data-act="todayHl"]');ok(await btn.count()===1,'pulsante Evidenzia oggi in barra');ok(await btn.getAttribute('aria-pressed')==='true','pulsante attivo di default');
+await btn.dispatchEvent('click');await W(300);r=await info();ok(r.col===null&&r.hdr===0&&r.ln!==null,'evidenziazione spenta: marker intatto '+JSON.stringify(r));ok(r.hl===false,'preferenza salvata');
+await btn.dispatchEvent('click');await W(300);r=await info();ok(r.col!==null&&r.ln!==null,'entrambi attivi insieme');
 // marker nascosto: l'evidenziazione resta
 await p.evaluate(()=>{const A=GanttApp;const m=A.P.markers.filter(m=>m.kind==='today')[0];A.commit('t',()=>{m.hidden=true})});await W(300);r=await info();ok(r.ln===null&&r.col!==null,'marker nascosto, evidenziazione attiva '+JSON.stringify(r));
 await p.evaluate(()=>{const A=GanttApp;const m=A.P.markers.filter(m=>m.kind==='today')[0];A.commit('t',()=>{m.hidden=false})});await W(300);

@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.10.0
+
+Pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare. Campo Vai a data nella barra della timeline, con estensione automatica fino a date lontane. Colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt e frecce), gruppo Carico di lavoro e valori rapidi per ore e persone. Selezione ad area delle righe (Alt e trascinamento), intervallo di date selezionabile trascinando nel calendario, tasti da 1 a 4 per scegliere il tipo di item mentre si disegna, suggerimento sui nomi troncati. Gli item di un gruppo nascosto sono attenuati. Esportazione dal lunedi alla domenica con margini. Finestra di benvenuto in due righe di schede.
+
 ## 0.9.9
 
 corretto un errore dello zoom con la maniglia della timeline (visto in WebKit, il motore di Safari) che poteva saltare il ridisegno al rilascio del mouse.

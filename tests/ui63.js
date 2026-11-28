@@ -52,11 +52,11 @@ const bg=await p.evaluate(()=>{const e=document.querySelector('.trow .bx.bar');r
 await p.evaluate(()=>{GanttApp.commit('t',q=>{q.periods.push({uid:'pt1',name:'Alfa',start:'2026-11-23',end:'2026-12-10',color:{c:'blu',v:1}})})});await W(300);
 const tc=()=>p.evaluate(()=>({t:document.querySelectorAll('.tper').length,b:document.querySelectorAll('.pbnd .pbar, .pbnd [data-p]').length,on:document.querySelector('[data-act="perTint"]').getAttribute('aria-pressed')}));
 let t0=await tc();ok(t0.t>=1&&t0.on==='true','colorazione attiva: '+JSON.stringify(t0));
-await p.locator('[data-act="perTint"]').click();await W(300);
+await p.locator('#mostraFly [data-act="perTint"]').dispatchEvent('click');await W(300);
 let t1=await tc();ok(t1.t===0&&t1.on==='false','colorazione disattivata dal pulsante: '+JSON.stringify(t1));
 ok(await p.evaluate(()=>GanttApp.P.view.periodTint===false&&GanttApp.P.view.periodBand!==false),'la fascia dei periodi resta visibile');
 ok(await p.evaluate(()=>document.documentElement.classList.contains('hasband')),'fascia ancora presente');
-await p.locator('[data-act="perTint"]').click();await W(300);
+await p.locator('#mostraFly [data-act="perTint"]').dispatchEvent('click');await W(300);
 let t2=await tc();ok(t2.t>=1&&t2.on==='true','colorazione riattivata');
 // interruttore nel pannello periodi
 await p.locator('[data-act="band"]').click();await W(250);

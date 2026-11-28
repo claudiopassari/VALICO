@@ -10,22 +10,29 @@ const dlg=p.locator('#dlgWelcome');
 ok(await dlg.evaluate(d=>d.open),'benvenuto aperto');
 const txt=await dlg.textContent();
 ['Nessun account','Nessuna registrazione','Nessuna raccolta di dati','Funziona sul tuo computer','Un solo file, senza installazione'].forEach(t=>ok(txt.includes(t),'striscia: '+t));
-const titles=await p.evaluate(()=>[...document.querySelectorAll('#wlTrack .wl-card h4')].map(h=>h.textContent));
+const titles=await p.evaluate(()=>[...document.querySelectorAll('#wlRows .wl-card h4')].map(h=>h.textContent));
 console.log(JSON.stringify(titles));
-ok(titles.length===7,'sette schede');
-['Disegna e annota','Gruppi leggibili','Controlla il piano','Calendari su misura','Progetti in file e revisioni','Esporta e copia','Personalizza'].forEach(t=>ok(titles.indexOf(t)>=0,'scheda: '+t));
-ok(await p.locator('#wlTrack .wl-card svg.wl-ani').count()===7,'un\'animazione per scheda');
-// carosello
-ok(await p.locator('#wlPrev').isDisabled(),'indietro disattivato all\'inizio');
-const sc0=await p.evaluate(()=>document.getElementById('wlTrack').scrollLeft);
-await p.locator('#wlNext').click();await W(900);
-const sc1=await p.evaluate(()=>document.getElementById('wlTrack').scrollLeft);ok(sc1>sc0+100,'avanti scorre: '+sc0+' -> '+sc1);
-ok(!(await p.locator('#wlPrev').isDisabled()),'indietro attivo dopo lo scorrimento');
-for(let i=0;i<8;i++){ if(await p.locator('#wlNext').isDisabled())break; await p.locator('#wlNext').click();await W(600);}
-ok(await p.locator('#wlNext').isDisabled(),'avanti disattivato alla fine');
-await p.locator('#wlPrev').click();await W(800);ok((await p.evaluate(()=>document.getElementById('wlTrack').scrollLeft))>0&&!(await p.locator('#wlNext').isDisabled()),'indietro funziona');
+ok(await p.locator('#wlRows .wl-track').count()===2,'due righe di schede');
+const n1=await p.evaluate(()=>document.querySelectorAll('#wlRows .wl-track')[0].children.length), n2=await p.evaluate(()=>document.querySelectorAll('#wlRows .wl-track')[1].children.length);
+ok(n1===5&&n2===10,'schede per riga: '+n1+', '+n2);
+['Disegna e annota','Seleziona','Collega','Cambia l\'etichetta','Esporta e copia','Date bloccate','Ore e persone','Calendario rispettato','Su smartphone','Scorciatoie da tastiera','Gruppi leggibili','Controlla il piano','Calendari su misura','Progetti in file e revisioni','Personalizza'].forEach(t=>ok(titles.indexOf(t)>=0,'scheda: '+t));
+ok(await p.locator('#wlRows .wl-card svg.wl-ani').count()===15,'un\'animazione per scheda');
+const wtxt=await p.locator('#wlRows').textContent();
+ok(!/critic|intervall/i.test(wtxt),'nessun cenno a percorso critico o intervallo');
+// caroselli: ogni riga ha frecce proprie
+const nx=p.locator('#wlRows .wl-nav.nx').nth(1), pv2=p.locator('#wlRows .wl-nav.pv').nth(1);
+ok(await pv2.isDisabled(),'indietro disattivato all\'inizio');
+const sc=i=>p.evaluate(i=>document.querySelectorAll('#wlRows .wl-track')[i].scrollLeft,1);
+const sc0=await sc();
+await nx.click();await W(900);
+const sc1=await sc();ok(sc1>sc0+100,'avanti scorre: '+sc0+' -> '+sc1);
+ok(await p.evaluate(()=>document.querySelectorAll('#wlRows .wl-track')[0].scrollLeft)===0,'l\'altra riga non si muove');
+ok(!(await pv2.isDisabled()),'indietro attivo dopo lo scorrimento');
+for(let i=0;i<14;i++){ if(await nx.isDisabled())break; await nx.click();await W(600);}
+ok(await nx.isDisabled(),'avanti disattivato alla fine');
+await pv2.click();await W(800);ok((await sc())>0&&!(await nx.isDisabled()),'indietro funziona');
 // tastiera
-await p.locator('#wlTrack').focus();await p.keyboard.press('Home');await W(200);
+await p.locator('#wlRows .wl-track').first().focus();await p.keyboard.press('Home');await W(200);
 // nome e icona chiusi
 ok(!(await p.evaluate(()=>document.getElementById('wlName').open)),'Il nome e l\'icona: chiuso');
 await p.locator('#wlName summary').click();await W(200);ok(await p.evaluate(()=>document.getElementById('wlName').open),'si apre al clic');

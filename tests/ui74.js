@@ -1,0 +1,20 @@
+// figli di un gruppo nascosto: attenuati con l'occhio globale attivo, assenti con l'occhio spento
+const {chromium}=require('playwright');
+let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m)}};
+(async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1700,height:800}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{try{localStorage.setItem('gantt.prefs.v1',JSON.stringify({detailsOpen:false}))}catch(e){}});
+await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(400);const W=ms=>p.waitForTimeout(ms);const ev=(f,a)=>p.evaluate(f,a);
+await ev(()=>GanttApp.act.loadExample());await W(500);
+const g=await ev(()=>{const P=GanttApp.P;const i=P.items.findIndex((x,k)=>P.items[k+1]&&P.items[k+1].level>x.level);return {uid:P.items[i].uid,n:P.items.length,kids:(()=>{let c=0,k=i+1;while(k<P.items.length&&P.items[k].level>P.items[i].level){c++;k++}return c})()}});
+ok(g.kids>=1,'gruppo con figli nell\'esempio');
+const rows=()=>ev(()=>document.querySelectorAll('#itemsBody .row').length);
+const r0=await rows();
+await p.locator('#itemsBody .row[data-uid="'+g.uid+'"]').hover();await p.locator('#itemsBody .row[data-uid="'+g.uid+'"] .eyb').click();await W(300);
+ok(await rows()===r0-1-g.kids,'occhio spento: gruppo e figli spariscono ('+r0+' -> '+await rows()+')');
+await ev(()=>{const h=document.querySelector('#itemsHead .eyh,.eyh');if(h)h.click()});await W(300);
+const st=await ev((u)=>{const P=GanttApp.P;const rs=[...document.querySelectorAll('#itemsBody .row')];const gi=P.items.findIndex(x=>x.uid===u);const out={hid:0,hidp:0};rs.forEach(r=>{if(r.classList.contains('hid'))out.hid++;if(r.classList.contains('hidp'))out.hidp++});out.tl=[...document.querySelectorAll('#tlCv .trow.hidp')].length;return out},g.uid);
+ok(st.hid===1,'occhio acceso: il gruppo ha il proprio stato nascosto '+JSON.stringify(st));
+ok(st.hidp===g.kids,'occhio acceso: tutti i figli attenuati ('+st.hidp+' su '+g.kids+')');
+ok(st.tl===g.kids,'anche nella timeline i figli sono attenuati ('+st.tl+')');
+console.log('ui74 pass',pass,'fail',fail,errs.length?errs.slice(0,3):'');await b.close()})();

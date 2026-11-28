@@ -69,7 +69,7 @@ ok(await p.locator('#tlCmds [data-act="undo"]').count()===0,'annulla non più ne
 await p.evaluate(()=>{document.querySelector('#panels').style.setProperty('--w-items-open','300px')});await p.waitForTimeout(400);
 await p.evaluate(()=>window.GanttApp.act.layoutItemCmds());
 const ovf=await p.evaluate(()=>window.GanttApp.ui.ovf.slice());ok(ovf.length>0,'a 300 px alcuni comandi passano in Altro: '+ovf);
-const vis=await p.locator('#itemCmds .tbtn:visible').count();ok(vis+ovf.length===12,'visibili+nascosti = 12 ('+vis+'+'+ovf.length+')');
+const vis=await p.locator('#itemCmds .tbtn:visible').count();ok(vis+ovf.length===11,'visibili+nascosti = 11 ('+vis+'+'+ovf.length+')');
 await p.screenshot({path:'b1.png'});
 await p.locator('#itemCmds [data-act="more"]').click();
 ok(await p.locator('#itemCmds [data-act="cols"]:visible').count()===1,'Colonne… sempre visibile, anche a 300 px');

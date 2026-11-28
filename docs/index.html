@@ -141,12 +141,12 @@ svg{display:block}
 .row .c-id .eyb svg,.cols .c-id .eyh svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .row:hover .c-id .eyb,.row.hid .c-id .eyb{display:inline-flex}
 .row .c-id .eyb:hover{background:var(--accent2);color:var(--text)}
-.row.hid .c:not(.c-id){opacity:.45}
+.row.hid .c:not(.c-id),.row.hidp .c:not(.c-id){opacity:.45}
 .row.hid .c-id .eyb{color:var(--accent)}
 .cols .c-id .eyh{display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;cursor:pointer;margin-left:3px;border-radius:5px;color:var(--muted)}
 .cols .c-id .eyh.on{color:var(--accent)}
 .cols .c-id .eyh:hover{background:var(--accent2)}
-.trow.hid>.bx{opacity:.4}
+.trow.hid>.bx,.trow.hidp>.bx{opacity:.4}
 #panels.i-closed .row .c-id .eyb,#panels.i-closed .cols .c-id .eyh{display:none!important}
 .stnote{cursor:pointer;color:var(--accent)}
 .stnote:hover{text-decoration:underline}
@@ -325,6 +325,14 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .trow:nth-child(even){background:var(--stripe)}
 .trow.sel{background:var(--accent2)}
 .trow.emp{background:transparent;border-bottom-color:transparent}
+.cgrip{cursor:grab;color:var(--muted);display:inline-flex;align-items:center;margin-right:6px;flex:none;border-radius:4px}
+.cgrip svg{width:14px;height:14px;fill:currentColor;stroke:none}
+.cgrip:focus-visible{outline:2px solid var(--accent)}
+.swrow.dragging{opacity:.55;background:var(--accent2)}
+.swrow>span:not(.cgrip){flex:1;text-align:left}
+.rmq{position:absolute;left:0;right:0;pointer-events:none;z-index:5;background:color-mix(in srgb,var(--accent) 14%,transparent);display:none}
+.rmq.win{border-top:1px solid var(--accent);border-bottom:1px solid var(--accent)}
+.rmq.cro{border-top:1px dashed var(--accent);border-bottom:1px dashed var(--accent)}
 .hovcol{position:absolute;top:0;bottom:0;pointer-events:none;background:color-mix(in srgb,var(--accent) 11%,transparent);box-shadow:inset 1px 0 0 color-mix(in srgb,var(--accent) 30%,transparent),inset -1px 0 0 color-mix(in srgb,var(--accent) 30%,transparent);z-index:1;display:none}
 .tlc.hv{background:color-mix(in srgb,var(--accent) 24%,transparent)!important;color:var(--text);font-weight:700}
 html[data-er="1"] .trow.emp{border-bottom-color:var(--line)}
@@ -379,6 +387,10 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .bar .bl{position:absolute;left:8px;right:6px;top:0;bottom:0;display:flex;align-items:center;font-size:calc(11.5px*var(--k));font-weight:600;overflow:hidden;white-space:nowrap}
 .bar .bp{position:absolute;left:0;bottom:0;height:calc(3px*var(--k));background:rgba(0,0,0,.42)}
 .bar.ghost{opacity:.65;outline:2px dashed var(--accent)}
+.bar.ghost.gt-milestone{height:16px;width:16px!important;margin-left:-8px;top:50%;margin-top:-8px;transform:rotate(45deg);border-radius:3px}
+.bar.ghost.gt-indication{height:4px;top:50%;margin-top:-2px;border-radius:2px}
+.bar.ghost.gt-wait{background:transparent!important}
+.gtag{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;font-weight:650;color:var(--accent);background:var(--panel);border:1px solid var(--accent);border-radius:6px;padding:1px 6px;white-space:nowrap;pointer-events:none;z-index:6}
 .row .c.dflt .t{opacity:.5}
 .bar.brk{background:none!important;box-shadow:none!important;overflow:visible;outline:0!important}
 .bar.brk .bseg{position:absolute;top:0;bottom:0;border-radius:var(--bre,calc(3px*var(--k)));overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.22);pointer-events:none}
@@ -495,6 +507,19 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .icmds{display:flex;gap:2px;flex:none}
 .icmds .ov{display:none}
 .tbtn.on{background:var(--accent2);color:var(--accent)}
+.tbtn.mod{position:relative}.tbtn.mod::after{content:"";position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.tbtn.pinned{background:var(--press)}
+.mostrafly{position:fixed;z-index:60;display:none;gap:2px;padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--panel);box-shadow:var(--shadow)}
+.mostrafly.open{display:inline-flex}
+.mostrafly::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+.gtbox{display:inline-flex;align-items:center;gap:2px;height:100%}
+.gtin{width:calc(86px*var(--k));height:calc(24px*var(--k));border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--text);padding:0 6px;font:inherit;font-size:.92em}
+.gtin:focus{outline:2px solid var(--accent);outline-offset:0}
+.gtgo{height:calc(24px*var(--k));border:0;border-radius:7px;background:var(--accent2);color:var(--accent);font:inherit;font-size:.92em;padding:0 9px;cursor:pointer}
+.gtgo:hover{background:var(--accent);color:var(--onacc)}
+.gtin.pulse{animation:gtpulse 1.1s ease-in-out infinite}
+@keyframes gtpulse{0%,100%{box-shadow:0 0 0 0 transparent;border-color:var(--line)}50%{box-shadow:0 0 0 3px var(--accent2);border-color:var(--accent)}}
+@media (prefers-reduced-motion:reduce){.gtin.pulse{animation:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}}
 #panels.noguides .gv,#panels.noguides .gl,#panels.noguides .gs,#panels.noguides .ge{display:none}
 #pItems .phead h2{flex:none;white-space:nowrap}
 #pItems .phead .sp{flex:1}
@@ -608,7 +633,9 @@ dialog::backdrop{background:rgba(0,0,0,.38)}
 .wl-lead{margin:2px auto 14px;max-width:62ch;text-align:center;line-height:1.5;color:var(--muted)}
 .wl-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;margin:0 0 14px}
 .wl-strip span{font-size:calc(11.5px*var(--k));font-weight:600;padding:3px 10px;border-radius:99px;background:var(--accent2);color:var(--accent)}
-.wl-car{position:relative;margin:0 -6px 12px}
+.wl-car{position:relative;margin:0 -6px 8px}
+.wl-rt{margin:10px 0 0;font-size:calc(12.5px*var(--k));font-weight:700;letter-spacing:.02em;color:var(--text)}
+.wl-rt small{font-weight:500;color:var(--muted);margin-left:8px}
 .wl-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 6px 10px;scroll-padding:0 6px;outline:none}
 .wl-track:focus-visible{box-shadow:0 0 0 2px var(--accent);border-radius:12px}
 .wl-track .wl-card{flex:0 0 min(262px,80%);scroll-snap-align:start}
@@ -664,6 +691,16 @@ dialog::backdrop{background:rgba(0,0,0,.38)}
 .wl-ani .r-2{animation:wlLoad2 5s ease-in-out infinite}
 .wl-ani .r-3{animation:wlLoad 5s ease-in-out 1.2s infinite}
 .wl-ani .e-ar{animation:wlDrop 5s ease-in-out infinite}
+@keyframes wlMq{0%,8%{transform:scale(0,0);opacity:1}50%,86%{transform:scale(1,1);opacity:1}100%{transform:scale(1,1);opacity:0}}
+@keyframes wlLn{0%,10%{stroke-dashoffset:70;opacity:1}42%,86%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes wlShake{0%,28%{transform:translateX(0)}36%{transform:translateX(14px)}46%,54%{transform:translateX(0)}60%,100%{transform:translateX(0)}}
+@keyframes wlScY{0%,10%{transform:translateY(0)}45%,86%{transform:translateY(-16px)}100%{transform:translateY(0)}}
+@keyframes wlKey{0%,20%,60%,100%{transform:translateY(0);fill:var(--panel)}30%,50%{transform:translateY(2px);fill:var(--accent2)}}
+.wl-ani .m-q{transform-box:fill-box;transform-origin:left top;animation:wlMq 6s ease-out infinite}
+.wl-ani .l-d{stroke-dasharray:70;animation:wlLn 6s ease-out infinite}
+.wl-ani .s-k{animation:wlShake 6s ease-in-out infinite}
+.wl-ani .ph-s{animation:wlScY 6s ease-in-out infinite}
+.wl-ani .k-1{animation:wlKey 6s ease-in-out infinite}.wl-ani .k-2{animation:wlKey 6s ease-in-out .4s infinite}.wl-ani .k-3{animation:wlKey 6s ease-in-out .8s infinite}
 @media(prefers-reduced-motion:reduce){.wl-ani *{animation:none!important}}
 .wl-f{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .wl-chk{display:flex;align-items:center;gap:8px;margin-right:auto;color:var(--muted);cursor:pointer;font-size:calc(12px*var(--k))}
@@ -833,7 +870,7 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
     <div class="abhero"><span class="ablogo" id="wlLogo"></span><div class="abhead"><span class="abname" id="wlTitle">Benvenuto in Valico</span><span class="abpill" id="wlPill"></span></div>
     <div class="abtag">Pianificazione con diagramma di Gantt, in un solo file, per lavorare sui tuoi progetti senza dipendere da nessuno.</div></div>
     <div class="wl-strip"><span>Nessun account</span><span>Nessuna registrazione</span><span>Nessuna raccolta di dati</span><span>Funziona sul tuo computer</span><span>Un solo file, senza installazione</span></div>
-    <div class="wl-car"><button type="button" class="wl-nav pv" id="wlPrev" aria-label="Scheda precedente"><svg viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13"/></svg></button><div class="wl-track" id="wlTrack" tabindex="0" role="region" aria-label="Funzioni principali"></div><button type="button" class="wl-nav nx" id="wlNext" aria-label="Scheda successiva"><svg viewBox="0 0 16 16"><path d="M6 3 L11 8 L6 13"/></svg></button></div>
+    <div id="wlRows"></div>
     <details class="abd" id="wlName">
       <summary>Il nome e l&rsquo;icona</summary>
       <p class="abp">Il valico è il punto in cui un percorso supera una catena montuosa: è l&rsquo;ostacolo e, insieme, il traguardo. Un progetto si affronta allo stesso modo: si supera programmando, un passo alla volta, e si supera in squadra.</p>
@@ -915,8 +952,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.9.9', date:'2026-11-26', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.10.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.10.0: pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare; campo Vai a data nella barra della timeline (la timeline si estende fino a date lontane); colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt+frecce) e gruppo Carico di lavoro con valori rapidi per ore e persone; trascinamento ad area sulle righe del pannello Item (Alt), selezione dell\'intervallo date trascinando nel calendario, tasti 1-4 per scegliere il tipo mentre si disegna, suggerimento sui nomi troncati; gli item dentro un gruppo nascosto sono attenuati; esportazione dal lunedì alla domenica con margini; benvenuto in due righe di schede.",
     "0.9.9: corretto un errore dello zoom con la maniglia della timeline (visto in WebKit, il motore di Safari) che poteva saltare il ridisegno al rilascio del mouse.",
     "0.9.8: corretto l'export in PDF vettoriale, che apriva due volte la finestra di stampa e quindi due richieste di salvataggio con nomi diversi.",
     "0.9.7: interruttore Mostra le barre nella barra della timeline: nasconde barre, gruppi e collegamenti (restano milestone, marker e periodi); solo vista, salvato nel progetto.",
@@ -1038,6 +1076,8 @@ var ICONS = {
   layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
   list:'<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
   brk:'<rect x="3" y="9" width="5" height="6" rx="1"/><rect x="16" y="9" width="5" height="6" rx="1"/>',
+  deps:'<path d="M4 6h5a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5"/><path d="M17 15l3 3-3 3"/>',
+  cursorhl:'<rect x="9" y="3" width="6" height="18" rx="1.5" stroke-dasharray="2 2"/><path d="M13 12l7 3-3 1-1 3z"/>',
   todayhl:'<rect x="8.5" y="3" width="7" height="18" rx="1.5"/><path d="M3 8h2.5M3 16h2.5M18.5 8h2.5M18.5 16h2.5"/>',
   goto:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M9.5 15h5M12.5 13l2 2-2 2"/>',
   target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/>',
@@ -1430,6 +1470,7 @@ function parseDateReal(t, refYear){
 
 /* ===================== Struttura, gerarchia e campi (modulo 2) ===================== */
 function findIdx(p, u){ for(var i = 0; i < p.items.length; i++) if(p.items[i].uid === u) return i; return -1; }
+function hidAnc(p, i){ var j = parentIdx(p, i); while(j >= 0){ if(p.items[j].hidden) return true; j = parentIdx(p, j); } return false; }   /* un antenato (gruppo) è nascosto */
 function blockEnd(p, i){ var L = p.items[i].level, j = i+1; while(j < p.items.length && p.items[j].level > L) j++; return j; }   /* indice successivo all'ultimo discendente */
 function parentIdx(p, i){ var L = p.items[i].level, j = i-1; while(j >= 0){ if(p.items[j].level < L) return j; j--; } return -1; }
 function isGroupAt(p, i){ return i+1 < p.items.length && p.items[i+1].level > p.items[i].level; }
@@ -2226,7 +2267,14 @@ function idW(){ var n = (typeof P !== 'undefined' && P && P.items) ? P.items.len
 function colById(id){ for(var i = 0; i < COLS.length; i++) if(COLS[i].id === id) return COLS[i]; return null; }
 function itemByUid(u){ for(var i = 0; i < P.items.length; i++) if(P.items[i].uid === u) return P.items[i]; return null; }
 function colHidden(id){ var c = colById(id); if(id === 'name') return false; if(c && c.opt) return (P.view.shownColumns || []).indexOf(id) < 0; return P.view.hiddenColumns.indexOf(id) >= 0; }
-function visCols(){ return COLS.filter(function(c){ return !colHidden(c.id); }); }
+/* ordine delle colonne (salvato nel progetto): Nome resta sempre per prima, le altre seguono P.view.colOrder */
+function colOrderIds(){
+  var base = COLS.filter(function(c){ return c.id !== 'name'; }).map(function(c){ return c.id; }), seen = {}, out = [];
+  ((P.view && P.view.colOrder) || []).forEach(function(id){ if(base.indexOf(id) >= 0 && !seen[id]){ seen[id] = 1; out.push(id); } });
+  base.forEach(function(id){ if(!seen[id]) out.push(id); });
+  return out;
+}
+function visCols(){ var by = {}, out; COLS.forEach(function(c){ by[c.id] = c; }); out = [by.name]; colOrderIds().forEach(function(id){ if(!colHidden(id)) out.push(by[id]); }); return out; }
 function visRows(){
   var out = [], hideUntil = -1, i, n = P.items.length, sh = !!ui.showHid, it;
   for(i = 0; i < n; i++){
@@ -2314,7 +2362,7 @@ function renderItems(){
   if(hcnt || ui.showHid) hid0.appendChild(h('span',{ class:'eyh'+(ui.showHid ? ' on' : ''), role:'button', 'aria-pressed':String(!!ui.showHid), 'aria-label':'Mostra le righe nascoste', 'data-tip':(ui.showHid ? 'Le righe nascoste sono visibili (attenuate): clic per nasconderle di nuovo' : hcnt + (hcnt === 1 ? ' riga nascosta' : ' righe nascoste') + ': clic per mostrarle (attenuate) e poterle riattivare') }, icon(ui.showHid ? 'eye' : 'eyeoff')));
   cols.appendChild(hid0);
   g.cols.forEach(function(c){
-    var hc = h('div',{ class:'c c-'+c.id+(c.id === 'name' ? ' s2' : ''), text:c.label, 'data-tip':c.tip });
+    var hc = h('div',{ class:'c c-'+c.id+(c.id === 'name' ? ' s2' : ''), text:c.label, 'data-tip':c.tip, 'data-hcol':c.id });
     if(c.id === 'name') hc.appendChild(h('span',{ class:'nres', 'data-tip':'Trascina per allargare solo la colonna Nome (il pannello scorre in orizzontale). Doppio clic: larghezza automatica.' }));
     cols.appendChild(hc);
   });
@@ -2329,7 +2377,7 @@ function renderItems(){
 }
 function rowEl(it, i, vcols){
   var sel = ui.sel.indexOf(it.uid) >= 0, grp = it.type === 'group';
-  var row = h('div',{ class:'row'+(sel ? ' sel' : '')+(grp ? ' grp' : '')+(it.hidden ? ' hid' : ''), 'data-uid':it.uid });
+  var row = h('div',{ class:'row'+(sel ? ' sel' : '')+(grp ? ' grp' : '')+(it.hidden ? ' hid' : '')+(!it.hidden && hidAnc(P, i) ? ' hidp' : ''), 'data-uid':it.uid });
   row.appendChild(h('div',{ class:'c c-id s1' }, h('span',{ class:'n', text:String(i+1) }), h('span',{ class:'g', 'data-tip':'Trascina per spostare: in verticale cambia l\'ordine, in orizzontale il livello' }, icon('grip')),
     h('span',{ class:'eyb'+(it.hidden ? ' off' : ''), role:'button', 'aria-label':it.hidden ? 'Mostra la riga' : 'Nascondi la riga', 'aria-pressed':String(!it.hidden), 'data-tip':it.hidden ? 'Riga nascosta (solo vista): clic per mostrarla di nuovo' : 'Nascondi la riga (solo vista: date e collegamenti non cambiano)' }, icon(it.hidden ? 'eyeoff' : 'eye'))));
   vcols.forEach(function(c){ row.appendChild(cellEl(it, i, c)); });
@@ -2763,6 +2811,44 @@ document.addEventListener('copy', cellClipCopy);
 document.addEventListener('paste', cellClipPaste);
 function initItemsEvents(){
   var body = $('#itemsBody');
+  /* nome completo come suggerimento quando la cella è troncata (dopo il ritardo usuale dei suggerimenti) */
+  body.addEventListener('mouseover',function(e){
+    var c = e.target.closest ? e.target.closest('.row[data-uid] .c-name') : null; if(!c) return;
+    var t = c.querySelector('.t'); if(!t) return;
+    if(t.scrollWidth > t.clientWidth + 1 && !ui.edit) c.setAttribute('data-tip', t.textContent); else c.removeAttribute('data-tip');
+  });
+  /* selezione ad area sulle righe (Alt+trascina): verso il basso righe contenute, verso l'alto righe toccate; Maiusc all'inizio aggiunge */
+  function startRowMarquee(e0){
+    var by0 = body.getBoundingClientRect(), y0 = e0.clientY - by0.top, moved = false, base = e0.shiftKey ? ui.sel.slice() : [], box = h('div',{ class:'rmq' }), prev = ui.sel.slice(), prevCell = ui.cell, prevRs = ui.rowSel;
+    body.appendChild(box);
+    function apply(ev){
+      var r0 = body.getBoundingClientRect(), y1 = ev.clientY - r0.top;
+      if(!moved && Math.abs(y1 - y0) < 4) return;
+      moved = true;
+      var lo = Math.min(y0, y1), hi = Math.max(y0, y1), down = y1 >= y0, rows = body.querySelectorAll('.row[data-uid]'), out = base.slice(), k, rw, tp, bt, u, inb;
+      for(k = 0; k < rows.length; k++){
+        rw = rows[k]; tp = rw.offsetTop; bt = tp + rw.offsetHeight; u = rw.getAttribute('data-uid');
+        inb = down ? (tp >= lo && bt <= hi) : (bt > lo && tp < hi);
+        if(inb && out.indexOf(u) < 0) out.push(u);
+      }
+      box.style.top = lo + 'px'; box.style.height = (hi - lo) + 'px'; box.className = 'rmq ' + (down ? 'win' : 'cro'); box.style.display = 'block';
+      ui.sel = out; ui.rowSel = true; refreshSel();
+    }
+    function mv(ev){ apply(ev); }
+    function fin(ev, cancel){
+      document.removeEventListener('mousemove', mv, true); document.removeEventListener('mouseup', up, true); document.removeEventListener('keydown', kd, true);
+      if(box.parentNode) box.parentNode.removeChild(box);
+      if(cancel || !moved){ ui.sel = prev; ui.cell = prevCell; ui.rowSel = prevRs; refreshSel(); return; }
+      if(ui.sel.length){ ui.anchor = ui.sel[0]; ui.cell = { uid:ui.sel[0], col:(prevCell && prevCell.col) || 'name' }; ui.rowSel = true; }
+      afterSelect();
+    }
+    function up(ev){ fin(ev, false); }
+    function kd(ev){ if(ev.key === 'Escape'){ ev.preventDefault(); ev.stopPropagation(); fin(ev, true); } }
+    document.addEventListener('mousemove', mv, true); document.addEventListener('mouseup', up, true); document.addEventListener('keydown', kd, true);
+  }
+  body.addEventListener('mousedown',function(e){
+    if(e.altKey && e.button === 0 && !(ui.edit && e.target.closest('input'))){ e.preventDefault(); if(ui.edit) endEdit('stay', true); e.stopPropagation(); startRowMarquee(e); return; }
+  }, true);
   body.addEventListener('mousedown',function(e){
     ui.slow = null;
     if(e.button !== 0 && e.button !== 2) return;
@@ -2816,7 +2902,19 @@ function initItemsEvents(){
     e.preventDefault();
     var u = row.getAttribute('data-uid');
     if(ui.sel.indexOf(u) < 0) setActive(u, 'name', 'single');
-    openMenuAt(e.clientX, e.clientY, rowMenuEntries());
+    var cc = e.target.closest('.c'), ck = cc && cc.getAttribute('data-col'), ents = rowMenuEntries(), qv = [];
+    /* valori rapidi per il carico di lavoro: ore al giorno e persone sulle righe selezionate */
+    if(ck === 'hours' || ck === 'crew'){
+      (ck === 'hours' ? ['8','6','4','0'] : ['1','2','3','4','5']).forEach(function(v){
+        qv.push({ label:(ck === 'hours' ? 'Ore al giorno: ' : 'Persone: ')+v, fn:function(){
+          var us = ui.sel.slice();
+          commit(ck === 'hours' ? 'Ore al giorno' : 'Persone', function(pp){ us.forEach(function(uu){ var it = pp.items[findIdx(pp, uu)]; if(it && it.type === 'task') setField(pp, uu, ck, v); }); });
+          renderItems(); renderTimeline();
+        } });
+      });
+      qv.push({ sep:true }); ents = qv.concat(ents);
+    }
+    openMenuAt(e.clientX, e.clientY, ents);
   });
 }
 
@@ -2917,13 +3015,47 @@ function openColumns(anchor){
       sw.setAttribute('aria-checked', String(col.opt ? at < 0 : at >= 0)); ui.dirty = true;
       applyItemsWidth(); renderItems(); renderHeader(); renderStatus(); if(advTg) advLabel();
     });
-    return h('div',{ class:'swrow', 'data-col':col.id }, h('span',{ text:col.tip.replace(/,.*$/,'') }), sw);
+    return h('div',{ class:'swrow', 'data-col':col.id }, h('span',{ class:'cgrip', tabindex:'0', role:'button', 'aria-label':'Trascina per cambiare l\'ordine della colonna ' + col.label + ' (Alt+↑ o Alt+↓)', 'data-tip':'Trascina per cambiare l\'ordine (Alt+↑/↓)' }, icon('grip')), h('span',{ text:col.tip.replace(/,.*$/,'') }), sw);
   }
-  var main = COLS.filter(function(x){ return x.id !== 'name' && !x.adv; }), adv = COLS.filter(function(x){ return x.adv; });
+  var byId = {}; COLS.forEach(function(x){ byId[x.id] = x; });
+  var ordC = colOrderIds().map(function(id){ return byId[id]; }), main = ordC.filter(function(x){ return !x.adv; }), adv = ordC.filter(function(x){ return x.adv; });
+  /* riordino: si trascina la maniglia (o Alt+↑/↓ con la maniglia a fuoco); le colonne dell'altro gruppo restano al loro posto */
+  function commitOrder(cont){
+    var ids = Array.prototype.map.call(cont.querySelectorAll(':scope > .swrow'), function(x){ return x.getAttribute('data-col'); }), full = colOrderIds(), pos = [];
+    full.forEach(function(id, i){ if(ids.indexOf(id) >= 0) pos.push(i); });
+    pos.forEach(function(q, k){ full[q] = ids[k]; });
+    P.view.colOrder = full; ui.dirty = true; applyItemsWidth(); renderItems(); renderHeader(); renderStatus();
+  }
+  function reorderIn(cont){
+    cont.addEventListener('mousedown',function(e){
+      var g = e.target.closest('.cgrip'); if(!g || e.button !== 0) return;
+      e.preventDefault();
+      var row = g.closest('.swrow'); row.classList.add('dragging');
+      function mv(ev){
+        var rows = Array.prototype.filter.call(cont.children, function(x){ return x.classList.contains('swrow') && x !== row; }), tgt = null, k, r;
+        for(k = 0; k < rows.length; k++){ r = rows[k].getBoundingClientRect(); if(ev.clientY < r.top + r.height / 2){ tgt = rows[k]; break; } }
+        cont.insertBefore(row, tgt);
+      }
+      function up(){ document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); row.classList.remove('dragging'); commitOrder(cont); }
+      document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+    });
+    cont.addEventListener('keydown',function(e){
+      var g = e.target.closest ? e.target.closest('.cgrip') : null; if(!g || !e.altKey || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
+      e.preventDefault(); e.stopPropagation();
+      var row = g.closest('.swrow'), sib = e.key === 'ArrowUp' ? row.previousElementSibling : row.nextElementSibling;
+      if(!sib || !sib.classList.contains('swrow')) return;
+      if(e.key === 'ArrowUp') cont.insertBefore(row, sib); else cont.insertBefore(sib, row);
+      commitOrder(cont); g.focus();
+    });
+  }
   c.appendChild(h('h3',{ class:'sub', text:'Principali' }));
-  main.forEach(function(col){ c.appendChild(mk(col)); });
+  var mainBox = h('div',{ class:'cbox' });
+  main.forEach(function(col){ mainBox.appendChild(mk(col)); });
+  c.appendChild(mainBox); reorderIn(mainBox);
   var box = h('div',{ class:'advbox' }), advTg = null;
-  adv.forEach(function(col){ box.appendChild(mk(col)); });
+  var advRows = h('div',{ class:'cbox' });
+  adv.forEach(function(col){ advRows.appendChild(mk(col)); });
+  box.appendChild(advRows); reorderIn(advRows);
   var open = adv.some(function(x){ return !colHidden(x.id); });
   function advLabel(){
     var n = adv.filter(function(x){ return !colHidden(x.id); }).length;
@@ -2931,10 +3063,16 @@ function openColumns(anchor){
     advTg.setAttribute('aria-expanded', String(open)); box.hidden = !open;
   }
   advTg = h('button',{ class:'advtg', type:'button', 'data-act':'advcols' });
-  advTg.addEventListener('click',function(){ open = !open; advLabel(); });
+  advTg.addEventListener('click',function(){ open = !open; advLabel(); if(popEl){ var t0 = parseFloat(popEl.style.top) || 8; popEl.style.top = Math.max(8, Math.min(t0, window.innerHeight - popEl.offsetHeight - 8)) + 'px'; } });
   c.appendChild(advTg); c.appendChild(box); advLabel();
   c.appendChild(h('div',{ class:'note', text:'Le colonne Δ confrontano il piano corrente con la baseline attiva: positivo = ritardo (rosso), negativo = anticipo (verde). Senza baseline attiva restano vuote.' }));
   c.appendChild(h('div',{ class:'note', text:'La scelta riguarda solo la vista: non filtra gli item e non cancella valori. Si salva nel file di progetto.' }));
+  c.appendChild(h('button',{ class:'btn sm', type:'button', 'data-act':'loadCols', style:'margin-top:8px;margin-right:6px', 'data-tip':'Mostra insieme Durata, Ore al giorno, Persone e Ore-uomo', text:'Carico di lavoro', onclick:function(){
+    P.view.shownColumns = P.view.shownColumns || [];
+    ['dur','hours','crew','manh'].forEach(function(id){ var cd = byId[id], hc, at; if(!cd) return; if(cd.opt){ if(P.view.shownColumns.indexOf(id) < 0) P.view.shownColumns.push(id); } else { at = P.view.hiddenColumns.indexOf(id); if(at >= 0) P.view.hiddenColumns.splice(at, 1); } });
+    ui.dirty = true; applyItemsWidth(); renderItems(); renderHeader(); renderStatus(); closePop();
+  } }));
+  c.appendChild(h('button',{ class:'btn sm', type:'button', 'data-act':'resetOrd', style:'margin-top:8px;margin-right:6px', text:'Ordine predefinito', onclick:function(){ delete P.view.colOrder; ui.dirty = true; applyItemsWidth(); renderItems(); renderHeader(); renderStatus(); closePop(); } }));
   c.appendChild(h('button',{ class:'btn sm', type:'button', 'data-act':'essCols', style:'margin-top:8px', text:'Solo colonne essenziali', onclick:function(){
     P.view.hiddenColumns = COLS_ESSENTIAL.slice(); P.view.shownColumns = []; ui.dirty = true;
     applyItemsWidth(); renderItems(); renderHeader(); renderStatus(); closePop();
@@ -3109,7 +3247,6 @@ function openMore(anchor){
 /* Comandi di riga nell'intestazione del pannello Item */
 var ICMDS = [
   { id:'add', ic:'plus', tip:'Nuovo item sotto la riga selezionata (in fondo se non c\'è selezione)', kid:'insBelow', label:'Nuovo item', fn:function(){ actInsert('below'); } },
-  { id:'ind', ic:'ind', tip:'Nuova indicazione: linea con etichetta per segnalare un\'avvertenza o un intervallo senza barra (dentro un gruppo se è selezionato)', label:'Nuova indicazione', fn:function(){ actNewIndication(); } },
   { id:'del', ic:'trash', tip:'Elimina gli item selezionati. Con il numero di riga selezionato si elimina anche con Canc', label:'Elimina', fn:function(){ actDelete(); }, sel:true },
   { id:'outdent', ic:'outdent', tip:'Riduci livello', kid:'outdent', label:'Riduci livello', fn:function(){ actLevel(-1); }, sel:true },
   { id:'indent', ic:'indent', tip:'Aumenta livello', kid:'indent', label:'Aumenta livello', fn:function(){ actLevel(1); }, sel:true },
@@ -3183,13 +3320,14 @@ function openVirtPicker(anchor, u, colId){
   openPopover(anchor, c);
   setTimeout(function(){ inp.focus(); inp.select(); }, 0);
 }
+var DRAW_TYPES = ['task','milestone','indication','wait'], DRAW_NAMES = { task:'Attività', milestone:'Milestone', indication:'Intervallo', wait:'Attesa' };
 function openDatePicker(anchor, u, colId){
   var it = itemByUid(u); if(!it || (colId !== 'start' && colId !== 'end' && colId !== 'deadline')) return;
   if(popEl && popAnchor === anchor){ closePop(); return; }
   if(virtOn()){ openVirtPicker(anchor, u, colId); return; }
   var cur = it[colId] ? toDN(it[colId]) : NaN, sel = isNaN(cur) ? null : cur, today = toDN(todayISO());
   var base = new Date((sel !== null ? sel : today) * DAYMS), y = base.getUTCFullYear(), m = base.getUTCMonth();
-  var box = h('div',{ class:'calp' });
+  var box = h('div',{ class:'calp' }), dragA = null;
   function draw(){
     box.textContent = '';
     var prev = h('button',{ class:'tbtn', type:'button', 'aria-label':'Mese precedente' }, icon('left')), next = h('button',{ class:'tbtn', type:'button', 'aria-label':'Mese successivo' }, icon('right'));
@@ -3212,8 +3350,23 @@ function openDatePicker(anchor, u, colId){
       (function(dn2){
         var b = h('button',{ class:cls, type:'button', 'data-dn':String(dn2), text:String(dd.getUTCDate()) });
         b.addEventListener('click',function(){ pickDate(u, colId, fromDN(dn2)); });
+        /* trascinando da un giorno all'altro si inseriscono insieme inizio e fine */
+        b.addEventListener('mousedown',function(ev){
+          if(ev.button !== 0 || it.type === 'milestone' || it.type === 'group' || it.type === 'indication' || colId === 'deadline') return;
+          dragA = dn2;
+          var stop = function(){ dragA = null; document.removeEventListener('mouseup', stop); };
+          document.addEventListener('mouseup', stop);
+        });
+        b.addEventListener('mouseup',function(){
+          if(dragA === null || dragA === dn2) return;
+          var A = Math.min(dragA, dn2), B = Math.max(dragA, dn2); dragA = null;
+          closePop();
+          if(ui.sel.length !== 1 || ui.sel[0] !== u) setActive(u, colId, 'single'); else { ui.cell = { uid:u, col:colId }; refreshSel(); }
+          commit('Modifica inizio e fine', function(pp){ setField(pp, u, 'start', fromDN(A)); return setField(pp, u, 'end', fromDN(B)); });
+        });
         b.addEventListener('mouseenter',function(){
           var r = null;
+          if(dragA !== null){ r = [Math.min(dragA, dn2), Math.max(dragA, dn2)]; paintPreview(g, r); g._cs(r, dn2); return; }
           if(it.type !== 'milestone'){ try{ var cc = clone(it); setSchedule(P, cc, colId, fromDN(dn2)); if(cc.start && cc.end) r = [toDN(cc.start), toDN(cc.end)]; }catch(x){} }
           paintPreview(g, r); g._cs(r, dn2);
         });
@@ -3236,7 +3389,7 @@ function openDatePicker(anchor, u, colId){
     box.appendChild(cnt);
     var td = h('button',{ class:'btn', type:'button', text:'Oggi' });
     td.addEventListener('click',function(){ pickDate(u, colId, fromDN(today)); });
-    box.appendChild(h('div',{ class:'cf' }, h('span',{ text:'Giorni non lavorativi in grigio' }), td));
+    box.appendChild(h('div',{ class:'cf' }, h('span',{ text:(it.type === 'milestone' || it.type === 'group' || it.type === 'indication' || colId === 'deadline') ? 'Giorni non lavorativi in grigio' : 'Trascina da un giorno all\'altro per inserire inizio e fine · non lavorativi in grigio' }), td));
   }
   draw();
   openPopover(anchor, box);
@@ -3411,6 +3564,7 @@ function tlExtent(p){
   if(!isNaN(ps) && (mn === null || ps < mn)){ mn = ps; if(mx === null) mx = ps + 7 * 8; }
   var pe = (!virtOn(p) && p.calendar && p.calendar.projectEnd) ? toDN(p.calendar.projectEnd) : NaN;
   if(!isNaN(pe)){ if(mx === null || pe > mx) mx = pe; if(mn === null) mn = Math.min(pe, todayDN(p) === null ? pe : todayDN(p)); }
+  if(mn === null && ui.gotoExt && ui.gotoExt.p === p){ mn = ui.gotoExt.a; mx = ui.gotoExt.b; }
   if(mn === null){ mn = t; mx = t + 7 * 8; }
   /* 0.8.18: periodi e marker personali contano nell'estensione (non nelle date di inizio/fine usate dai marker automatici); durante un trascinamento il calendario si allunga una settimana alla volta */
   var lo = mn, hi = mx, dxe = ui.dragExt || null;
@@ -3420,6 +3574,7 @@ function tlExtent(p){
     var s0 = toDN(m.date), e0 = m.dateEnd ? toDN(m.dateEnd) : s0; if(isNaN(s0)) return; if(isNaN(e0)) e0 = s0;
     if(s0 < lo) lo = s0; if(e0 > hi) hi = e0;
   });
+  if(ui.gotoExt && ui.gotoExt.p === p){ lo = Math.min(lo, ui.gotoExt.a - 31); hi = Math.max(hi, ui.gotoExt.b + 31); }
   var a = mondayOf(lo - 7 * mb) - (dxe ? dxe.l : 0), b = mondayOf(hi + 7 * ma) + 6 + (dxe ? dxe.r : 0);
   return { a:a, b:b, n:b - a + 1, mn:mn, mx:mx };
 }
@@ -3767,7 +3922,7 @@ function renderTimeline(){ ui.hovKey = null;
   { var prb = document.createElement('div'); prb.style.cssText = 'position:absolute;visibility:hidden;width:1px;height:var(--row-h)'; document.body.appendChild(prb); ui.rh = prb.getBoundingClientRect().height || 32; prb.remove(); }
   ui.frames = tlFrames(vr, g);
   for(k = 0; k < n; k++){
-    var row = h('div',{ class:'trow'+(k >= vr.length ? ' emp' : (P.items[vr[k]] && P.items[vr[k]].hidden ? ' hid' : '')), 'data-k':String(k) });
+    var row = h('div',{ class:'trow'+(k >= vr.length ? ' emp' : (P.items[vr[k]] && P.items[vr[k]].hidden ? ' hid' : (P.items[vr[k]] && hidAnc(P, vr[k]) ? ' hidp' : ''))), 'data-k':String(k) });
     if(k < vr.length){
       i = vr[k]; row.setAttribute('data-u', items[i].uid);
       if(selSet[items[i].uid]) row.classList.add('sel');
@@ -4120,7 +4275,12 @@ function tlGoRange(fromISO, toISO){
   var g = ui.geo || tlGeom(), body = $('#tlBody'); if(!g || !body) return false;
   var a = toDN(fromISO), b = toISO ? toDN(toISO) : a, t;
   if(b < a){ t = a; a = b; b = t; }
-  if(b < g.a || a > g.b){ toast('Il periodo richiesto è fuori dalla timeline: aumenta i margini nelle opzioni della timeline.', 4600); return false; }
+  if(b < g.a || a > g.b){
+    /* data fuori dal calendario: la timeline si estende (solo vista, non salvata) di un mese oltre la data richiesta */
+    var ge = ui.gotoExt && ui.gotoExt.p === P ? ui.gotoExt : null;
+    ui.gotoExt = { p:P, a:Math.min(a, ge ? ge.a : a), b:Math.max(b, ge ? ge.b : b) };
+    renderTimeline(); g = ui.geo || tlGeom(); body = $('#tlBody');
+  }
   var ca = Math.max(a, g.a), cb = Math.min(b, g.b), n = cb - ca + 1, np;
   if(a === b){
     body.scrollLeft = Math.max(0, (a - g.a) * g.px + g.px / 2 - g.cw / 2);
@@ -4139,6 +4299,12 @@ function tlFlashRange(a, b){
   var el = h('div',{ class:'tgo', style:'left:'+((a - g.a) * g.px)+'px;width:'+((b - a + 1) * g.px)+'px' });
   grid.appendChild(el);
   setTimeout(function(){ if(el.parentNode) el.remove(); }, 3600);
+}
+function gotoQuick(inp){
+  var a = inp.value.trim(), pa = parseDateText(a, new Date().getFullYear());
+  if(!a){ openGotoDay(inp); return; }
+  if(pa === false || pa === ''){ toast('Data non valida. ' + dateHint(), 3600); inp.focus(); return; }
+  if(tlGoRange(pa, null)) inp.select();
 }
 function openGotoDay(anchor){
   var virt = virtOn(), t = todayDN();
@@ -4675,10 +4841,17 @@ function initTimelineEvents(){
       }
       if(brkOn(g) && drag.el.classList.contains('bar') && P.items[drag.i] && P.items[drag.i].type !== 'indication') brkBuild(drag.el, ns, ne, g, (ns - g.a) * g.px, (ne - ns + 1) * g.px, 0, itemHex(P, drag.i), P.items[drag.i].progress ? Math.min(100, P.items[drag.i].progress) : 0);
     } else if(drag.kind === 'draw' || drag.kind === 'new'){
-      var a1 = Math.min(drag.dn0, dn), b1 = Math.max(drag.dn0, dn);
+      var a1 = Math.min(drag.dn0, dn), b1 = Math.max(drag.dn0, dn), gty = drag.kind === 'new' ? (drag.type || 'task') : 'task';
+      if(gty === 'milestone'){ a1 = b1 = dn; }   /* la milestone ha una sola data: quella sotto il cursore */
       drag.ns = a1; drag.ne = b1;
       if(!drag.el){ drag.el = h('div',{ class:'bx bar ghost', style:'background:'+(drag.kind === 'new' ? PALETTE.blu[0] : itemHex(P, drag.i)) }); drag.row.appendChild(drag.el); }
+      drag.el.className = 'bx bar ghost' + (gty !== 'task' ? ' gt-' + gty : '');
       drag.el.style.left = ((a1 - g.a) * g.px)+'px'; drag.el.style.width = ((b1 - a1 + 1) * g.px)+'px';
+      if(drag.kind === 'new'){
+        if(!drag.tag){ drag.tag = h('span',{ class:'gtag' }); drag.row.appendChild(drag.tag); }
+        drag.tag.textContent = DRAW_NAMES[gty] + ' · tasti 1-4';
+        drag.tag.style.left = ((b1 - g.a + 1) * g.px + 8)+'px';
+      }
     }
   }
   function edge(){
@@ -4706,16 +4879,22 @@ function initTimelineEvents(){
     clearInterval(tmr); tmr = null; tb.classList.remove('tldrag'); tb.style.cursor = ''; ui.dragExt = null;
   }
   function onMove(e){ last = e; hoverAt(e); if(!drag.moved && Math.abs(e.clientX - drag.x0) < 4) return; drag.moved = true; tb.classList.add('tldrag'); paint(); }
-  function onKey(e){ if(e.key === 'Escape'){ e.stopPropagation(); e.preventDefault(); stop(); drag = null; renderTimeline(); } }
+  function onKey(e){
+    if(e.key === 'Escape'){ e.stopPropagation(); e.preventDefault(); stop(); drag = null; renderTimeline(); return; }
+    if(drag && drag.kind === 'new'){   /* tipo dell'item scelto durante il disegno: 1 attività, 2 milestone, 3 intervallo, 4 attesa */
+      var mk = /^(?:Digit|Numpad)([1-4])$/.exec(e.code || '');
+      if(mk && !e.ctrlKey && !e.altKey && !e.metaKey){ e.preventDefault(); e.stopPropagation(); drag.type = DRAW_TYPES[+mk[1] - 1]; if(last) paint(); }
+    }
+  }
   function onCtl(e){ if(drag && drag.moved && last && (e.key === 'Control' || e.key === 'Meta')){ last = { clientX:last.clientX, clientY:last.clientY, ctrlKey:e.type === 'keydown' }; paint(); } }
   document.addEventListener('keydown', onCtl); document.addEventListener('keyup', onCtl);
   function onUp(){
-    var d = drag; stop(); drag = null; if(d && !d.moved && d.multi){ setActive(d.uid, (ui.cell && ui.cell.col) || 'name', 'single', null); return; } if(!d || !d.moved){ return; }
+    var d = drag; stop(); drag = null; if(d && !d.moved && d.multi){ setActive(d.uid, (ui.cell && ui.cell.col) || 'name', 'single', null); return; } if(!d || (!d.moved && !(d.kind === 'new' && d.type && d.ns !== undefined))){ return; }
     var u = d.uid;
     if(d.kind === 'move'){ if(d.delta) commit(d.multi ? 'Sposta barre' : 'Sposta barra', function(p){ return d.multi ? opBarMoveMany(p, d.uids, d.delta, false) : opBarMove(p, u, d.delta); }); else renderTimeline(); }
     else if(d.kind === 'left' || d.kind === 'right'){ commit('Ridimensiona barra', function(p){ return opBarRange(p, u, fromDN(d.ns), fromDN(d.ne)); }) || renderTimeline(); }
     else if(d.kind === 'new'){
-      var nu = null, okn = commit('Nuova barra', function(p){ var c = opInsert(p, null, 'end'); nu = c.uid; return opBarRange(p, c.uid, fromDN(d.ns), fromDN(d.ne)); });
+      var nu = null, dty = d.type || 'task', okn = commit(dty === 'task' ? 'Nuova barra' : 'Nuovo item (' + DRAW_NAMES[dty].toLowerCase() + ')', function(p){ var c = opInsert(p, null, 'end'); nu = c.uid; if(dty !== 'task') setField(p, c.uid, 'type', dty); if(dty === 'milestone') return setSchedule(p, p.items[findIdx(p, c.uid)], 'start', fromDN(d.ns)); return opBarRange(p, c.uid, fromDN(d.ns), fromDN(d.ne)); });
       if(okn && nu){ ui.sel = [nu]; ui.anchor = nu; ui.cell = { uid:nu, col:'name' }; selectedHiddenFix(); render(); scrollToRow(nu); startEdit(nu, 'name', { fresh:true }); } else renderTimeline();
     }
     else if(d.kind === 'draw'){
@@ -6040,6 +6219,18 @@ function lyNotShown(o){   /* con «Tutti i livelli», dichiara gli item che un l
   if(ind) t.push(ind + (ind === 1 ? ' indicazione' : ' indicazioni'));
   return t.length ? 'Non rappresentati in questo layout: ' + t.join(', ') + '.' : '';
 }
+function expExtraSpan(){   /* estensione di periodi e marker personali visibili, in giorni: [min, max] oppure null */
+  var lo = 1e9, hi = -1e9;
+  if(P.view.periodBand !== false) (P.periods || []).forEach(function(pr){ if(!pr || pr.hidden) return; var s0 = pr.start ? toDN(pr.start) : NaN, e0 = pr.end ? toDN(pr.end) : NaN; if(isNaN(s0) || isNaN(e0)) return; if(s0 < lo) lo = s0; if(e0 > hi) hi = e0; });
+  (P.markers || []).forEach(function(m){
+    if(!m || m.hidden || P.view.markersOff || m.kind !== 'custom' || !m.date) return;
+    var s0 = toDN(m.date), e0 = m.dateEnd ? toDN(m.dateEnd) : s0; if(isNaN(s0)) return; if(isNaN(e0)) e0 = s0;
+    if(s0 < lo) lo = s0; if(e0 > hi) hi = e0;
+  });
+  return hi < lo ? null : [lo, hi];
+}
+/* inizio al lunedì (la settimana precedente se il primo elemento parte di lunedì), fine alla domenica (la successiva se l'ultimo elemento termina di domenica) */
+function expMargin(first, last){ var a = mondayOf(first), b = mondayOf(last) + 6; if(a === first) a -= 7; if(b === last) b += 7; return [a, b]; }
 function expWeekSnap(a, b){ return [mondayOf(a), mondayOf(b) + 6]; }   /* ogni esportazione parte da un lunedì e termina a una domenica */
 function expRange(o){   /* intervallo scelto in giorni [a, b], oppure null (tutto) oppure {error} */
   var ry, ia, ib, pr, k;
@@ -6069,8 +6260,9 @@ function expLayout(o){
   if(rgx && rgx.error) return rgx;
   if(rgx){
     a = rgx[0]; b = rgx[1];
+    if(o.area === 'active'){ var xe2 = expExtraSpan(); if(xe2){ if(xe2[0] < a) a = xe2[0]; if(xe2[1] > b) b = xe2[1]; } pa = expMargin(a, b); a = pa[0]; b = pa[1]; }
     arr = arr.filter(function(q){ return q.e >= a && q.s <= b; }); if(!arr.length) return { error:'Nessun item nell\'intervallo indicato.' };
-  }else{ a -= 2; b += 2; }
+  }else{ pa = expMargin(a, b); a = pa[0]; b = pa[1]; }
   pa = expWeekSnap(a, b); a = pa[0]; b = pa[1];
   if(o.layout === 'lanes' || o.layout === 'phases' || o.layout === 'mline'){   /* livello di partenza: il primo con almeno due voci (altrimenti un unico contenitore occuperebbe tutto) */
     var cnt = {}, lvs; arr.forEach(function(q){ if(!q.ms) cnt[q.lv] = (cnt[q.lv] || 0) + 1; });
@@ -6134,17 +6326,20 @@ function expBuild(o){
   if(o.area === 'active'){
     ar = activeRange();
     if(ar){
-      x0 = (ar[0] - 5 - g.a) * g.px; x1 = (ar[1] + 6 - g.a) * g.px;
+      var f0 = ar[0], l0 = ar[1], xe = expExtraSpan();
       /* barre ed etichette (anche fuori dalla barra) devono stare per intero nell'area */
       Array.prototype.forEach.call(cv.querySelectorAll('.trow'), function(tr, ti){
         if(ti >= n) return;
         Array.prototype.forEach.call(tr.querySelectorAll('.bx'), function(el){
           if(el.classList.contains('area')) return;
           var l = el.offsetLeft, r = l + el.offsetWidth; if(!r) return;
-          if(l - 8 < x0) x0 = l - 8; if(r + 8 > x1) x1 = r + 8;
+          var dl = Math.floor(l / g.px + 1e-6) + g.a, dr2 = Math.ceil(r / g.px - 1e-6) + g.a - 1;
+          if(dl < f0) f0 = dl; if(dr2 > l0) l0 = dr2;
         });
       });
-      x0 = Math.max(0, x0); x1 = Math.min(g.W, x1);
+      if(xe){ if(xe[0] < f0) f0 = xe[0]; if(xe[1] > l0) l0 = xe[1]; }
+      var mg = expMargin(f0, l0);
+      x0 = Math.max(0, (mg[0] - g.a) * g.px); x1 = Math.min(g.W, (mg[1] - g.a + 1) * g.px);
     }
   }
   else if(o.area === 'custom' || o.area === 'period'){
@@ -6158,7 +6353,7 @@ function expBuild(o){
   x0 = Math.floor(x0); x1 = Math.ceil(x1);
   /* colonne dell'elenco: «come a schermo» oppure scelta dell'utente */
   var colList = null;
-  if(Array.isArray(o.cols)){ colList = COLS.filter(function(c){ return c.id === 'name' || o.cols.indexOf(c.id) >= 0; }); }   /* tutte le colonne sono selezionabili, anche se nascoste a schermo */
+  if(Array.isArray(o.cols)){ var byC = {}; COLS.forEach(function(c){ byC[c.id] = c; }); colList = [byC.name]; colOrderIds().forEach(function(id){ if(o.cols.indexOf(id) >= 0) colList.push(byC[id]); }); }   /* tutte le colonne sono selezionabili, anche se nascoste a schermo */
   var nameW = o.items ? exportNameWidth() : NAME_MIN, Wt = x1 - x0, gi = gridInfo(colList, nameW, o.items ? exportDateWidths(vr) : null), Wi = o.items ? gi.min : 0;   /* la colonna Nome si adatta al nome più lungo (con un tetto), così in stampa non resta tagliata */
   /* intestazione della timeline: si possono omettere periodi e marker, e la fascia si accorcia di conseguenza */
   var tlrH = (head.querySelector('.tlr') ? head.querySelector('.tlr').getBoundingClientRect().height : 0), pbEl = head.querySelector('.pbnd'), msEl = head.querySelector('.mstrip');
@@ -6974,6 +7169,7 @@ function renderToolbarState(){
   ['del','indent','outdent'].forEach(function(a){ var b = $('#itemCmds [data-act="'+a+'"]'); if(b) b.classList.toggle('is-disabled', !ui.sel.length); });
   var vt = document.querySelectorAll('#tlCmds [data-vt]'), z;
   for(z = 0; z < vt.length; z++){ var kk = vt[z].getAttribute('data-vt'), on = kk === 'showLocks' ? P.view.showLocks !== false : kk === 'periodBand' ? P.view.periodBand !== false : kk === 'periodTint' ? P.view.periodTint !== false : kk === 'markersOn' ? !P.view.markersOff : kk === 'barsOn' ? !P.view.barsOff : !!P.view[kk]; vt[z].classList.toggle('on', on); vt[z].setAttribute('aria-pressed', String(on)); }
+  mosRefresh();
   var ph = document.querySelectorAll('#tlCmds [data-ph]'), q;
   for(q = 0; q < ph.length; q++){ var po = prefs.todayHl !== false; ph[q].classList.toggle('on', po); ph[q].setAttribute('aria-pressed', String(po)); }
   var sp = document.querySelectorAll('#tlCmds [data-pk]');
@@ -7012,42 +7208,74 @@ function openWelcome(){
   $('#wlPill').textContent = 'v'+APP.version; $('#wlNever').checked = !!prefs.welcomeOff;
   if(d.showModal) d.showModal(); else d.setAttribute('open','');
   var b = d.querySelector('.dlg-b'); if(b) b.scrollTop = 0;
-  var tk = $('#wlTrack'); if(tk) tk.scrollLeft = 0; wlNavState(); var nm = $('#wlName'); if(nm) nm.removeAttribute('open');
+  Array.prototype.forEach.call(document.querySelectorAll('#wlRows .wl-track'), function(t){ t.scrollLeft = 0; }); wlNavState(); var nm = $('#wlName'); if(nm) nm.removeAttribute('open');
   var st = $('#wlStart'); if(st) st.focus();
 }
 var WL_SVG = function(inner){ return '<svg class="wl-ani" viewBox="0 0 160 84" aria-hidden="true">'+inner+'</svg>'; };
-var WL_CARDS = [
+var WL_ROWS = [
+  { title:'Per iniziare', sub:'quattro gesti per lavorare subito', cards:[
   ['Disegna e annota', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect x="14" y="8" width="72" height="5" rx="2.5" fill="#f5b301" opacity=".75"/><rect class="w-bar a-b1" x="14" y="26" width="86" height="13" rx="4"/><polygon class="a-cur" points="98,36 98,52 103,48 108,56 111,54 106,46 112,45" fill="var(--text)"/><rect class="w-bar2 a-b2" x="44" y="56" width="60" height="12" rx="4"/><g class="a-flag"><line x1="128" y1="10" x2="128" y2="70" stroke="#f58220" stroke-width="1.5"/><polygon points="128,10 146,15 128,21" fill="#f58220"/></g>'),
-    'Disegna una barra trascinando sulla riga vuota; taglia, collega, aggiungi marker e periodi con un clic.'],
+    'Trascina sulla riga vuota per disegnare una barra. Mentre disegni, i tasti 1, 2, 3 e 4 scelgono il tipo: attività, milestone, indicazione, attesa.'],
+  ['Seleziona', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect class="w-bar2" x="14" y="12" width="60" height="11" rx="4"/><rect class="w-bar" x="40" y="30" width="70" height="11" rx="4"/><rect class="w-bar" x="70" y="48" width="64" height="11" rx="4"/><rect class="m-q" x="30" y="24" width="112" height="42" rx="3" fill="var(--accent)" fill-opacity=".14" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3"/>'),
+    'Trascina su un\'area vuota della timeline per selezionare più barre. Nel pannello Item, Alt+trascina seleziona più righe.'],
+  ['Collega', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect class="w-bar" x="12" y="14" width="58" height="12" rx="4"/><rect class="w-bar2" x="86" y="50" width="62" height="12" rx="4"/><path class="w-lnk l-d" d="M70 20 H78 V56 H86" marker-end="url(#wlar)"/><text class="w-tx" x="84" y="22">Maiusc + trascina</text>'),
+    'Tieni premuto Maiusc e trascina da una barra a un\'altra: nasce una dipendenza. Tipo e ritardo si regolano in seguito.'],
+  ['Cambia l\'etichetta', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect class="w-bar" x="20" y="30" width="120" height="16" rx="5"/><text class="w-tx rv-a" x="30" y="41" style="fill:#fff">Posa cavi</text><text class="w-tx rv-b" x="30" y="41" style="fill:#fff">Fase A</text><text class="w-tx" x="20" y="64">nome dell\'item: Posa cavi</text>'),
+    'Doppio clic su una barra o sulla sua etichetta: cambi il testo mostrato sulla timeline senza modificare il nome dell\'item.'],
+  ['Esporta e copia', WL_SVG('<rect class="w-pg" x="22" y="8" width="56" height="68" rx="5"/><rect class="w-bar2" x="30" y="20" width="30" height="6" rx="2"/><rect class="w-bar2" x="38" y="32" width="30" height="6" rx="2"/><rect class="w-bar2" x="30" y="44" width="22" height="6" rx="2"/><g class="e-ar"><path d="M112 20 V44 M102 36 L112 46 L122 36" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><text class="w-tx" x="92" y="64">PNG · PDF · copia</text>'),
+    'Copia l\'immagine con un clic e incollala in un\'email o in una presentazione. Oppure PNG, JPEG, SVG, PDF ed Excel, con otto layout e sfondo trasparente.']
+  ]},
+  { title:'Per andare più a fondo', sub:'funzioni che fanno risparmiare tempo', cards:[
+  ['Date bloccate', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><line x1="96" y1="8" x2="96" y2="72" stroke="#e5384a" stroke-width="1.5" stroke-dasharray="3 2"/><rect class="w-bar s-k" x="20" y="28" width="76" height="14" rx="4"/><g transform="translate(100 24)" fill="none" stroke="var(--text)" stroke-width="1.6"><rect x="0" y="8" width="14" height="11" rx="2" fill="var(--panel)"/><path d="M3 8 V5 a4 4 0 0 1 8 0 V8"/></g><rect class="w-bar2" x="40" y="54" width="60" height="11" rx="4"/>'),
+    'Blocca l\'inizio o la fine di un\'attività con il lucchetto: quella data resta ferma anche se trascini o colleghi altre barre.'],
+  ['Ore e persone', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect class="w-bar" x="14" y="16" width="70" height="12" rx="4"/><text class="w-tx" x="92" y="26">8 h × 3 pers.</text><rect class="w-bar r-1" x="14" y="40" width="110" height="9" rx="3" fill="#2fb457"/><text class="w-tx" x="14" y="68" style="fill:var(--text);font-weight:700">ore-uomo: giorni × ore × pers.</text>'),
+    'Indica ore al giorno e persone per ogni attività: le ore-uomo si calcolano da sole. L\'ordine delle colonne si sceglie dal pannello Colonne.'],
+  ['Calendario rispettato', WL_SVG('<line class="w-ax" x1="0" y1="78" x2="160" y2="78"/><rect x="62" y="6" width="24" height="68" fill="var(--muted)" opacity=".16"/><text class="w-tx" x="64" y="82">sab dom</text><rect class="w-bar" x="12" y="28" width="50" height="14" rx="4"/><rect class="w-bar" x="86" y="28" width="56" height="14" rx="4"/><path d="M62 35 H86" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="3 3"/>'),
+    'Le barre possono interrompersi nei giorni non lavorativi (fine settimana, festività) seguendo il calendario del progetto. Si attiva dal pannello Mostra.'],
+  ['Su smartphone', WL_SVG('<rect x="58" y="4" width="44" height="76" rx="8" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.6"/><g class="ph-s"><rect class="w-bar" x="64" y="16" width="26" height="6" rx="2"/><rect class="w-bar2" x="72" y="28" width="24" height="6" rx="2"/><rect class="w-bar" x="66" y="40" width="22" height="6" rx="2"/><rect class="w-bar2" x="76" y="52" width="20" height="6" rx="2"/><rect class="w-bar" x="68" y="64" width="24" height="6" rx="2"/><rect class="w-bar2" x="64" y="76" width="26" height="6" rx="2"/></g>'),
+    'Dal telefono il progetto si consulta: scorri le barre e leggi le date. La modifica è pensata per il computer.'],
+  ['Scorciatoie da tastiera', WL_SVG('<g stroke="var(--muted)" stroke-width="1.4"><rect class="k-1" x="18" y="22" width="36" height="30" rx="6" fill="var(--panel)"/><rect class="k-2" x="62" y="22" width="36" height="30" rx="6" fill="var(--panel)"/><rect class="k-3" x="106" y="22" width="36" height="30" rx="6" fill="var(--panel)"/></g><g class="w-tx" text-anchor="middle" style="fill:var(--text);font-weight:700"><text x="36" y="42">Ctrl</text><text x="80" y="42">Alt</text><text x="124" y="42">Z</text></g><text class="w-tx" x="18" y="72">Guida (?) › Scorciatoie</text>'),
+    'Le scorciatoie sono elencate e personalizzabili: apri la Guida (?) in alto e scegli «Scorciatoie da tastiera».'],
   ['Gruppi leggibili', WL_SVG('<rect class="g-tint" x="8" y="6" width="144" height="72" rx="8" fill="var(--accent)"/><rect x="8" y="6" width="3" height="72" rx="1.5" fill="var(--accent)"/><text class="w-tx" x="18" y="19" style="font-weight:700;fill:var(--text)">Fase 1</text><rect class="w-bar a-b1" x="20" y="28" width="60" height="11" rx="4"/><rect class="w-bar a-b2" x="52" y="46" width="56" height="11" rx="4"/><rect class="w-bar a-b3" x="94" y="64" width="46" height="9" rx="4"/>'),
     'Gruppi a più livelli con date e avanzamento calcolati, quattro stili grafici, colore e tinta di fondo.'],
-  ['Controlla il piano', WL_SVG('<rect class="w-ghost" x="22" y="12" width="70" height="13" rx="4"/><rect class="w-bar b-act" x="22" y="32" width="70" height="13" rx="4"/><text class="w-tx" x="24" y="9">baseline</text><text class="w-tx a-l" x="122" y="43" style="fill:#e5384a">+3 g</text><rect class="w-bar c-1" x="22" y="58" width="96" height="12" rx="4"/><text class="w-tx" x="24" y="80">percorso critico</text>'),
-    'Baseline con scostamenti, percorso critico e scadenze segnalate quando la fine prevista le supera.'],
+  ['Controlla il piano', WL_SVG('<rect class="w-ghost" x="22" y="12" width="70" height="13" rx="4"/><rect class="w-bar b-act" x="22" y="32" width="70" height="13" rx="4"/><text class="w-tx" x="24" y="9">baseline</text><text class="w-tx a-l" x="122" y="43" style="fill:#e5384a">+3 g</text><rect class="w-bar c-1" x="22" y="58" width="96" height="12" rx="4"/><text class="w-tx" x="24" y="80">scadenza</text>'),
+    'Baseline con scostamenti e scadenze segnalate quando la fine prevista le supera.'],
   ['Calendari su misura', WL_SVG('<g class="w-tx"><text x="6" y="14">Sett.</text></g><rect class="k-sw" x="6" y="18" width="20" height="24" rx="4" fill="var(--accent)" opacity=".28"/><g class="w-tx" text-anchor="middle"><text x="16" y="34">&#8722;1</text><text x="38" y="34">1</text><text x="60" y="34">2</text><text x="82" y="34">3</text><text x="104" y="34">4</text><text x="126" y="34">5</text><text x="148" y="34">6</text></g><g fill="none" stroke="var(--line)"><rect x="6" y="18" width="20" height="24" rx="4"/><rect x="28" y="18" width="20" height="24" rx="4"/><rect x="50" y="18" width="20" height="24" rx="4"/><rect x="72" y="18" width="20" height="24" rx="4"/><rect x="94" y="18" width="20" height="24" rx="4"/><rect x="116" y="18" width="20" height="24" rx="4"/><rect x="138" y="18" width="20" height="24" rx="4"/></g><g fill="var(--muted)"><rect x="6" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="18" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="30" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="42" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="54" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="66" y="54" width="9" height="9" rx="2" opacity=".25"/><rect x="78" y="54" width="9" height="9" rx="2" opacity=".25"/><rect x="90" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="102" y="54" width="9" height="9" rx="2" opacity=".85"/><rect x="114" y="54" width="9" height="9" rx="2" opacity=".85"/></g><text class="w-tx" x="6" y="76">calendario reale o virtuale (G1, G2…)</text>'),
     'Calendario lavorativo con festività ed eccezioni, o virtuale a giorni numerati; settimane dall\'inizio lavori.'],
   ['Progetti in file e revisioni', WL_SVG('<path class="w-pg" d="M30 8 H58 L72 22 V74 H30 Z"/><path d="M58 8 V22 H72" fill="none" stroke="var(--muted)" stroke-width="1.5"/><rect class="w-bar2" x="38" y="34" width="26" height="5" rx="2"/><rect class="w-bar2" x="38" y="44" width="20" height="5" rx="2"/><text class="w-tx" x="30" y="82" style="font-size:8px">progetto.json</text><rect x="88" y="30" width="58" height="24" rx="12" fill="var(--accent2)" stroke="var(--accent)"/><text class="w-tx rv-a" x="117" y="46" text-anchor="middle" style="fill:var(--accent);font-weight:700;font-size:11px">Rev. 1.0</text><text class="w-tx rv-b" x="117" y="46" text-anchor="middle" style="fill:var(--accent);font-weight:700;font-size:11px">Rev. 1.1</text>'),
     'Ogni progetto è un file JSON tuo; le revisioni emesse (Rev. 1.0, 1.1…) restano nel registro.'],
-  ['Esporta e copia', WL_SVG('<rect class="w-pg" x="22" y="8" width="56" height="68" rx="5"/><rect class="w-bar2" x="30" y="20" width="30" height="6" rx="2"/><rect class="w-bar2" x="38" y="32" width="30" height="6" rx="2"/><rect class="w-bar2" x="30" y="44" width="22" height="6" rx="2"/><g class="e-ar"><path d="M112 20 V44 M102 36 L112 46 L122 36" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><text class="w-tx" x="92" y="64">PNG · PDF · copia</text>'),
-    'PNG, JPEG, SVG, PDF ed Excel, con otto layout, sfondo trasparente e copia diretta dell\'immagine.'],
   ['Personalizza', WL_SVG('<rect class="w-bar p-bar" x="10" y="12" width="96" height="12" rx="4"/><rect class="w-bar p-bar d2" x="34" y="32" width="84" height="12" rx="4"/><rect class="w-bar p-bar d3" x="62" y="52" width="80" height="12" rx="4"/><circle cx="16" cy="76" r="4" fill="#2f7df6"/><circle cx="30" cy="76" r="4" fill="#f58220"/><circle cx="44" cy="76" r="4" fill="#2fb457"/><circle cx="58" cy="76" r="4" fill="#8b5cf6"/><circle cx="72" cy="76" r="4" fill="#e5384a"/>'),
     '40 colori in quattro livelli ordinati per tonalità, temi chiaro e scuro, carattere, densità e scorciatoie da tastiera personalizzabili.']
+  ]}
 ];
 function closeWelcome(){
   var d = $('#dlgWelcome'); if(!d) return;
   prefs.welcomeOff = !!$('#wlNever').checked; savePrefs();
   if(d.close) d.close(); else d.removeAttribute('open');
+  /* progetto nuovo o vuoto: il campo «Vai a data» lampeggia finché non viene usato (massimo 10 s) */
+  var gq = $('#gtQuick');
+  if(gq && !P.items.some(function(x){ return x.start; })){ gq.classList.add('pulse'); setTimeout(function(){ gq.classList.remove('pulse'); }, 10000); }
 }
 function wlNavState(){
-  var tr = $('#wlTrack'), pv = $('#wlPrev'), nx = $('#wlNext'); if(!tr) return;
-  pv.disabled = tr.scrollLeft < 4; nx.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4;
+  var trs = document.querySelectorAll('#wlRows .wl-track'), k;
+  for(k = 0; k < trs.length; k++){ var tr = trs[k]; if(!tr._pv) continue; tr._pv.disabled = tr.scrollLeft < 4; tr._nx.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4; }
 }
 function initWelcome(){
   $('#wlLogo').innerHTML = $('#abLogo').innerHTML;
-  var tr = $('#wlTrack'); tr.textContent = '';
-  WL_CARDS.forEach(function(c){ var d = h('div',{ class:'wl-card', role:'group', 'aria-label':c[0] }); d.innerHTML = c[1]; d.appendChild(h('h4',{ text:c[0] })); d.appendChild(h('p',{ text:c[2] })); tr.appendChild(d); });
-  function go(dir){ var cw = (tr.firstChild ? tr.firstChild.offsetWidth : 260) + 12; tr.scrollBy({ left:dir * cw, behavior:'smooth' }); }
-  $('#wlPrev').addEventListener('click', function(){ go(-1); }); $('#wlNext').addEventListener('click', function(){ go(1); });
-  tr.addEventListener('scroll', wlNavState); window.addEventListener('resize', wlNavState);
+  var rows = $('#wlRows'); rows.textContent = '';
+  WL_ROWS.forEach(function(rw, k){
+    var tr = h('div',{ class:'wl-track', tabindex:'0', role:'region', 'aria-label':rw.title, 'data-wlt':String(k) });
+    var pv = h('button',{ type:'button', class:'wl-nav pv', 'aria-label':'Scheda precedente: '+rw.title }), nx = h('button',{ type:'button', class:'wl-nav nx', 'aria-label':'Scheda successiva: '+rw.title });
+    pv.innerHTML = '<svg viewBox="0 0 16 16"><path d="M10 3 L5 8 L10 13"/></svg>'; nx.innerHTML = '<svg viewBox="0 0 16 16"><path d="M6 3 L11 8 L6 13"/></svg>';
+    rw.cards.forEach(function(c){ var d = h('div',{ class:'wl-card', role:'group', 'aria-label':c[0] }); d.innerHTML = c[1]; d.appendChild(h('h4',{ text:c[0] })); d.appendChild(h('p',{ text:c[2] })); tr.appendChild(d); });
+    function go(dir){ var cw = (tr.firstChild ? tr.firstChild.offsetWidth : 260) + 12; tr.scrollBy({ left:dir * cw, behavior:'smooth' }); }
+    pv.addEventListener('click', function(){ go(-1); }); nx.addEventListener('click', function(){ go(1); });
+    tr.addEventListener('scroll', wlNavState);
+    tr._pv = pv; tr._nx = nx;
+    rows.appendChild(h('div',{ class:'wl-rt' }, rw.title, h('small',{ text:rw.sub })));
+    rows.appendChild(h('div',{ class:'wl-car' }, pv, tr, nx));
+  });
+  window.addEventListener('resize', wlNavState);
   $('#wlStart').addEventListener('click', closeWelcome);
   $('#wlExample').addEventListener('click', function(){ closeWelcome(); loadExample(); });
   $('#wlPriv').addEventListener('click', function(){ openAbout(true); });
@@ -7273,7 +7501,7 @@ function buildLog(){
 var TLC = [
  { seg:true, tip:'Scala della timeline', label:'Scala', opts:['Giorni','Settimane','Mesi'], vk:'scale', vv:['days','weeks','months'] },
  { ic:'target', tip:'Vai a oggi', label:'Vai a oggi', act:'today' },
- { ic:'goto', tip:'Vai a un giorno o a un intervallo di date', label:'Vai al giorno', act:'gotoDay' },
+ { goto:true, tip:'Vai a una data', label:'Vai a data…', act:'gotoDay' },
  { sep:true },
  { seg:true, ico:true, tip:'Gruppi: compatti (una riga) o estesi (con le barre dei figli)', label:'Gruppi', names:['Gruppi compatti','Gruppi estesi'], vk:'groupMode', vv:['compact','extended'],
    opts:['<path d="M4 12h16" stroke-width="3.2"/>','<path d="M4 6h16M4 12h11M4 18h14" stroke-width="2.2"/>'] },
@@ -7281,20 +7509,101 @@ var TLC = [
  { sep:true },
  { ic:'layers', tip:'Visualizza: intestazione, gruppi e righe, evidenziazioni (date bloccate, percorso critico, dipendenze, passato)', label:'Visualizza…', act:'tlopts' },
  { ic:'calendar', tip:'Calendario del progetto: giorni lavorativi, festività, eccezioni', label:'Calendario del progetto…', act:'calendar' },
- { ic:'todayhl', tip:'Evidenzia oggi: colonna del giorno corrente evidenziata a tutta altezza (attiva/disattiva)', label:'Evidenzia oggi', act:'todayHl', ph:true },
- { ic:'brk', tip:'Interrompi le barre nei giorni non lavorativi: solo visivo, segue il calendario del progetto (attiva/disattiva)', label:'Interrompi le barre nei giorni non lavorativi', act:'breakNW', vt:'breakNW' },
+ { ic:'eye', tip:'Mostra: barre, marker, periodi, evidenziazioni (passa il cursore per un\'anteprima, clic per applicare)', label:'Mostra', act:'mostra', mostra:true },
  { sep:true },
  { ic:'mklist', tip:'Elenco dei marker (nuovo marker: Alt+clic nell\'intestazione)', label:'Elenco dei marker…', act:'mkList' },
  { ic:'bandlist', tip:'Fascia dei periodi (nuovo periodo: Alt+trascina nella fascia)', label:'Fascia dei periodi…', act:'band' },
- { ic:'gantt', tip:'Mostra o nasconde le barre (attività, attese, intervalli e gruppi) e i collegamenti; restano marker, periodi e milestone. Solo vista: i dati non cambiano', label:'Mostra le barre', act:'barsVis', vt:'barsOn' },
- { ic:'marker', tip:'Mostra o nasconde tutti i marker (la visibilità di ciascun marker resta invariata)', label:'Mostra i marker', act:'mkVis', vt:'markersOn' },
- { ic:'band', tip:'Mostra o nasconde tutti i periodi (fascia e colorazione della timeline)', label:'Mostra i periodi', act:'perVis', vt:'periodBand' },
- { ic:'tint', tip:'Colora o non colora la timeline in corrispondenza dei periodi (la fascia dei periodi resta visibile)', label:'Colorazione dei periodi', act:'perTint', vt:'periodTint' },
  { sep:true },
  { ic:'link', tip:'Modalità collegamento (dipendenze). Tenendo premuto Maiusc compaiono i punti di collegamento', label:'Collegamento (dipendenze)', act:'link' },
  { sep:true, far:true },
  { ic:'bars', tip:'Baseline: confronto tra il piano salvato e il piano corrente', label:'Baseline…', act:'baseline' }
 ];
+/* ===== Pannello «Mostra»: interruttori di sola vista, con anteprima al passaggio del cursore ===== */
+var MOSTRA = [
+  { act:'barsVis', ic:'gantt', label:'Barre', tip:'Barre (attività, attese, intervalli e gruppi) e collegamenti; restano marker, periodi e milestone', key:'barsOff', inv:true, dflt:true },
+  { act:'mkVis', ic:'marker', label:'Marker', tip:'Tutti i marker (la visibilità di ciascun marker resta invariata)', key:'markersOff', inv:true, dflt:true },
+  { act:'perVis', ic:'band', label:'Periodi', tip:'Fascia dei periodi', key:'periodBand', dflt:true },
+  { act:'perTint', ic:'tint', label:'Tinta dei periodi', tip:'Colorazione della timeline in corrispondenza dei periodi', key:'periodTint', dflt:true },
+  { act:'breakNW', ic:'brk', label:'Interruzione nei giorni non lavorativi', tip:'Interrompe le barre nei giorni non lavorativi (solo visivo)', key:'breakNW', dflt:false },
+  { act:'todayHl', ic:'todayhl', label:'Evidenzia oggi', tip:'Colonna del giorno corrente evidenziata a tutta altezza', pref:'todayHl', dflt:true },
+  { act:'hoverCol', ic:'cursorhl', label:'Evidenzia sotto il cursore', tip:'Evidenzia giorno, settimana e mese sotto il cursore', pref:'hoverCol', dflt:true },
+  { act:'depsVis', ic:'deps', label:'Frecce delle dipendenze', tip:'Frecce delle dipendenze tra le barre', key:'showDeps', dflt:true }
+];
+function mosGet(m){
+  var v = m.pref ? prefs[m.pref] : P.view[m.key];
+  if(m.inv) return !v;
+  if(m.dflt) return v !== false;
+  return !!v;
+}
+function mosSetRaw(m, on){
+  if(m.pref) prefs[m.pref] = on; else P.view[m.key] = m.inv ? !on : on;
+  if(m.pref === 'hoverCol' && !on){ var o = document.querySelector('.hovcol, .tlc.hv'); if(o && typeof hoverClear === 'function') hoverClear(); }
+}
+var mosPrev = null, mosTimer = 0, mosClose = 0, mosPinned = false;
+function mosRefresh(){
+  var fl = document.getElementById('mostraFly'), diff = false;
+  MOSTRA.forEach(function(m){
+    var on = mosGet(m); if(on !== m.dflt) diff = true;
+    if(fl){ var b = fl.querySelector('[data-act="'+m.act+'"]'); if(b){ b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); } }
+  });
+  var mb = document.querySelector('#tlCmds [data-act="mostra"]'); if(mb) mb.classList.toggle('mod', diff);
+}
+function mosApply(m, on, final){
+  mosSetRaw(m, on);
+  if(final){ if(m.pref) savePrefs(); else ui.dirty = true; renderHeader(); renderStatus(); }
+  renderTimeline(); renderToolbarState();
+}
+function mosPreviewEnd(){
+  clearTimeout(mosTimer);
+  if(!mosPrev) return;
+  var pv = mosPrev; mosPrev = null; mosSetRaw(pv.m, pv.old); renderTimeline(); renderToolbarState();
+}
+function mosToggle(m){
+  clearTimeout(mosTimer);
+  if(mosPrev && mosPrev.m === m){ mosPrev = null; mosApply(m, mosGet(m), true); return; }
+  mosPreviewEnd(); mosApply(m, !mosGet(m), true);
+}
+function mosOpen(btn){
+  var fl = document.getElementById('mostraFly'); if(!fl) return;
+  clearTimeout(mosClose);
+  var r = btn.getBoundingClientRect();
+  fl.classList.add('open'); fl.style.top = (r.bottom + 6) + 'px';
+  fl.style.left = Math.max(8, Math.min(r.left, window.innerWidth - fl.offsetWidth - 8)) + 'px';
+  btn.setAttribute('aria-expanded', 'true');
+  mosRefresh();
+}
+function mosShut(){
+  var fl = document.getElementById('mostraFly'); mosPreviewEnd(); mosPinned = false;
+  if(fl) fl.classList.remove('open');
+  var mb = document.querySelector('#tlCmds [data-act="mostra"]'); if(mb){ mb.setAttribute('aria-expanded', 'false'); mb.classList.remove('pinned'); }
+}
+function buildMostra(btn){
+  var old = document.getElementById('mostraFly'); if(old) old.remove();
+  var fl = h('div',{ id:'mostraFly', class:'mostrafly', role:'toolbar', 'aria-label':'Mostra' });
+  MOSTRA.forEach(function(m){
+    var b = h('button',{ type:'button', class:'tbtn', 'data-act':m.act, 'data-tip':m.label+' — '+m.tip, 'aria-label':m.label, 'aria-pressed':'false' }, icon(m.ic));
+    b.addEventListener('mouseenter',function(){
+      clearTimeout(mosTimer);
+      mosTimer = setTimeout(function(){ if(mosPrev) mosPreviewEnd(); mosPrev = { m:m, old:mosGet(m) }; mosApply(m, !mosPrev.old, false); }, 120);
+    });
+    b.addEventListener('mouseleave',function(){ mosPreviewEnd(); });
+    b.addEventListener('click',function(e){ e.stopPropagation(); mosToggle(m); });
+    fl.appendChild(b);
+  });
+  document.body.appendChild(fl);
+  var wrapEnter = function(){ clearTimeout(mosClose); mosOpen(btn); };
+  var wrapLeave = function(){ clearTimeout(mosClose); if(mosPinned) return; mosClose = setTimeout(mosShut, 250); };
+  btn.addEventListener('mouseenter', wrapEnter); btn.addEventListener('mouseleave', wrapLeave);
+  fl.addEventListener('mouseenter',function(){ clearTimeout(mosClose); }); fl.addEventListener('mouseleave', wrapLeave);
+  btn.addEventListener('focus', wrapEnter);
+  btn.addEventListener('click',function(){
+    if(mosPinned){ mosShut(); } else { mosPinned = true; btn.classList.add('pinned'); mosOpen(btn); }
+  });
+  fl.addEventListener('focusout',function(e){ if(!mosPinned && !fl.contains(e.relatedTarget) && e.relatedTarget !== btn) mosClose = setTimeout(mosShut, 250); });
+  btn.addEventListener('keydown',function(e){ if(e.key === 'Escape') mosShut(); });
+  fl.addEventListener('keydown',function(e){ if(e.key === 'Escape'){ mosShut(); btn.focus(); } });
+  document.addEventListener('mousedown',function(e){ if(!mosPinned) return; if(fl.contains(e.target) || btn.contains(e.target)) return; mosShut(); });
+}
 function tlcSeg(it, i){
   if(it.lv){ setShowLevel(it.vv[i]); return; }
   if(it.pk){ prefs[it.pk] = it.vv[i]; savePrefs(); applyGroupStyle(); renderTimeline(); renderToolbarState(); return; }
@@ -7305,16 +7614,11 @@ function tlcAct(it, el){
   if(it.act === 'today') tlGoToday(); else if(it.act === 'gotoDay') openGotoDay(el); else if(it.act === 'tlopts') openTlOpts(el); else if(it.act === 'calendar') openCalendar(el);
   else if(it.act === 'mkNew') newMarker(el); else if(it.act === 'mkList') openMarkers(el);
   else if(it.act === 'color') pickColorFor(el, ui.sel.slice());
-  else if(it.act === 'todayHl'){ prefs.todayHl = prefs.todayHl === false; savePrefs(); renderTimeline(); renderToolbarState(); }
+  else if(it.act === 'mostra'){ /* gestito dal pulsante */ }
   else if(it.act === 'link') setLinkMode(!ui.linkMode);
   else if(it.act === 'locks') setView('showLocks', P.view.showLocks === false);
-  else if(it.act === 'breakNW') setView('breakNW', !P.view.breakNW);
   else if(it.act === 'critical'){ setView('showCritical', !P.view.showCritical); if(P.view.showCritical && !P.items.some(function(x){ return x.predecessors && x.predecessors.length; })) toast('Il percorso critico richiede collegamenti tra le attività: senza dipendenze è critico solo l\'item che termina per ultimo.', 5200); }
   else if(it.act === 'band') openPeriods(el, null);
-  else if(it.act === 'barsVis') setView('barsOff', !P.view.barsOff);
-  else if(it.act === 'mkVis') setView('markersOff', !P.view.markersOff);
-  else if(it.act === 'perVis') setView('periodBand', P.view.periodBand === false);
-  else if(it.act === 'perTint') setView('periodTint', P.view.periodTint === false);
   else if(it.act === 'baseline') openBaselines(el, null);
   else if(it.act === 'mkSync'){ realignMarkers(); toast('Inizio e Fine lavori seguono di nuovo le attività.'); }
 }
@@ -7325,6 +7629,17 @@ function buildTlCmds(){
   TLC.forEach(function(it){
     var el;
     if(it.sep){ flush(); el = h('span',{ class:'vgap'+(it.far ? ' far' : '') }); it.el = el; box.appendChild(el); return; }
+    if(it.goto){
+      var gi = h('input',{ type:'text', class:'gtin', id:'gtQuick', 'aria-label':'Vai a una data', placeholder:virtOn() ? 'G12' : 'gg/mm/aa', 'data-tip':'Data da raggiungere (gg/mm/aa, 19 nov 26, aaaa-mm-gg). Invio per andare' });
+      var gg = h('button',{ type:'button', class:'gtgo', 'data-tip':'Centra la timeline sulla data indicata' }, 'Vai');
+      var gdo = function(){ gotoQuick(gi); };
+      gg.addEventListener('click', gdo); gi.addEventListener('keydown',function(e){ if(e.key === 'Enter'){ e.preventDefault(); gdo(); } e.stopPropagation(); });
+      gi.addEventListener('focus', function(){ gi.classList.remove('pulse'); }); gi.addEventListener('input', function(){ gi.classList.remove('pulse'); });
+      var gib = h('button',{ class:'tbtn', type:'button', 'data-act':'gotoDay', 'aria-label':'Vai a un giorno o a un intervallo di date (calendario)', 'data-tip':'Vai a un giorno o a un intervallo di date: apre il calendario' }, icon('goto'));
+      gib.addEventListener('click',function(){ gi.classList.remove('pulse'); openGotoDay(gib); if(gib.blur) gib.blur(); });
+      el = h('div',{ class:'gtbox' }, gib, gi, gg);
+      it.el = el; if(!cap) cap = h('div',{ class:'tcap' }); cap.appendChild(el); return;
+    }
     if(it.seg){
       el = h('div',{ class:'seg', 'data-tip':it.tip });
       it.opts.forEach(function(o, i){
@@ -7334,7 +7649,8 @@ function buildTlCmds(){
       });
     } else {
       el = h('button',{ class:'tbtn'+(it.soon ? ' is-disabled' : ''), type:'button', 'aria-label':it.tip, 'data-tip':it.tip, 'data-soon':it.soon || null, 'data-act':it.act || null, 'data-vt':it.vt || null, 'data-ph':it.ph ? '1' : null }, icon(it.ic));
-      el.addEventListener('click',function(){ tlcAct(it, el); if(el.blur) el.blur(); });
+      if(it.mostra){ el.setAttribute('aria-haspopup','true'); el.setAttribute('aria-expanded','false'); buildMostra(el); }
+      else el.addEventListener('click',function(){ tlcAct(it, el); if(el.blur) el.blur(); });
     }
     it.el = el; if(!cap) cap = h('div',{ class:'tcap' }); cap.appendChild(el);
   });
@@ -7344,6 +7660,7 @@ function buildTlCmds(){
     var r = mb.getBoundingClientRect(), ent = [];
     (ui.tlcHidden || []).forEach(function(it){
       if(it.seg){ it.opts.forEach(function(o, i){ var cur = it.pk ? prefs[it.pk] === it.vv[i] : it.lv ? currentShowLevel() === it.vv[i] : (P.view[it.vk] || (it.vk === 'groupMode' ? 'compact' : 'weeks')) === it.vv[i]; ent.push({ label:it.lv ? it.names[i] : it.ico ? it.names[i] : it.label+': '+o, note:cur ? 'attivo' : null, fn:function(){ tlcSeg(it, i); } }); }); }
+      else if(it.mostra) MOSTRA.forEach(function(m){ ent.push({ label:'Mostra: '+m.label, note:mosGet(m) ? 'attivo' : 'spento', fn:function(){ mosToggle(m); } }); });
       else ent.push({ label:it.label, note:it.soon || null, disabled:!!it.soon, fn:function(){ tlcAct(it, mb); } });
     });
     openMenuAt(r.left, r.bottom + 6, ent);

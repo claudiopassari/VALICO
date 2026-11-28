@@ -10,10 +10,10 @@ await p.evaluate(()=>{GanttApp.core&&0;});
 await p.locator('#tlCmds [data-vk="scale"][data-vv="days"]').click().catch(()=>{});await W(300);
 await p.evaluate(()=>{GanttApp.ui.px=24;GanttApp.renderTimeline();});await W(200);
 // pulsante in barra
-ok(await p.locator('#tlCmds [data-act="breakNW"]').count()===1,'pulsante nella barra');
-await p.locator('#tlCmds [data-act="breakNW"]').click();await W(300);
+ok(await p.locator('#mostraFly [data-act="breakNW"]').count()===1,'pulsante nella barra');
+await p.locator('#mostraFly [data-act="breakNW"]').dispatchEvent('click');await W(300);
 ok(await p.evaluate(()=>GanttApp.P.view.breakNW===true),'pulsante attiva');
-ok(await p.evaluate(()=>document.querySelector('#tlCmds [data-act="breakNW"]').getAttribute('aria-pressed')==='true'),'pulsante premuto');
+ok(await p.evaluate(()=>document.querySelector('#mostraFly [data-act="breakNW"]').getAttribute('aria-pressed')==='true'),'pulsante premuto');
 const info=await p.evaluate(()=>{const A=GanttApp,P=A.P,g=A.ui.geo,out={brk:0,tot:0,bad:[],grp:0,ms:0};
  const bars=[...document.querySelectorAll('.bar[data-u]')];out.tot=bars.length;
  bars.forEach(el=>{const u=el.getAttribute('data-u'),it=P.items.find(x=>x.uid===u);if(!it)return;const s=Math.floor(Date.parse(it.start)/864e5),e=Math.floor(Date.parse(it.end)/864e5);
@@ -30,10 +30,10 @@ ok(info.tot>3,'barre presenti '+info.tot);ok(info.brk>0,'almeno una barra interr
 ok(info.grp===0,'gruppi e milestone continui');
 // date e durate invariate
 const before=await p.evaluate(()=>JSON.stringify(GanttApp.P.items.map(x=>[x.start,x.end,x.duration])));
-await p.locator('#tlCmds [data-act="breakNW"]').click();await W(250);
+await p.locator('#mostraFly [data-act="breakNW"]').dispatchEvent('click');await W(250);
 ok(await p.evaluate(()=>GanttApp.P.view.breakNW===false&&document.querySelectorAll('.bar.brk').length===0),'spegnimento ripristina barre continue');
 ok(before===await p.evaluate(()=>JSON.stringify(GanttApp.P.items.map(x=>[x.start,x.end,x.duration]))),'date e durate invariate');
-await p.locator('#tlCmds [data-act="breakNW"]').click();await W(250);
+await p.locator('#mostraFly [data-act="breakNW"]').dispatchEvent('click');await W(250);
 // eccezione lavorativa: un sabato lavorativo mostra la barra
 const ex=await p.evaluate(()=>{const A=GanttApp,P=A.P;const bars=[...document.querySelectorAll('.bar.brk')];const el=bars[0];const u=el.getAttribute('data-u'),it=P.items.find(x=>x.uid===u);
  const s=Math.floor(Date.parse(it.start)/864e5),e=Math.floor(Date.parse(it.end)/864e5);let sat=null;for(let d=s;d<=e;d++){if(new Date(d*864e5).getUTCDay()===6){sat=d;break}}
