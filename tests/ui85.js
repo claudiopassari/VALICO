@@ -82,6 +82,11 @@ ok(await p.locator('.aiprev tbody tr').count()===4,'risposta di Copilot incollat
 await p.locator('#aiFoot .btn',{hasText:'Indietro'}).click();await W(100);
 await p.locator('#aiResp').fill('questo non è JSON');await p.locator('#aiParse').click();await W(200);
 ok(/JSON valido/.test(await A(()=>document.getElementById('toast').textContent)),'messaggio per risposta non valida');
+// 5b) Copilot: testo vuoto ammesso (usa il contenuto già aperto in Copilot)
+await p.locator('#aiTxt').fill('');await p.locator('#aiCopy').click();await W(200);
+const clip2=await A(()=>navigator.clipboard.readText().catch(()=>null));
+if(clip2!==null)ok(/contenuto dell'email/.test(clip2),'prompt senza testo per Copilot');
+ok(await p.locator('.aisteps li').count()===4,'istruzioni passo-passo per la modalità assistita');
 // 6) Graph diretto (token già presente)
 await p.selectOption('#aiProv','graph');await W(100);
 ok(await p.locator('#aiCid').count()===1&&/sperimentale/i.test(await p.locator('#aiBody').innerText()),'campi Graph e avviso sperimentale');

@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.13.1
+
+Assistente AI, modalità assistita con Copilot: istruzioni passo-passo nella finestra e prompt utilizzabile anche senza testo, per lavorare sull'email o sul documento già aperto in Copilot (per esempio nel riquadro di Outlook).
+
 ## 0.13.0
 
 Assistente AI (menu Altro del pannello Item), disattivato in modo predefinito: trasforma testo libero, email incollate o dettatura vocale in righe aggiunte al progetto, con validazione, anteprima, conferma e un solo passo di annullamento. Fornitori con chiave API personale (Claude, ChatGPT, Gemini, Perplexity), senza server di Valico; la chiave non è salvata se non su richiesta. Microsoft Copilot in modalità assistita (prompt da copiare e risposta da incollare, nessuna connessione, valida per l'accesso con account aziendale) e diretta sperimentale tramite la Chat API di Microsoft 365 Copilot. La modalità assistita è disponibile per ogni fornitore.
