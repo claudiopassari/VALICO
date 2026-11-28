@@ -78,7 +78,7 @@ ok(/FS|^\d+$/.test(pt2)&&pt2.length>0,'predText: '+pt2);
 const onPath=()=>p.evaluate(()=>{const e=document.querySelector('#tlCv .dephit'),m=e.getScreenCTM(),pt=e.getPointAtLength(e.getTotalLength()*0.5);return [m.a*pt.x+m.e,m.d*pt.y+m.f]});
 let hp=await onPath();await p.mouse.click(hp[0],hp[1]);await W(150);
 ok(await p.locator('.pop .seg').count()>=1,'popover della freccia con selettore tipo');
-await p.locator('.pop .seg button',{hasText:'SS'}).click();await W(150);
+await p.locator('.pop .seg button',{hasText:/^SS$/}).click();await W(150);
 ok((await AA(()=>window.GanttApp.P.items.flatMap(i=>i.predecessors||[]).map(x=>x.type))).indexOf('SS')>=0,'tipo cambiato a SS dal popover');
 await p.keyboard.press('Escape');await W(80);
 // Canc elimina il collegamento selezionato

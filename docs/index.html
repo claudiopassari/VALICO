@@ -278,7 +278,7 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 .tdeps .dephit{stroke:transparent;stroke-width:9;fill:none;pointer-events:stroke;cursor:pointer}
 .tdeps .lagb{pointer-events:all;cursor:pointer}
 .tdeps .lagb rect{rx:99px;stroke:var(--panel);stroke-width:1.5px}
-.tdeps .lagb.pos rect{fill:#2fb457}.tdeps .lagb.neg rect{fill:#e5384a}
+.tdeps .lagb.rg rect{fill:#475569}.tdeps .lagb.pos rect{fill:#2fb457}.tdeps .lagb.neg rect{fill:#e5384a}
 .tdeps .lagb.on rect{stroke:var(--accent);stroke-width:2px}
 .tdeps .lagb text{font-size:calc(9px*var(--k));fill:#fff;font-weight:700;stroke:none;pointer-events:none}
 .ldot{display:none;position:absolute;top:calc(50% - 6px);width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--panel);border:2px solid var(--accent);box-sizing:border-box;z-index:7;cursor:crosshair}
@@ -287,6 +287,9 @@ html[data-gr="1"] .row.grp .c{background-image:linear-gradient(color-mix(in srgb
 #tlBody.linking{cursor:crosshair}
 .tlink{position:absolute;left:0;top:0;z-index:8;pointer-events:none;overflow:visible}
 .tlink path{stroke:var(--accent);stroke-width:2;fill:none;stroke-dasharray:5 3}
+.tlink.rig path{stroke-width:3.6;stroke-dasharray:none}
+.tdeps .dep.rigid{stroke-width:3;stroke:var(--text);opacity:.85}.tdeps .dep.rigid.on,.tdeps .dep.rigid.rel{stroke:var(--accent);opacity:1}.tdeps .dep.rigid.bad{stroke:var(--danger)}
+.bx.rigm{outline:2px dashed var(--accent);outline-offset:2px}
 .cpick{padding:2px 0}
 .cmask .cgrid{display:grid;grid-template-columns:repeat(7,26px) 34px repeat(2,26px);gap:6px;margin:8px 0}
 .cmask.sm .cgrid{grid-template-columns:repeat(7,22px) 30px repeat(2,22px);gap:4px;margin:6px 0}
@@ -493,6 +496,9 @@ html:not(.showsc) .shortcuts,.panel.closed .shortcuts,#pItems.closed .shortcuts{
 .dbox{position:relative;display:inline-flex;align-items:center;flex:none}.dbox .numin{padding-right:calc(26px*var(--k))}
 .dbox .calb{position:absolute;right:3px;top:50%;transform:translateY(-50%);opacity:.6}.dbox .calb:hover{opacity:1}.dbox .calb.on{opacity:1;color:var(--accent)}
 .cinl .calp{margin:0}
+#panels .cols .c.hdrag{opacity:.45}.hdmark{position:absolute;top:0;bottom:0;width:3px;background:var(--accent);z-index:30;pointer-events:none}body.hdragging{cursor:grabbing;user-select:none}
+#panels .cols .c[data-hcol]:not([data-hcol=name]){cursor:grab}
+.rngcal .d{user-select:none}.rngcal[data-v] .grid{grid-template-columns:repeat(7,1fr)}.rngcal .d{white-space:nowrap}.rngcal .d.rg{background:var(--accent-soft,rgba(37,99,235,.18));border-radius:0}.rngcal .d.rge{background:var(--accent);color:#fff}
 .calb.big svg{width:15px;height:15px}
 .calb:disabled{opacity:.2;cursor:default}
 .calp{width:calc(7*34px*var(--k))}
@@ -972,8 +978,9 @@ html[data-mob] #mnav .mmode{flex-basis:96px}
 'use strict';
 
 /* ===================== Configurazione ===================== */
-var APP = { name:'Valico', version:'0.11.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
+var APP = { name:'Valico', version:'0.12.0', date:'2026-11-28', contact:'', schema:2, author:'Claudio Passari',
   notes:[
+    "0.12.0: collegamenti rigidi. Un collegamento rigido lega in modo esatto due barre a una distanza fissa in giorni lavorativi: spostando una barra si spostano, nei due versi, tutte quelle collegate in modo rigido (insieme rigido). Si crea tenendo premuto Ctrl al completamento del collegamento, o dal menu del collegamento, o scrivendo ! dopo il predecessore (esempio 3SS+2!). Operazione tutto o niente: se una barra dell\'insieme ha una data bloccata o gli scarti sono incompatibili, nulla si sposta e il messaggio indica l\'insieme e la barra che blocca. Gesto a due clic: con Maiusc premuto, rilasciando il mouse la freccia resta agganciata e il clic successivo su una barra crea il collegamento (Esc o rilascio di Maiusc annullano). I collegamenti rigidi hanno tratto spesso e la sigla R; le barre dell\'insieme sono evidenziate alla selezione. Messaggio esplicativo anche per i collegamenti ordinari (quale predecessore impedisce lo spostamento). Selezione ad area additiva: con Ctrl (o Maiusc) all\'inizio del trascinamento si aggiunge alla selezione, anche in zone diverse. Campo Vai a data: calendario con selezione di un giorno (clic) o di un intervallo (trascinamento), anche nel calendario virtuale (giorni G1, G2, …). Colonne del pannello Item riordinabili trascinando l\'intestazione. Nuova colonna calcolata Ore/giorno tot. (ore al giorno × persone). I file delle versioni precedenti si aprono senza modifiche; le versioni precedenti leggono i collegamenti rigidi come flessibili.",
     "0.11.0: pannello di esportazione in tre blocchi (Cosa esportare, Area e contenuto, Formato e uscita) con la copia rapida dell\'immagine in evidenza accanto all\'anteprima; esportazione in Excel completa (tutti i campi modificabili: tipo, scadenza, ore al giorno, persone, etichetta, con calendario a barre semplificate, fogli Guida ed Elenchi con tendine); modello Excel scaricabile dal menu di salvataggio; importazione da Excel con anteprima degli errori riga per riga e nessuna modifica al progetto aperto fino alla conferma.",
     "0.10.0: pannello Mostra (barre, marker, periodi, tinta, interruzione nei giorni non lavorativi, evidenzia oggi e cursore, frecce) con anteprima al passaggio del cursore e clic per applicare; campo Vai a data nella barra della timeline (la timeline si estende fino a date lontane); colonne del pannello Item riordinabili dal pannello Colonne (trascinamento o Alt+frecce) e gruppo Carico di lavoro con valori rapidi per ore e persone; trascinamento ad area sulle righe del pannello Item (Alt), selezione dell\'intervallo date trascinando nel calendario, tasti 1-4 per scegliere il tipo mentre si disegna, suggerimento sui nomi troncati; gli item dentro un gruppo nascosto sono attenuati; esportazione dal lunedì alla domenica con margini; benvenuto in due righe di schede.",
     "0.9.9: corretto un errore dello zoom con la maniglia della timeline (visto in WebKit, il motore di Safari) che poteva saltare il ridisegno al rilascio del mouse.",
@@ -1725,6 +1732,105 @@ function depReq(p, it, pr){
   if(ty === 'SF'){ if(as === null) return null; return { k:'E', d:wShift(cal, prevWork(cal, as), lag) }; }
   return null;
 }
+
+/* ===================== Collegamenti rigidi (0.12.0) =====================
+   Un collegamento rigido è un predecessore con rigid:true: lega in modo esatto un estremo di una barra a un estremo di un'altra,
+   a una distanza fissa in giorni lavorativi (il «ritardo» del collegamento). Spostando una barra si spostano, nei due versi, tutte quelle
+   che le sono collegate in modo rigido (insieme rigido). Tutto o niente: se una barra dell'insieme ha una data bloccata, o gli scarti sono
+   incompatibili, l'operazione è rifiutata con un messaggio che indica l'insieme e la barra che blocca. I file di versioni precedenti
+   leggono il collegamento come flessibile (stesso tipo e ritardo). */
+function rigidEdges(p){
+  var out = [];
+  p.items.forEach(function(it){ (it.predecessors || []).forEach(function(pr){ if(pr && pr.rigid) out.push({ a:pr.uid, b:it.uid, pr:pr }); }); });
+  return out;
+}
+function rigidSet(p, uid_){   /* insieme rigido: uid di tutte le barre collegate in modo rigido, direttamente o no */
+  var ed = rigidEdges(p), seen = {}, st = [uid_], out = [];
+  if(!ed.length) return [uid_];
+  seen[uid_] = 1;
+  while(st.length){
+    var u = st.pop(); out.push(u);
+    ed.forEach(function(e){ var o = e.a === u ? e.b : e.b === u ? e.a : null; if(o && !seen[o]){ seen[o] = 1; st.push(o); } });
+  }
+  return out;
+}
+function rigidNames(p, uids, max){
+  var nm = uids.map(function(u){ var it = itemByUid2(p, u); return '«' + ((it && it.name) || 'senza nome') + '»'; });
+  max = max || 6;
+  return nm.length > max ? nm.slice(0, max).join(', ') + ' e altre ' + (nm.length - max) : nm.join(', ');
+}
+function rgEnd(c){ return c.end ? toDN(c.end) : toDN(c.start); }
+function rgSetStart(cal, c, S){
+  if(c.type === 'milestone'){ c.start = fromDN(S); c.end = c.start; c.duration = 1; return; }
+  var d = c.duration || (c.end ? workBetween(cal, toDN(c.start), toDN(c.end)) : 1);
+  c.start = fromDN(S); c.end = fromDN(addWork(cal, S, d)); c.duration = d;
+}
+function rgSetEnd(cal, c, E){
+  if(c.type === 'milestone'){ c.start = fromDN(E); c.end = c.start; c.duration = 1; return; }
+  var d = c.duration || (c.end ? workBetween(cal, toDN(c.start), toDN(c.end)) : 1);
+  c.end = fromDN(E); c.start = fromDN(startFromEnd(cal, E, d)); c.duration = d;
+}
+/* distanza con segno, in giorni lavorativi, tra due giorni lavorativi */
+function wDiff(cal, a, b){ return b >= a ? Math.max(0, workBetween(cal, a, b) - 1) : -Math.max(0, workBetween(cal, b, a) - 1); }
+/* ritardo che rende esatto il collegamento nella posizione attuale delle due barre */
+function rigidLagNow(p, A, B, ty){
+  var cal = p.calendar, as = toDN(A.start), ae = A.end ? toDN(A.end) : as, bs = toDN(B.start), be = B.end ? toDN(B.end) : bs, ref, tgt;
+  if(ty === 'FS'){ ref = nextWork(cal, ae + 1); tgt = bs; }
+  else if(ty === 'SS'){ ref = nextWork(cal, as); tgt = bs; }
+  else if(ty === 'FF'){ ref = prevWork(cal, ae); tgt = be; }
+  else { ref = prevWork(cal, as); tgt = be; }
+  return wDiff(cal, ref, tgt);
+}
+var RG_TY = { FS:'fine → inizio', SS:'inizio → inizio', FF:'fine → fine', SF:'inizio → fine' };
+function rigidBlockMsg(p, c, other, edgeA, edgeB, set){
+  return 'Non si può spostare: «' + (c.name || 'senza nome') + '» ha una data bloccata ed è collegata in modo rigido a «' + ((other && other.name) || 'senza nome') + '». '
+    + 'Insieme rigido (' + set.length + (set.length === 1 ? ' barra' : ' barre') + '): ' + rigidNames(p, set) + '. Sblocca il lucchetto di «' + (c.name || 'senza nome') + '» oppure rendi flessibile il collegamento.';
+}
+function rigidPropagate(p, before, quiet){
+  var edges = rigidEdges(p); ui.rigidMoved = 0;
+  if(!edges.length) return 0;
+  var cal = p.calendar, bs = {}, bp = {}, fixed = {}, moved = {}, byU = {}, force = {}, k;
+  before.items.forEach(function(x){ bs[x.uid] = x; (x.predecessors || []).forEach(function(pr){ bp[x.uid + '>' + pr.uid] = (pr.type || 'FS') + '|' + (pr.lag || 0) + '|' + (pr.rigid ? 1 : 0); }); });
+  p.items.forEach(function(x){ byU[x.uid] = x; var b = bs[x.uid]; if(b && (b.start !== x.start || b.end !== x.end)) fixed[x.uid] = 1; });
+  edges.forEach(function(e, i){ var sig = (e.pr.type || 'FS') + '|' + (e.pr.lag || 0) + '|1'; if(bp[e.b + '>' + e.a] !== sig){ force[i] = 1; } });
+  function reqOf(e){ return depReq(p, byU[e.b], e.pr); }
+  function ok(e){ var B = byU[e.b], A = byU[e.a]; if(!A.start || !B.start) return true; var rq = reqOf(e); if(!rq) return true; return (rq.k === 'S' ? toDN(B.start) : rgEnd(B)) === rq.d; }
+  function lockCheck(c, other, e){
+    if(c.lockStart || c.lockEnd){ var set = rigidSet(p, c.uid); throw new Error(rigidBlockMsg(p, c, other, e.a, e.b, set)); }
+  }
+  var guard = 0, again = true, i, e, A, B, rq, want;
+  /* collegamenti nuovi o modificati: il predecessore è il riferimento */
+  while(again && guard++ < 400){
+    again = false;
+    for(i = 0; i < edges.length; i++){
+      e = edges[i]; A = byU[e.a]; B = byU[e.b];
+      if(!A.start || !B.start || ok(e)) continue;
+      if(force[i] && !(fixed[e.b] && !fixed[e.a])){
+        if(fixed[e.b] && moved[e.b]) throw new Error('Collegamenti rigidi incompatibili: «' + (B.name || 'senza nome') + '» dovrebbe trovarsi in due posizioni diverse. Insieme rigido: ' + rigidNames(p, rigidSet(p, e.b)) + '.');
+        rq = reqOf(e); lockCheck(B, A, e);
+        if(rq.k === 'S') rgSetStart(cal, B, rq.d); else rgSetEnd(cal, B, rq.d);
+        fixed[e.b] = 1; moved[e.b] = 1; fixed[e.a] = fixed[e.a] || 1; again = true; continue;
+      }
+      if(fixed[e.a] && !fixed[e.b]){
+        rq = reqOf(e); lockCheck(B, A, e);
+        if(rq.k === 'S') rgSetStart(cal, B, rq.d); else rgSetEnd(cal, B, rq.d);
+        fixed[e.b] = 1; moved[e.b] = 1; again = true;
+      } else if(fixed[e.b] && !fixed[e.a]){
+        var ty = e.pr.type || 'FS', lag = e.pr.lag || 0;
+        lockCheck(A, B, e);
+        if(ty === 'FS'){ want = wShift(cal, toDN(B.start), -lag); rgSetEnd(cal, A, prevWork(cal, want - 1)); }
+        else if(ty === 'SS'){ rgSetStart(cal, A, wShift(cal, toDN(B.start), -lag)); }
+        else if(ty === 'FF'){ rgSetEnd(cal, A, wShift(cal, rgEnd(B), -lag)); }
+        else { rgSetStart(cal, A, wShift(cal, rgEnd(B), -lag)); }
+        fixed[e.a] = 1; moved[e.a] = 1; again = true;
+      } else if(fixed[e.a] && fixed[e.b]){
+        throw new Error('Collegamento rigido non rispettato tra «' + (A.name || 'senza nome') + '» e «' + (B.name || 'senza nome') + '» (' + RG_TY[e.pr.type || 'FS'] + ', ' + ((e.pr.lag || 0) >= 0 ? '+' : '') + (e.pr.lag || 0) + ' gg): le barre dell\'insieme sono state spostate di scarti diversi, oppure gli scarti dei collegamenti sono incompatibili. Insieme rigido: ' + rigidNames(p, rigidSet(p, e.a)) + '.');
+      }
+    }
+  }
+  var n = Object.keys(moved).length; ui.rigidMoved = n;
+  return n;
+}
 /* percorso critico (metodo del cammino critico, CPM): passaggio in avanti al più presto dalla sola rete dei collegamenti
    (gli item senza predecessori, o con inizio bloccato, restano ancorati alla loro data), passaggio all'indietro dalla fine del
    progetto, margine totale in giorni lavorativi. Critici: margine zero. Le date inserite a mano più tardi del necessario
@@ -1832,7 +1938,7 @@ function depViolated(p, it, pr){
 }
 /* spinge in avanti i successori che violano un collegamento (mai indietro). Le date bloccate non si muovono: il conflitto resta visibile. */
 function applyDeps(p){
-  var items = p.items, byUid = {}, order = [], state = {}, cal = p.calendar, moved = 0;
+  var items = p.items, byUid = {}, order = [], state = {}, cal = p.calendar, moved = 0, rig = rigidEdges(p).length > 0, pass = 0, again;
   items.forEach(function(x){ byUid[x.uid] = x; });
   function visit(it){
     if(state[it.uid]) return; state[it.uid] = 1;
@@ -1840,23 +1946,42 @@ function applyDeps(p){
     state[it.uid] = 2; order.push(it);
   }
   items.forEach(visit);
-  order.forEach(function(it){
-    var i = findIdx(p, it.uid);
-    if(!it.predecessors || !it.predecessors.length || !it.start || it.type === 'group' || it.type === 'indication' || isGroupAt(p, i)) return;
-    var ms = it.type === 'milestone', s = toDN(it.start), e = it.end ? toDN(it.end) : s, dur = ms ? 1 : (it.end ? Math.max(1, workBetween(cal, s, e)) : Math.max(1, it.duration || 1));
-    var need = s;
-    it.predecessors.forEach(function(pr){
-      var rq = depReq(p, it, pr); if(!rq) return;
-      var ns = rq.k === 'S' ? rq.d : (e < rq.d ? startFromEnd(cal, rq.d, dur) : s);
-      if(ns > need) need = ns;
+  ui.depWhy = null;
+  do{
+    again = false; pass++;
+    order.forEach(function(it){
+      var i = findIdx(p, it.uid);
+      if(!it.predecessors || !it.predecessors.length || !it.start || it.type === 'group' || it.type === 'indication' || isGroupAt(p, i)) return;
+      var ms = it.type === 'milestone', s = toDN(it.start), e = it.end ? toDN(it.end) : s, dur = ms ? 1 : (it.end ? Math.max(1, workBetween(cal, s, e)) : Math.max(1, it.duration || 1));
+      var need = s, why = null;
+      it.predecessors.forEach(function(pr){
+        if(pr.rigid) return;   /* i collegamenti rigidi sono gestiti a parte: non spingono, vincolano in modo esatto */
+        var rq = depReq(p, it, pr); if(!rq) return;
+        var ns = rq.k === 'S' ? rq.d : (e < rq.d ? startFromEnd(cal, rq.d, dur) : s);
+        if(ns > need){ need = ns; why = pr; }
+      });
+      if(need > s){
+        if(it.lockStart || it.lockEnd) return;
+        var set = rig ? rigidSet(p, it.uid) : [it.uid];
+        if(set.length > 1){
+          /* l'item fa parte di un insieme rigido: si sposta l'insieme intero, o nessuna barra */
+          var nsh = workBetween(cal, s, need) - 1, blocked = false;
+          set.forEach(function(u){ var c = byUid[u]; if(c.start && (c.lockStart || c.lockEnd)) blocked = true; });
+          if(blocked) return;
+          set.forEach(function(u){
+            var c = byUid[u]; if(!c.start) return;
+            rgSetStart(cal, c, wShift(cal, toDN(c.start), nsh)); moved++;
+          });
+          again = true;
+        } else {
+          it.start = fromDN(need);
+          if(ms) it.end = it.start; else if(it.end){ it.end = fromDN(addWork(cal, need, dur)); it.duration = dur; }
+          moved++;
+        }
+        if(why){ var pa = byUid[why.uid]; ui.depWhy = { name:it.name, pred:pa ? pa.name : '', ty:why.type || 'FS', lag:why.lag || 0, d:need }; }
+      }
     });
-    if(need > s){
-      if(it.lockStart || it.lockEnd) return;
-      it.start = fromDN(need);
-      if(ms) it.end = it.start; else if(it.end){ it.end = fromDN(addWork(cal, need, dur)); it.duration = dur; }
-      moved++;
-    }
-  });
+  }while(again && pass < 25);
   ui.depMoved = (ui.depMoved || 0) + moved;
   return moved;
 }
@@ -1880,7 +2005,7 @@ function opCover(p, indUid, tUid, on){
   if(on && k < 0) ind.covers.push(tUid); else if(!on && k >= 0) ind.covers.splice(k, 1);
   return null;
 }
-function opLink(p, predUid, succUid, type){
+function opLink(p, predUid, succUid, type, rigid){
   var ai = findIdx(p, predUid), bi = findIdx(p, succUid);
   if(ai < 0 || bi < 0) throw new Error('Item non trovato.');
   if(predUid === succUid) throw new Error('Un item non può essere collegato a se stesso.');
@@ -1888,8 +2013,26 @@ function opLink(p, predUid, succUid, type){
   if(p.items[ai].type === 'indication' || p.items[bi].type === 'indication') throw new Error('Le indicazioni non si collegano come predecessori o successori.');
   if(wouldCycle(p, predUid, succUid)) throw new Error('Il collegamento creerebbe un ciclo tra le dipendenze.');
   var succ = p.items[bi], ex = (succ.predecessors || []).filter(function(x){ return x.uid === predUid; })[0];
-  if(ex) ex.type = type; else (succ.predecessors = succ.predecessors || []).push({ uid:predUid, type:type, lag:0 });
+  var lk = ex;
+  if(ex) ex.type = type; else { lk = { uid:predUid, type:type, lag:0 }; (succ.predecessors = succ.predecessors || []).push(lk); }
+  if(rigid){
+    var A = p.items[ai], B = succ;
+    if(!A.start || !B.start) throw new Error('Un collegamento rigido richiede che entrambe le barre abbiano le date.');
+    lk.rigid = true; lk.lag = rigidLagNow(p, A, B, type);
+    return 'Collegamento rigido creato (' + RG_TY[type] + ', ' + (lk.lag >= 0 ? '+' : '') + lk.lag + ' gg lavorativi): le due barre si spostano insieme.';
+  } else if(ex && ex.rigid){ delete ex.rigid; }
   return null;
+}
+/* trasforma un collegamento da flessibile a rigido o viceversa; passando a rigido il ritardo è aggiornato in modo che le barre restino dove sono */
+function opSetRigid(p, from, to, on){
+  var B = itemByUid2(p, to), A = itemByUid2(p, from), pr = B && (B.predecessors || []).filter(function(x){ return x.uid === from; })[0];
+  if(!pr || !A) throw new Error('Collegamento non trovato.');
+  if(on){
+    if(!A.start || !B.start) throw new Error('Un collegamento rigido richiede che entrambe le barre abbiano le date.');
+    var old = pr.lag || 0; pr.rigid = true; pr.lag = rigidLagNow(p, A, B, pr.type || 'FS');
+    return pr.lag !== old ? 'Collegamento reso rigido: il ritardo è ora ' + (pr.lag >= 0 ? '+' : '') + pr.lag + ' gg lavorativi, per mantenere le barre dove sono.' : 'Collegamento reso rigido.';
+  }
+  delete pr.rigid; return 'Collegamento reso flessibile.';
 }
 var PTYPE = { FS:'FS', SS:'SS', FF:'FF', SF:'SF', FI:'FS', II:'SS', IF:'SF' };
 function parsePreds(p, it, text){
@@ -1898,8 +2041,8 @@ function parsePreds(p, it, text){
   if(it.type === 'indication') throw new Error('Le indicazioni non hanno predecessori.');
   for(k = 0; k < parts.length; k++){
     var tok = parts[k].trim(); if(!tok) continue;
-    var m = /^(\d+)\s*([A-Za-z]{2})?\s*([+-]\s*\d+)?$/.exec(tok);
-    if(!m) throw new Error('Predecessore non valido: "'+tok+'". Esempio: 3, 5FS+2.');
+    var m = /^(\d+)\s*([A-Za-z]{2})?\s*([+-]\s*\d+)?\s*(!)?$/.exec(tok);
+    if(!m) throw new Error('Predecessore non valido: "'+tok+'". Esempio: 3, 5FS+2, 7SS-1! (il punto esclamativo rende il collegamento rigido).');
     var row = +m[1], ty = m[2] ? PTYPE[m[2].toUpperCase()] : 'FS', lag = m[3] ? parseInt(m[3].replace(/\s+/g,''), 10) : 0;
     if(!ty) throw new Error('Tipo di collegamento non valido: "'+m[2]+'". Usa FS, SS, FF o SF.');
     if(row < 1 || row > p.items.length) throw new Error('La riga '+row+' non esiste.');
@@ -1909,7 +2052,7 @@ function parsePreds(p, it, text){
     if(target.type === 'indication') throw new Error('La riga '+row+' è un\'indicazione: non si collega come predecessore.');
     if(seen[target.uid]) throw new Error('La riga '+row+' è indicata più volte.');
     seen[target.uid] = true;
-    out.push({ uid:target.uid, type:ty, lag:lag });
+    var ent = { uid:target.uid, type:ty, lag:lag }; if(m[4]) ent.rigid = true; out.push(ent);
   }
   /* ciclo: partendo dai nuovi predecessori non si deve poter risalire a it */
   var byUid = {}; p.items.forEach(function(x){ byUid[x.uid] = x; });
@@ -1925,7 +2068,7 @@ function parsePreds(p, it, text){
 function predText(p, it){
   return (it.predecessors || []).map(function(pr){
     var r = findIdx(p, pr.uid) + 1, lag = pr.lag || 0;
-    return r + ((pr.type && pr.type !== 'FS') || lag ? (pr.type || 'FS') : '') + (lag ? (lag > 0 ? '+' : '') + lag : '');
+    return r + ((pr.type && pr.type !== 'FS') || lag || pr.rigid ? (pr.type || 'FS') : '') + (lag ? (lag > 0 ? '+' : '') + lag : '') + (pr.rigid ? '!' : '');
   }).join(', ');
 }
 
@@ -2012,6 +2155,7 @@ function cellText(p, it, col){
     case 'label': return it.barLabel || '';
     case 'preds': return predText(p, it);
     case 'hours': return it.type !== 'task' || isGroupAt(p, p.items.indexOf(it)) ? '' : fmtHours(it.hoursPerDay != null ? it.hoursPerDay : (p.calendar.hoursPerDay || 8));
+    case 'hpd': { if(it.type !== 'task' || isGroupAt(p, p.items.indexOf(it))) return ''; var hh = it.hoursPerDay != null ? it.hoursPerDay : (p.calendar.hoursPerDay || 8); return fmtHours(hh * (it.crew != null ? it.crew : 1)); }
     case 'manh': { var mhv = manHoursOf(p, it); return mhv === null ? '' : fmtHours(mhv); }
     case 'crew': return it.crew == null ? '' : String(it.crew);
     case 'deadline': return it.deadline ? fmtISO(it.deadline) : '';
@@ -2236,11 +2380,12 @@ function commit(label, fn){
   if(ui.consult){ toast(CONSULT_MSG, 3600); return false; }   /* smartphone, modalità consultazione */
   var before = JSON.parse(JSON.stringify(P)), ch = [], notice = null;
   calInvalidate();
-  try{ notice = fn(P); finalize(P); }
+  try{ notice = fn(P); rigidPropagate(P, before); finalize(P); }
   catch(err){ P = before; ui.lastErr = true; if(typeof diagPush === 'function') diagPush('gestito', err); toast(err && err.message ? err.message : String(err), 4500); render(); return false; }
   diff(before, P, [], ch);
-  if(!ch.length){ if(ui.depMoved > 0) toast('Spostamento annullato dai collegamenti: l\'item non può iniziare prima dei suoi predecessori.', 3800); return false; }
-  if(ui.depMoved > 0 && typeof notice !== 'string') notice = ui.depMoved === 1 ? 'Un successore è stato spostato dai collegamenti.' : ui.depMoved+' successori sono stati spostati dai collegamenti.';
+  if(!ch.length){ if(ui.depMoved > 0){ var w = ui.depWhy; toast(w ? 'Spostamento annullato: «' + (w.name || 'senza nome') + '» non può ' + (w.ty === 'FF' || w.ty === 'SF' ? 'finire' : 'iniziare') + ' prima di ' + fmtISO(fromDN(w.d)) + ', perché è collegata a «' + (w.pred || 'senza nome') + '» (' + w.ty + (w.lag ? (w.lag > 0 ? '+' : '') + w.lag : '') + '). Per spostarla elimina il collegamento o sposta prima il predecessore.' : 'Spostamento annullato dai collegamenti: l\'item non può iniziare prima dei suoi predecessori.', 5200); } return false; }
+  if(ui.rigidMoved > 0 && typeof notice !== 'string') notice = ui.rigidMoved === 1 ? 'Una barra collegata in modo rigido si è spostata insieme.' : ui.rigidMoved + ' barre collegate in modo rigido si sono spostate insieme.';
+  else if(ui.depMoved > 0 && typeof notice !== 'string') notice = ui.depMoved === 1 ? 'Un successore è stato spostato dai collegamenti.' : ui.depMoved+' successori sono stati spostati dai collegamenti.';
   hist.undo.push({ label:label, ch:ch, t:Date.now() }); ui.unsaved = (ui.unsaved || 0) + 1; actLog('mod', label);
   if(hist.undo.length > MAX_UNDO) hist.undo.shift();
   hist.redo.length = 0;
@@ -2274,6 +2419,7 @@ var COLS = [
   { id:'progress', label:'%',            tip:'Avanzamento', w:74, num:true },
   { id:'assignee', label:'Assegnatario', tip:'Assegnatario', w:150 },
   { id:'crew',     label:'Persone',      tip:'Persone impiegate sull\'attività, moltiplicano le ore (predefinito 1)', w:84, num:true, opt:true, adv:true },
+  { id:'hpd',      label:'Ore/giorno tot.', tip:'Ore al giorno totali dell\'attività: ore al giorno × persone (esempio 8 ore × 3 persone = 24). Calcolata', w:100, num:true, opt:true, adv:true, calc:true },
   { id:'manh',     label:'Ore-uomo',     tip:'Ore-uomo previste, durata × ore al giorno × persone (attese e milestone escluse, i gruppi sommano le attività)', w:92, num:true, opt:true, adv:true, calc:true },
   { id:'notes',    label:'Note',         tip:'Note (fino a 150 caratteri)', w:190 },
   { id:'label',    label:'Etichetta',    tip:'Etichetta mostrata nella barra', w:150, adv:true },
@@ -2333,6 +2479,7 @@ function applyItemsWidth(){
 function whyReadOnly(i, col){
   var it = P.items[i];
   if(col === 'manh') return 'Le ore-uomo sono calcolate: durata × ore al giorno × persone.';
+  if(col === 'hpd') return 'Le ore al giorno totali sono calcolate: ore al giorno × persone.';
   if(isGroupAt(P, i)) return 'Le date, la durata e l\'avanzamento di un gruppo sono calcolati dagli elementi che contiene.';
   if(it.type === 'indication') return col === 'preds' ? 'Le indicazioni non hanno dipendenze.' : col === 'progress' ? 'Le indicazioni non hanno avanzamento.' : 'Le date derivano dalle attività coperte: modifica l\'elenco delle attività coperte nei Dettagli.';
   if(it.type === 'milestone' && (col === 'end' || col === 'dur')) return 'Una milestone dura un solo giorno: si modifica solo la data di inizio.';
@@ -2840,7 +2987,7 @@ function initItemsEvents(){
   });
   /* selezione ad area sulle righe (Alt+trascina): verso il basso righe contenute, verso l'alto righe toccate; Maiusc all'inizio aggiunge */
   function startRowMarquee(e0){
-    var by0 = body.getBoundingClientRect(), y0 = e0.clientY - by0.top, moved = false, base = e0.shiftKey ? ui.sel.slice() : [], box = h('div',{ class:'rmq' }), prev = ui.sel.slice(), prevCell = ui.cell, prevRs = ui.rowSel;
+    var by0 = body.getBoundingClientRect(), y0 = e0.clientY - by0.top, moved = false, base = (e0.shiftKey || e0.ctrlKey || e0.metaKey) ? ui.sel.slice() : [], box = h('div',{ class:'rmq' }), prev = ui.sel.slice(), prevCell = ui.cell, prevRs = ui.rowSel;
     body.appendChild(box);
     function apply(ev){
       var r0 = body.getBoundingClientRect(), y1 = ev.clientY - r0.top;
@@ -4234,14 +4381,14 @@ function tlDeps(g){
       var ty = pr.type || 'FS', se = (ty === 'FS' || ty === 'FF') ? 'e' : 's', te = (ty === 'FS' || ty === 'SS') ? 's' : 'e';
       var xs = ex(pa, se), xt = ex(it, te), ys = rows[a.k].offsetTop + rows[a.k].offsetHeight / 2, yt = rows[b.k].offsetTop + rows[b.k].offsetHeight / 2, rh = rows[b.k].offsetHeight;
       var d = depPath(xs, ys, se, xt, yt, te, rh), bad = depViolated(P, it, pr), on = ui.depSel && ui.depSel.to === it.uid && ui.depSel.from === pr.uid;
-      var tip = 'Collegamento '+ty+(pr.lag ? (pr.lag > 0 ? '+' : '')+pr.lag : '')+': '+(pa.name || 'item')+' → '+(it.name || 'item');
+      var tip = 'Collegamento '+(pr.rigid ? 'rigido ' : 'flessibile ')+ty+(pr.lag ? (pr.lag > 0 ? '+' : '')+pr.lag : '')+': '+(pa.name || 'item')+' → '+(it.name || 'item')+(pr.rigid ? '. Le due barre si spostano insieme (insieme rigido di '+rigidSet(P, it.uid).length+')' : '');
       if(bad) tip += '. Non rispettato: l\'item dovrebbe '+(bad.k === 'S' ? 'iniziare' : 'finire')+' non prima del '+fmtISO(fromDN(bad.d))+(it.lockStart || it.lockEnd ? ' (date bloccate: non si sposta)' : '')+'.';
       var cl = !bad && !on && ui.crit && ui.crit.links[pr.uid+'>'+it.uid], rel = !bad && !on && !cl && ui.sel && ui.sel.length && (ui.sel.indexOf(pr.uid) >= 0 || ui.sel.indexOf(it.uid) >= 0), mk = (on || rel) ? 'ahs' : (bad || cl) ? 'ahc' : 'ah';
-      body += '<path class="dep'+(bad ? ' bad' : '')+(on ? ' on' : '')+(cl ? ' crit' : '')+(rel ? ' rel' : '')+'" d="'+d+'" marker-end="url(#'+mk+')"/>';
+      body += '<path class="dep'+(pr.rigid ? ' rigid' : '')+(bad ? ' bad' : '')+(on ? ' on' : '')+(cl ? ' crit' : '')+(rel ? ' rel' : '')+'" d="'+d+'" marker-end="url(#'+mk+')"/>';
       body += '<path class="dephit" d="'+d+'" data-from="'+pr.uid+'" data-to="'+it.uid+'"><title>'+tip.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</title></path>';
-      if(pr.lag){
-        var mid = pathMid(d), lt = (pr.lag > 0 ? '+' : '')+pr.lag, lw = Math.max(20, lt.length * 6.4 + 12) * kf, lh = 14 * kf;
-        lags += '<g class="lagb '+(pr.lag > 0 ? 'pos' : 'neg')+(on ? ' on' : '')+'" data-from="'+pr.uid+'" data-to="'+it.uid+'"><title>'+tip.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</title><rect x="'+(mid[0] - lw / 2)+'" y="'+(mid[1] - lh / 2)+'" width="'+lw+'" height="'+lh+'" rx="'+(lh / 2)+'"/><text x="'+mid[0]+'" y="'+(mid[1] + 3.2 * kf)+'" text-anchor="middle">'+lt+'</text></g>';
+      if(pr.lag || pr.rigid){
+        var mid = pathMid(d), lt = (pr.rigid ? 'R' + (pr.lag ? ' ' : '') : '') + (pr.lag ? (pr.lag > 0 ? '+' : '')+pr.lag : ''), lw = Math.max(20, lt.length * 6.4 + 12) * kf, lh = 14 * kf;
+        lags += '<g class="lagb '+(pr.lag > 0 ? 'pos' : pr.lag < 0 ? 'neg' : 'rg')+(on ? ' on' : '')+'" data-from="'+pr.uid+'" data-to="'+it.uid+'"><title>'+tip.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</title><rect x="'+(mid[0] - lw / 2)+'" y="'+(mid[1] - lh / 2)+'" width="'+lw+'" height="'+lh+'" rx="'+(lh / 2)+'"/><text x="'+mid[0]+'" y="'+(mid[1] + 3.2 * kf)+'" text-anchor="middle">'+lt+'</text></g>';
       }
     });
   });
@@ -4251,9 +4398,17 @@ function tlDeps(g){
     +'<marker id="ahc" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" style="fill:var(--danger)"/></marker>'
     +'<marker id="ahs" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" style="fill:var(--accent)"/></marker></defs>'+body+'</svg>');
 }
+function rigidMark(uids){   /* contorno tratteggiato sulle barre dell'insieme rigido delle barre indicate */
+  var cv = $('#tlCv'); if(!cv) return;
+  var old = cv.querySelectorAll('.rigm'), k; for(k = 0; k < old.length; k++) old[k].classList.remove('rigm');
+  if(!uids || !uids.length || !rigidEdges(P).length) return;
+  var set = {}; uids.forEach(function(u){ var st = rigidSet(P, u); if(st.length > 1) st.forEach(function(x){ set[x] = 1; }); });
+  var els = cv.querySelectorAll('.bar[data-u],.ms[data-u]'); for(k = 0; k < els.length; k++) if(set[els[k].getAttribute('data-u')]) els[k].classList.add('rigm');
+}
 function tlSel(){
   var rows = document.querySelectorAll('#tlBody .trow[data-u]'), k;
   for(k = 0; k < rows.length; k++) rows[k].classList.toggle('sel', ui.sel.indexOf(rows[k].getAttribute('data-u')) >= 0);
+  rigidMark(ui.sel);
   if(ui.geo && P.view.showDeps !== false && P.items.some(function(x){ return x.predecessors && x.predecessors.length; })) tlDeps(ui.geo);   /* i collegamenti degli item selezionati sono evidenziati */
 }
 function stkOff(l, w, sw, sl, vw){   /* etichetta centrata nella parte visibile del suo segmento (anno, mese) */
@@ -4327,6 +4482,88 @@ function gotoQuick(inp){
   if(pa === false || pa === ''){ toast('Data non valida. ' + dateHint(), 3600); inp.focus(); return; }
   if(tlGoRange(pa, null)) inp.select();
 }
+/* calendario con selezione di un giorno (clic) o di un intervallo (trascinamento); chiama onSet(da, a) al rilascio, a = null per un solo giorno */
+function rangeCalendar(startISO, onSet, virt){
+  var vpg = 0, VP = 35;
+  if(virt && startISO){ vpg = Math.max(0, Math.floor((toDN(startISO) - VBASE) / VP)); }
+  var today = toDN(todayISO()), base = new Date((startISO ? toDN(startISO) : today) * DAYMS), y = base.getUTCFullYear(), m = base.getUTCMonth(), box = h('div',{ class:'calp rngcal' }), a0 = null, a1 = null, drag = false;
+  function paint(){
+    var lo = a0 === null ? null : Math.min(a0, a1), hi = a0 === null ? null : Math.max(a0, a1), els = box.querySelectorAll('button.d'), k, dn;
+    for(k = 0; k < els.length; k++){ dn = +els[k].getAttribute('data-dn'); els[k].classList.toggle('rg', lo !== null && dn >= lo && dn <= hi); els[k].classList.toggle('rge', lo !== null && (dn === lo || dn === hi)); }
+  }
+  function draw(){
+    box.textContent = '';
+    var prev = h('button',{ class:'tbtn', type:'button', 'aria-label':virt ? 'Pagina precedente' : 'Mese precedente' }, icon('left')), next = h('button',{ class:'tbtn', type:'button', 'aria-label':virt ? 'Pagina successiva' : 'Mese successivo' }, icon('right'));
+    if(virt){
+      prev.addEventListener('click',function(){ if(vpg > 0){ vpg--; draw(); } });
+      next.addEventListener('click',function(){ vpg++; draw(); });
+      box.appendChild(h('div',{ class:'ch' }, prev, h('b',{ text:'G' + (vpg * VP + 1) + ' – G' + (vpg + 1) * VP }), next));
+    } else {
+      prev.addEventListener('click',function(){ m--; if(m < 0){ m = 11; y--; } draw(); });
+      next.addEventListener('click',function(){ m++; if(m > 11){ m = 0; y++; } draw(); });
+      box.appendChild(h('div',{ class:'ch' }, prev, h('b',{ text:MESI_FULL[m]+' '+y }), next));
+    }
+    var g = h('div',{ class:'grid' }), first = Math.round(Date.UTC(y, m, 1) / DAYMS), off = (dnWeekday(first) + 6) % 7, k, dn, dd, cls;
+    if(virt){
+      for(k = 0; k < VP; k++){ dn = VBASE + vpg * VP + k; g.appendChild(h('button',{ class:'d', type:'button', 'data-dn':String(dn), text:'G' + (dn - VBASE + 1) })); }
+    } else {
+      WD.forEach(function(w){ g.appendChild(h('div',{ class:'wd', text:w })); });
+      for(k = 0; k < 42; k++){
+        dn = first - off + k; dd = new Date(dn * DAYMS); cls = 'd';
+        if(dd.getUTCMonth() !== m) cls += ' o';
+        if(!isWork(P.calendar, dn)) cls += ' nw';
+        if(dn === today) cls += ' td';
+        g.appendChild(h('button',{ class:cls, type:'button', 'data-dn':String(dn), text:String(dd.getUTCDate()) }));
+      }
+    }
+    g.addEventListener('mousedown',function(e){ var b = e.target.closest && e.target.closest('button.d'); if(!b || e.button !== 0) return; e.preventDefault(); drag = true; a0 = a1 = +b.getAttribute('data-dn'); paint(); });
+    g.addEventListener('mouseover',function(e){ if(!drag) return; var b = e.target.closest && e.target.closest('button.d'); if(!b) return; a1 = +b.getAttribute('data-dn'); paint(); });
+    g.addEventListener('keydown',function(e){ if((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('button.d')){ e.preventDefault(); var d1 = +e.target.getAttribute('data-dn'); onSet(fromDN(d1), null); } });
+    box.appendChild(g);
+    box.appendChild(h('div',{ class:'cf' }, h('span',{ text:'Clic su un giorno, o trascina per un intervallo' })));
+  }
+  function up(){
+    if(!box.isConnected){ document.removeEventListener('mouseup', up); return; }
+    if(!drag) return; drag = false;
+    var lo = Math.min(a0, a1), hi = Math.max(a0, a1); onSet(fromDN(lo), hi > lo ? fromDN(hi) : null);
+  }
+  document.addEventListener('mouseup', up);
+  box._dispose = function(){ document.removeEventListener('mouseup', up); };
+  draw();
+  return box;
+}
+/* riordino delle colonne trascinando le intestazioni del pannello Item (la colonna Nome resta fissa); l'ordine delle colonne nascoste è conservato */
+function initHeaderDrag(){
+  var cols = $('#itemsCols') || document.querySelector('#panels .cols'); if(!cols || cols._hd) return; cols._hd = 1;
+  cols.addEventListener('mousedown',function(e){
+    if(e.button !== 0) return;
+    var hc = e.target.closest && e.target.closest('.c[data-hcol]'); if(!hc || hc.getAttribute('data-hcol') === 'name' || (e.target.closest && e.target.closest('.nres'))) return;
+    var id = hc.getAttribute('data-hcol'), x0 = e.clientX, moving = false, mark = null, to = -1, hs;
+    function heads(){ return Array.prototype.filter.call(cols.querySelectorAll('.c[data-hcol]'), function(x){ return x.getAttribute('data-hcol') !== 'name'; }); }
+    function mv(ev){
+      if(!moving){ if(Math.abs(ev.clientX - x0) < 6) return; moving = true; hc.classList.add('hdrag'); mark = h('div',{ class:'hdmark' }); cols.appendChild(mark); document.body.classList.add('hdragging'); }
+      hs = heads(); to = hs.length;
+      var k, r, cr = cols.getBoundingClientRect(), mx = 0;
+      for(k = 0; k < hs.length; k++){ r = hs[k].getBoundingClientRect(); if(ev.clientX < r.left + r.width / 2){ to = k; break; } }
+      if(to < hs.length){ r = hs[to].getBoundingClientRect(); mx = r.left - cr.left + cols.scrollLeft; } else { r = hs[hs.length - 1].getBoundingClientRect(); mx = r.right - cr.left + cols.scrollLeft; }
+      mark.style.left = mx + 'px';
+    }
+    function up(){
+      document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); document.body.classList.remove('hdragging');
+      if(!moving) return;
+      hc.classList.remove('hdrag'); if(mark) mark.remove();
+      ui.suppressHeadClick = Date.now();
+      var ids = heads().map(function(x){ return x.getAttribute('data-hcol'); }), from = ids.indexOf(id), full, pos = [], k;
+      if(from < 0 || to < 0 || to === from || to === from + 1) return;
+      ids.splice(from, 1); ids.splice(to > from ? to - 1 : to, 0, id);
+      full = colOrderIds(); full.forEach(function(c, i){ if(ids.indexOf(c) >= 0) pos.push(i); });
+      pos.forEach(function(q, kk){ full[q] = ids[kk]; });
+      P.view.colOrder = full; ui.dirty = true; applyItemsWidth(); renderItems(); renderHeader(); renderStatus();
+      toast('Colonna spostata. L\'ordine è salvato nel progetto.', 2400);
+    }
+    document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+  });
+}
 function openGotoDay(anchor){
   var virt = virtOn(), t = todayDN();
   var c = h('div',{ class:'look gotop' }, h('h3',{ text:'Vai al giorno' }));
@@ -4336,6 +4573,7 @@ function openGotoDay(anchor){
   }
   var f1 = field('Dal giorno', 'gtFrom'), f2 = field('Al giorno (facoltativo)', 'gtTo');
   c.appendChild(f1); c.appendChild(f2);
+  var rcal = null;
   c.appendChild(h('div',{ class:'note', text:'Un solo giorno: la timeline lo porta al centro. Con un intervallo adatta lo zoom per mostrarlo per intero. ' + (virt ? dateHint() : '') }));
   var i1 = f1.querySelector('input'), i2 = f2.querySelector('input');
   if(!virt && t !== null) i1.value = fromDN(t);
@@ -4351,6 +4589,12 @@ function openGotoDay(anchor){
   var tb = h('button',{ type:'button', class:'btn' }, 'Oggi');
   tb.addEventListener('click', function(){ if(t === null){ toast('Nel calendario virtuale «Oggi» richiede l\'ancoraggio a una data reale.', 3800); return; } if(tlGoRange(fromDN(t), null)) closePop(); });
   c.appendChild(h('div',{ style:'display:flex;gap:8px;margin-top:10px' }, gb, tb));
+  var first0 = null; P.items.forEach(function(x){ if(x.start && (first0 === null || x.start < first0)) first0 = x.start; });
+  rcal = rangeCalendar(virt ? first0 : (i1.value || null), function(a, b){
+    if(virt){ i1.value = 'G' + (toDN(a) - VBASE + 1); i2.value = b ? 'G' + (toDN(b) - VBASE + 1) : ''; } else { i1.value = a; i2.value = b || ''; }
+    go();
+  }, virt);
+  rcal.style.marginTop = '10px'; c.appendChild(rcal);
   openPopover(anchor, c);
   setTimeout(function(){ if(!virt) i1.focus(); else i1.focus(); }, 30);
 }
@@ -4485,9 +4729,15 @@ function depEdit(anchor, from, to){
   var succ = itemByUid(to), pr = succ && (succ.predecessors || []).filter(function(x){ return x.uid === from; })[0], pa = itemByUid(from);
   if(!pr) return;
   var c = h('div',null, h('h3',{ text:'Collegamento' }), h('div',{ class:'sub', text:(pa.name || 'item')+' → '+(succ.name || 'item') }));
+  c.appendChild(h('div',{ class:'sub2', text:'Natura' }));
+  c.appendChild(segControl([['flex', 'Flessibile'], ['rigid', 'Rigido']], pr.rigid ? 'rigid' : 'flex', function(v){
+    commit(v === 'rigid' ? 'Rendi rigido il collegamento' : 'Rendi flessibile il collegamento', function(p){ return opSetRigid(p, from, to, v === 'rigid'); });
+    closePop();
+  }));
+  c.appendChild(h('div',{ class:'note', text:'Flessibile: il successore non può iniziare prima del predecessore, ma se questo si sposta il successore resta dov\'è (a meno che non venga superato). Rigido: le due barre sono legate a una distanza fissa e si spostano sempre insieme, nei due versi.' }));
   c.appendChild(h('div',{ class:'sub2', text:'Tipo' }));
   c.appendChild(segControl(DEP_TYPES.map(function(t){ return [t[0], t[0]]; }), pr.type || 'FS', function(v){
-    commit('Cambia tipo di collegamento', function(p){ var q = itemByUid2(p, to).predecessors.filter(function(x){ return x.uid === from; })[0]; if(q) q.type = v; });
+    commit('Cambia tipo di collegamento', function(p){ var q = itemByUid2(p, to).predecessors.filter(function(x){ return x.uid === from; })[0]; if(q){ q.type = v; if(q.rigid) q.lag = rigidLagNow(p, itemByUid2(p, from), itemByUid2(p, to), v); } });
   }));
   c.appendChild(h('div',{ class:'note', text:'FS: il successore inizia dopo la fine del predecessore. SS: iniziano insieme. FF: finiscono insieme. SF: il successore finisce dopo l\'inizio del predecessore.' }));
   c.appendChild(numField('Ritardo (giorni lavorativi, negativo = anticipo)', pr.lag || 0, -365, 365, function(v){
@@ -4516,8 +4766,8 @@ function initLinks(){
       e.preventDefault(); e.stopImmediatePropagation(); depDelete(ui.depSel.from, ui.depSel.to);
     }
   }, true);
-  document.addEventListener('keyup',function(e){ if(e.key === 'Shift'){ ui.shiftDown = false; syncLinking(); } }, true);
-  window.addEventListener('blur',function(){ ui.shiftDown = false; syncLinking(); });
+  document.addEventListener('keyup',function(e){ if(e.key === 'Shift'){ ui.shiftDown = false; syncLinking(); if(ld && ld.sticky) ld.cancel(); } }, true);
+  window.addEventListener('blur',function(){ ui.shiftDown = false; syncLinking(); if(ld && ld.sticky) ld.cancel(); });
   function dotCenter(el){ var cv = $('#tlCv').getBoundingClientRect(), r = el.getBoundingClientRect(); return [r.left + r.width / 2 - cv.left, r.top + r.height / 2 - cv.top]; }
   tb.addEventListener('mousedown',function(e){
     if(e.button !== 0) return;
@@ -4537,13 +4787,14 @@ function initLinks(){
     ld = { uid:dot.getAttribute('data-u'), end:dot.getAttribute('data-e'), hot:null };
     function mv(ev){
       var r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top;
-      path.setAttribute('d','M'+c0[0]+' '+c0[1]+' L'+x+' '+y);
+      path.setAttribute('d','M'+c0[0]+' '+c0[1]+' L'+x+' '+y); svg.setAttribute('class', 'tlink' + ((ev.ctrlKey || ev.metaKey) ? ' rig' : ''));
       var under = document.elementFromPoint(ev.clientX, ev.clientY), d2 = under && under.closest && under.closest('.ldot');
       if(ld.hot && ld.hot !== d2) ld.hot.classList.remove('hot');
       ld.hot = d2 && d2 !== dot ? d2 : null; if(ld.hot) ld.hot.classList.add('hot');
     }
-    function end(ev){
-      document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', end);
+    function finish(ev){
+      document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', end); document.removeEventListener('mousedown', second, true);
+      placeHint(null);
       var under = document.elementFromPoint(ev.clientX, ev.clientY), tgt = null, te = null;
       if(under && under.closest){
         var d2 = under.closest('.ldot'), b2 = under.closest('.bar,.ms,.ind');
@@ -4552,7 +4803,7 @@ function initLinks(){
       }
       cleanup();
       if(!tgt || tgt === ld.uid) { ld = null; return; }
-      var src = ld; ld = null;
+      var src = ld, rigid = !!(ev.ctrlKey || ev.metaKey); ld = null;
       var si = itemByUid(src.uid), ti = itemByUid(tgt);
       if(si && ti && (si.type === 'indication' || ti.type === 'indication')){
         var ind = si.type === 'indication' ? si : ti, oth = ind === si ? ti : si;
@@ -4560,10 +4811,25 @@ function initLinks(){
         commit('Copri un\'attività con l\'indicazione', function(p){ return opCover(p, ind.uid, oth.uid, true); }); return;
       }
       var ty = src.end === 'e' ? (te === 's' ? 'FS' : 'FF') : (te === 's' ? 'SS' : 'SF');
-      commit('Nuovo collegamento', function(p){ return opLink(p, src.uid, tgt, ty); });
+      commit(rigid ? 'Nuovo collegamento rigido' : 'Nuovo collegamento', function(p){ return opLink(p, src.uid, tgt, ty, rigid); });
+    }
+    /* rilascio del mouse: se è sopra una destinazione il collegamento è creato; se no e Maiusc è ancora premuto la freccia resta agganciata (secondo clic) */
+    function end(ev){
+      var under = document.elementFromPoint(ev.clientX, ev.clientY), ok = under && under.closest && under.closest('.ldot,.bar,.ms,.ind'), same = ok && ok.getAttribute('data-u') === ld.uid;
+      if((!ok || same) && ui.shiftDown){
+        ld.sticky = true; document.removeEventListener('mouseup', end);
+        placeHint('Clic su una barra o su un punto per collegare (Ctrl: collegamento rigido). Esc o rilascio di Maiusc: annulla.');
+        document.addEventListener('mousedown', second, true); return;
+      }
+      finish(ev);
+    }
+    function second(ev){
+      if(ev.button !== 0){ return; }
+      ev.stopPropagation(); ev.preventDefault();
+      finish(ev);
     }
     function cleanup(){ svg.remove(); if(ld && ld.hot) ld.hot.classList.remove('hot'); }
-    ld.cancel = function(){ document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', end); cleanup(); ld = null; };
+    ld.cancel = function(){ document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', end); document.removeEventListener('mousedown', second, true); placeHint(null); cleanup(); ld = null; };
     document.addEventListener('mousemove', mv); document.addEventListener('mouseup', end);
     mv(e);
   }, true);
@@ -4573,7 +4839,7 @@ function initLinks(){
     var from = hit.getAttribute('data-from'), to = hit.getAttribute('data-to'), succ = itemByUid(to), pr = succ && (succ.predecessors || []).filter(function(x){ return x.uid === from; })[0];
     if(!pr) return;
     ui.depSel = { from:from, to:to }; tlDeps(ui.geo);
-    var ent = [{ label:'Modifica il ritardo…', fn:function(){ depEdit({ getBoundingClientRect:function(){ return { left:e.clientX, right:e.clientX, top:e.clientY, bottom:e.clientY + 4, width:0, height:4 }; }, isConnected:true }, from, to); } }, { sep:true }];
+    var ent = [{ label:pr.rigid ? 'Rendi flessibile il collegamento' : 'Rendi rigido il collegamento', fn:function(){ commit(pr.rigid ? 'Rendi flessibile il collegamento' : 'Rendi rigido il collegamento', function(p){ return opSetRigid(p, from, to, !pr.rigid); }); } }, { sep:true }, { label:'Modifica il ritardo…', fn:function(){ depEdit({ getBoundingClientRect:function(){ return { left:e.clientX, right:e.clientX, top:e.clientY, bottom:e.clientY + 4, width:0, height:4 }; }, isConnected:true }, from, to); } }, { sep:true }];
     DEP_TYPES.forEach(function(t){ ent.push({ label:'Tipo: '+t[0]+' ('+t[1].toLowerCase()+')', disabled:(pr.type || 'FS') === t[0], fn:function(){ commit('Cambia tipo di collegamento', function(p){ var q = itemByUid2(p, to).predecessors.filter(function(x){ return x.uid === from; })[0]; if(q) q.type = t[0]; }); } }); });
     ent.push({ sep:true }); ent.push({ label:'Elimina il collegamento', keys:'Canc', fn:function(){ depDelete(from, to); } });
     openMenuAt(e.clientX, e.clientY, ent);
@@ -5573,7 +5839,7 @@ var ALT_CUR = {
 };
 var ALT_HINT = {
   cut:'Alt+clic: taglia la barra nel giorno indicato',
-  area:'Alt+trascina: selezione ad area (verso destra: barre contenute · verso sinistra: barre toccate · Maiusc all\'inizio: aggiunge)',
+  area:'Alt+trascina: selezione ad area (verso destra: barre contenute · verso sinistra: barre toccate · Maiusc o Ctrl all\'inizio: aggiunge alla selezione)',
   marker:'Alt+clic: nuovo marker in questo giorno',
   period:'Alt+trascina: nuovo periodo',
   unlink:'Alt+clic: elimina il collegamento'
@@ -5646,9 +5912,9 @@ function altPeriod(e0){
   document.addEventListener('mousemove', mv, true); document.addEventListener('mouseup', up, true); document.addEventListener('keydown', kd, true);
 }
 function altArea(e0){
-  var cv = $('#tlCv'), tb = $('#tlBody'), r0 = cv.getBoundingClientRect(), sx = e0.clientX - r0.left, sy = e0.clientY - r0.top, add = !!e0.shiftKey, last = e0, moved = false, box = null, hits = [], tmr = null;
+  var cv = $('#tlCv'), tb = $('#tlBody'), r0 = cv.getBoundingClientRect(), sx = e0.clientX - r0.left, sy = e0.clientY - r0.top, add = !!(e0.shiftKey || e0.ctrlKey || e0.metaKey), last = e0, moved = false, box = null, hits = [], tmr = null;
   var base = add ? ui.sel.slice() : [];
-  ui.altBusy = true; placeHint('Selezione ad area · verso destra: barre contenute · verso sinistra: barre toccate · Esc annulla');
+  ui.altBusy = true; placeHint('Selezione ad area' + (add ? ' (si aggiunge)' : '') + ' · verso destra: barre contenute · verso sinistra: barre toccate · Esc annulla');
   function rect(){ var r = cv.getBoundingClientRect(), cx = last.clientX - r.left, cy = last.clientY - r.top; return { l:Math.min(sx, cx), r:Math.max(sx, cx), t:Math.min(sy, cy), b:Math.max(sy, cy), win:cx >= sx, cr:r }; }
   function pick(q){
     var els = cv.querySelectorAll('.bar[data-u],.ms[data-u],.ind[data-u],.gsum[data-u]'), map = {}, k, el, b, u, m, out = [], L, R, T, B;
@@ -5692,7 +5958,8 @@ function altArea(e0){
   tmr = setInterval(edge, 30);
 }
 document.addEventListener('mousedown',function(e){
-  if(e.button !== 0 || !e.altKey || e.ctrlKey || e.metaKey || ui.place || ui.edit || ui.altBusy) return;
+  if(e.button !== 0 || !e.altKey || ui.place || ui.edit || ui.altBusy) return;
+  if((e.ctrlKey || e.metaKey) && dupTarget(e.clientX, e.clientY)) return;   /* Ctrl+Alt su una barra, un periodo o un marker: duplicazione; altrove: selezione ad area che si aggiunge */
   if(document.querySelector('dialog[open]')) return;
   if(e.target.closest && (e.target.closest('.tledit') || e.target.closest('.ptedit') || e.target.closest('.mtedit'))) return;
   var z = altZone(e.clientX, e.clientY); if(!z) return;
@@ -8384,7 +8651,7 @@ function init(){
   var narrow = window.innerWidth < 820;
   setPanel('details', prefs.detailsOpen===null ? !narrow : prefs.detailsOpen, false);
   setPanel('items', prefs.itemsOpen, false);
-  initItemsEvents(); initItemsResizer(); initNameResizer(); applyItemsWidth(); initTimelineEvents(); initLinks(); initItemScale(); initMobile();
+  initItemsEvents(); initItemsResizer(); initNameResizer(); applyItemsWidth(); initTimelineEvents(); initLinks(); initHeaderDrag(); initItemScale(); initMobile();
   var ib = $('#itemsWrap'), tb = $('#tlBody'), lock = false;
   /* Rotella: asse dominante. Verticale = scorre l'elenco; orizzontale solo con Alt (o, nella timeline, con gesto nettamente orizzontale) */
   function wheelLock(el, allowHoriz){
@@ -8437,7 +8704,7 @@ function init(){
 }
 
 window.GanttApp = {
-  core:{ buildExample:buildExample, expScale:expScale, opToVirtual:opToVirtual, opToReal:opToReal, todayDN:todayDN, virtOn:virtOn, VBASE:VBASE, parseDateText:parseDateText, criticalSet:criticalSet, devVal:devVal, calInvalidate:calInvalidate, toDN:toDN, fromDN:fromDN, isWork:isWork, nextWork:nextWork, prevWork:prevWork, addWork:addWork, startFromEnd:startFromEnd, workBetween:workBetween, easterDN:easterDN, holidaysIT:holidaysIT, parseDateText:parseDateText, fmtISO:fmtISO, finalize:finalize, retimeAll:retimeAll, setField:setField, cellText:cellText, canEdit:canEdit, parsePreds:parsePreds, predText:predText, opInsert:opInsert, opDelete:opDelete, opDuplicate:opDuplicate, opLevel:opLevel, opMove:opMove, opDrop:opDrop, dropRange:dropRange, opLock:opLock, opBarRange:opBarRange, opBarMove:opBarMove, tlExtent:tlExtent, isoWeek:isoWeek, mondayOf:mondayOf, opMergeAssignees:opMergeAssignees, topsOf:topsOf, blockEnd:blockEnd, findIdx:findIdx, diff:diff, applyChanges:applyChanges, prepareSave:prepareSave, normalizeLoaded:normalizeLoaded, nextRev:nextRev, baseName:baseName, revFileName:revFileName, newProject:newProject, newItem:newItem, loadText:loadText, PALETTE:PALETTE, opLink:opLink, opSplit:opSplit, opUnlink:opUnlink, opCover:opCover, assigneeReport:assigneeReport, opSaveBaseline:opSaveBaseline, baselineReport:baselineReport, snapBaseline:snapBaseline, wouldCycle:wouldCycle, applyDeps:applyDeps },
+  core:{ opSetRigid:opSetRigid, rigidSet:rigidSet, rigidLagNow:rigidLagNow, buildExample:buildExample, expScale:expScale, opToVirtual:opToVirtual, opToReal:opToReal, todayDN:todayDN, virtOn:virtOn, VBASE:VBASE, parseDateText:parseDateText, criticalSet:criticalSet, devVal:devVal, calInvalidate:calInvalidate, toDN:toDN, fromDN:fromDN, isWork:isWork, nextWork:nextWork, prevWork:prevWork, addWork:addWork, startFromEnd:startFromEnd, workBetween:workBetween, easterDN:easterDN, holidaysIT:holidaysIT, parseDateText:parseDateText, fmtISO:fmtISO, finalize:finalize, retimeAll:retimeAll, setField:setField, cellText:cellText, canEdit:canEdit, parsePreds:parsePreds, predText:predText, opInsert:opInsert, opDelete:opDelete, opDuplicate:opDuplicate, opLevel:opLevel, opMove:opMove, opDrop:opDrop, dropRange:dropRange, opLock:opLock, opBarRange:opBarRange, opBarMove:opBarMove, tlExtent:tlExtent, isoWeek:isoWeek, mondayOf:mondayOf, opMergeAssignees:opMergeAssignees, topsOf:topsOf, blockEnd:blockEnd, findIdx:findIdx, diff:diff, applyChanges:applyChanges, prepareSave:prepareSave, normalizeLoaded:normalizeLoaded, nextRev:nextRev, baseName:baseName, revFileName:revFileName, newProject:newProject, newItem:newItem, loadText:loadText, PALETTE:PALETTE, opLink:opLink, opSplit:opSplit, opUnlink:opUnlink, opCover:opCover, assigneeReport:assigneeReport, opSaveBaseline:opSaveBaseline, baselineReport:baselineReport, snapBaseline:snapBaseline, wouldCycle:wouldCycle, applyDeps:applyDeps },
   get P(){ return P; }, hist:hist, ui:ui, commit:commit, undo:undo, redo:redo, addItem:addItem, deleteSelected:deleteSelected, render:render, MAX_UNDO:MAX_UNDO, renderItems:renderItems, renderTimeline:renderTimeline,
   act:{ expCanvas:expCanvas, expVecDoc:expVecDoc, expVecPlan:expVecPlan, expPrint:expPrint, expOpts:expOpts, expBuild:expBuild, expRun:expRun, tlFitAll:tlFitAll, loadExample:loadExample, openWelcome:openWelcome, closeWelcome:closeWelcome, pickColorFor:pickColorFor, openShortcuts:openShortcuts, openLog:openLog, setScale:setScale, setView:setView, tlGoToday:tlGoToday, openCalendar:openCalendar, openMarkers:openMarkers, openTlOpts:openTlOpts, openDatePicker:openDatePicker, pickDate:pickDate, saveFlow:saveFlow, layoutItemCmds:layoutItemCmds, layoutTlCmds:layoutTlCmds, deselectAll:deselectAll, tlEditLabel:tlEditLabel, startTitleEdit:startTitleEdit, insert:actInsert, del:actDelete, level:actLevel, move:actMove, dup:actDuplicate, lock:actLock, startEdit:startEdit, endEdit:endEdit, visRows:visRows }
 };

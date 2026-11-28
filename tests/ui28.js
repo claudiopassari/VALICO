@@ -6,7 +6,7 @@ await p.addInitScript(()=>{try{if(!localStorage.getItem('gantt.prefs.v1'))localS
 const W=t=>p.waitForTimeout(t);
 await p.locator('[data-act="export"]').click();await W(300);
 ok(await p.locator('#dlgExp[open]').count()===1,'dialogo aperto');
-async function dl(label){const [d]=await Promise.all([p.waitForEvent('download',{timeout:60000}),p.locator('#expGo').click()]);const path='/tmp/valico-tests/out_'+label;await d.saveAs(path);return {name:d.suggestedFilename(),buf:fs.readFileSync(path)}}
+async function dl(label){const [d]=await Promise.all([p.waitForEvent('download',{timeout:60000}),p.locator('#expGo').click()]);const path='/tmp/claude-0/-home-claude/fd0a8c60-c582-5ddb-9fa6-fefd84f40864/scratchpad/gt/out_'+label;await d.saveAs(path);return {name:d.suggestedFilename(),buf:fs.readFileSync(path)}}
 let r=await dl('a.png');console.log(r.name,r.buf.length);
 ok(r.buf.slice(0,8).toString('hex')==='89504e470d0a1a0a','PNG valido');
 const w=r.buf.readUInt32BE(16),h=r.buf.readUInt32BE(20);console.log('png',w,h);ok(w>1500&&h>400,'dimensioni plausibili');

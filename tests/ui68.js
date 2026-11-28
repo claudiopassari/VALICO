@@ -5,7 +5,7 @@ const eq=(a,b,m)=>ok(JSON.stringify(a)===JSON.stringify(b),m+' | got '+JSON.stri
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1700,height:800}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));
 await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(400);const W=ms=>p.waitForTimeout(ms);const ev=(f,a)=>p.evaluate(f,a);
-await ev(()=>{GanttApp.commit('t',q=>{q.items=[];const g=GanttApp.core.newItem('Gruppo');const i=GanttApp.core.newItem('Assenza lavori');i.level=2;i.type='indication';const a=GanttApp.core.newItem('Attivita');a.level=2;q.items.push(g,i,a);GanttApp.core.opBarRange(q,i.uid,'2026-12-03','2026-12-18');GanttApp.core.opBarRange(q,a.uid,'2026-12-03','2026-12-08')})});await W(400);
+await ev(()=>{GanttApp.commit('t',q=>{q.items=[];const g=GanttApp.core.newItem('Gruppo');const i=GanttApp.core.newItem('Assenza recinzione');i.level=2;i.type='indication';const a=GanttApp.core.newItem('Attivita');a.level=2;q.items.push(g,i,a);GanttApp.core.opBarRange(q,i.uid,'2026-12-03','2026-12-18');GanttApp.core.opBarRange(q,a.uid,'2026-12-03','2026-12-08')})});await W(400);
 const u=await ev(()=>GanttApp.P.items[1].uid);
 const geo=()=>ev(u=>{const e=document.querySelector('#tlBody .ind[data-u="'+u+'"]'),r=e.getBoundingClientRect();return {l:r.left,r:r.right,y:r.top+r.height/2,w:r.width}},u);
 const g0=await geo();

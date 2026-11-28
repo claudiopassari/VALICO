@@ -101,7 +101,7 @@ ok(dialogs.length===1&&/gruppo/.test(dialogs[0]),'conferma eliminazione gruppo: 
 eq(await p.evaluate(()=>window.GanttApp.P.items.length),n0-(await p.evaluate(()=>0))-3+0===0?0:n0-3,'gruppo eliminato con figli');
 await p.keyboard.press('Control+z');
 // 14. columns popover
-await p.locator('[data-act="cols"]').click();ok(await p.locator('.pop .switch').count()===16,'16 interruttori colonne');
+await p.locator('[data-act="cols"]').click();ok(await p.locator('.pop .switch').count()===17,'17 interruttori colonne');
 await p.locator('.pop .switch').nth(5).click(); // notes on
 ok(await p.locator('#itemsCols .c-notes').count()===1,'colonna Note mostrata');
 await p.locator('.pop .switch').nth(0).click(); // start off

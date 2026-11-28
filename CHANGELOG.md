@@ -2,6 +2,10 @@
 
 Elenco delle novità per versione (stesso testo mostrato in Valico, finestra Informazioni › Novità delle versioni).
 
+## 0.12.0
+
+Collegamenti rigidi: due barre legate a una distanza fissa in giorni lavorativi si spostano insieme nei due versi (insieme rigido), con operazione tutto o niente e messaggio che indica l'insieme e la barra che blocca. Si creano con Ctrl al completamento del collegamento, dal menu del collegamento o con ! nella cella Predecessori. Gesto a due clic con Maiusc (la freccia resta agganciata dopo il rilascio). Tratto spesso e sigla R, evidenziazione dell'insieme alla selezione, messaggio esplicativo anche per i collegamenti ordinari. Selezione ad area additiva con Ctrl o Maiusc, anche in zone diverse. Campo Vai a data con calendario a selezione di giorno o intervallo (anche nel calendario virtuale). Colonne del pannello Item riordinabili trascinando l'intestazione. Nuova colonna calcolata Ore/giorno tot. Compatibile con i file delle versioni precedenti.
+
 ## 0.11.0
 
 Pannello di esportazione in tre blocchi (Cosa esportare, Area e contenuto, Formato e uscita) con la copia rapida dell'immagine in evidenza accanto all'anteprima. Esportazione in Excel completa: tutti i campi modificabili (tipo, scadenza, ore al giorno, persone, etichetta), calendario con barre semplificate, fogli Guida ed Elenchi con tendine. Modello Excel scaricabile dal menu di salvataggio. Importazione da Excel con anteprima degli errori riga per riga e nessuna modifica al progetto aperto fino alla conferma.

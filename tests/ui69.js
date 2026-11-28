@@ -4,7 +4,7 @@ let pass=0,fail=0;const ok=(c,m)=>{if(c)pass++;else{fail++;console.log('FAIL:',m
 (async()=>{const b=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']});const p=await b.newPage({viewport:{width:1700,height:700}});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));
 await p.goto('file://'+process.cwd()+'/app.html');await p.waitForTimeout(400);const W=ms=>p.waitForTimeout(ms);const ev=(f,a)=>p.evaluate(f,a);
-await ev(()=>{GanttApp.commit('t',q=>{q.items=[];const g=GanttApp.core.newItem('VIE CAVO');const m=GanttApp.core.newItem('Valutazione attraversamenti stradali con il fornitore');m.level=2;m.type='milestone';const a=GanttApp.core.newItem('Attraversamenti');a.level=2;
+await ev(()=>{GanttApp.commit('t',q=>{q.items=[];const g=GanttApp.core.newItem('VIE CAVO');const m=GanttApp.core.newItem('Valutazione attraversamenti stradali con CSA');m.level=2;m.type='milestone';const a=GanttApp.core.newItem('Attraversamenti');a.level=2;
  const g2=GanttApp.core.newItem('GRUPPO LUNGO CON NOME LUNGO');const b1=GanttApp.core.newItem('B1');b1.level=2;
  q.items.push(g,m,a,g2,b1);GanttApp.core.opBarRange(q,a.uid,'2026-11-30','2026-11-30');GanttApp.core.setField(q,m.uid,'start','30/11/2026');GanttApp.core.opBarRange(q,b1.uid,'2026-11-30','2027-01-29')})});await W(400);
 await ev(()=>GanttApp.act.setScale&&GanttApp.act.setScale('weeks'));await W(300);
